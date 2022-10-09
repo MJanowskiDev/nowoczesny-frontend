@@ -1,4 +1,4 @@
-#Next.js course
+# Next.js course
 https://hyperfunctor.com/nextjs-react-graphql-typescript
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
