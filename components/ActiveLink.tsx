@@ -11,7 +11,7 @@ interface ActiveLinkProps extends LinkProps {
 
 export const ActiveLink = ({
   children,
-  classActive = "text-lime-400 underline underline-offset-4 decoration-2 ",
+  classActive = "text-teal-600 dark:text-teal-300 font-bold underline underline-offset-4 decoration-2 ",
   className,
   ...props
 }: ActiveLinkProps) => {

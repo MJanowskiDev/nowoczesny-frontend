@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { DarkModeContext } from "./ThemeContext";
 
 const SunIcon = () => (
   <svg
@@ -36,15 +37,23 @@ const MoonIcon = () => {
   );
 };
 
-export const DayNightToggle = () => {
+export const ThemeToggler = () => {
   const [darkMode, setDarkMode] = useState(false);
+
+  const { mode, setMode } = useContext(DarkModeContext);
+
   const handleModeChange = () => {
     setDarkMode((prev) => !prev);
+    if (setMode !== undefined) {
+      if (mode === "light") setMode("dark");
+      if (mode === "dark") setMode("light");
+    }
   };
+
   return (
     <div
       onClick={handleModeChange}
-      className="rounded-md bg-gray-100/20 px-2 py-1 text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+      className="rounded-md bg-gray-200/90 dark:bg-gray-100/20 px-2 py-1 text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
     >
       {darkMode ? <MoonIcon /> : <SunIcon />}
     </div>
