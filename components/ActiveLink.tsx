@@ -6,11 +6,13 @@ import { useRouter } from "next/router";
 interface ActiveLinkProps extends LinkProps {
   children: React.ReactElement;
   classActive?: string;
+  className?: string;
 }
 
 export const ActiveLink = ({
   children,
   classActive = "text-lime-400 underline underline-offset-4 decoration-2 ",
+  className,
   ...props
 }: ActiveLinkProps) => {
   const router = useRouter();
@@ -21,9 +23,7 @@ export const ActiveLink = ({
   return (
     <Link {...props}>
       {React.cloneElement(onlyChild, {
-        className: pathMatches
-          ? `${classActive}`
-          : `${onlyChild.props.className}`,
+        className: pathMatches ? `${classActive}` : `${className}`,
       })}
     </Link>
   );
