@@ -1,9 +1,12 @@
 import { ActiveLink } from "./ActiveLink";
 import Link from "next/link";
-import { DayNightToggle } from "./DayNightToggle";
+import { ThemeToggler } from "./ThemeToggler";
 export const StyledHeader = () => {
   return (
-    <header aria-label="Site Header" className="bg-white dark:bg-gray-900">
+    <header
+      aria-label="Site Header"
+      className="bg-gray-100/50 dark:bg-gray-900"
+    >
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex-1 md:flex md:items-center md:gap-12">
@@ -55,7 +58,7 @@ export const StyledHeader = () => {
                   </ActiveLink>
                 </li>
                 <li>
-                  <DayNightToggle />
+                  <ThemeToggler />
                 </li>
               </ul>
             </nav>
