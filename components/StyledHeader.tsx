@@ -52,9 +52,9 @@ export const StyledHeader = () => {
                 <li>
                   <ActiveLink
                     className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                    href="/products"
+                    href="/products-csr"
                   >
-                    <a>Products</a>
+                    <a>ProductsCSR</a>
                   </ActiveLink>
                 </li>
                 <li>
