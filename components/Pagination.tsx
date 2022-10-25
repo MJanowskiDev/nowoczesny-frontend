@@ -11,7 +11,7 @@ export const Pagination = ({ baseLink, pages }: PaginationProps) => {
         {pages.map((pageNumber) => {
           return (
             <ActiveLink
-              classActive="border-teal-600 text-teal-600 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
+              classActive="border-teal-600 dark:border-teal-300 dark:text-teal-300 text-teal-600 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
               className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
               key={`nextlink--${pageNumber}`}
               href={`/${baseLink}/${pageNumber}`}

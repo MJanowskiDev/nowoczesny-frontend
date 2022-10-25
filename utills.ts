@@ -15,4 +15,4 @@ interface Rating {
 }
 
 export const PRODUCT_PAGES_AMOUNT = 10;
-export const PRODUCT_TAKE_AMOUNT = 25;
+export const PRODUCT_TAKE_AMOUNT = 10;
