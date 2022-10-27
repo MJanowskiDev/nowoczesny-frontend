@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ProductsAPIResponse } from "../utills";
 
 type ProductCardProps = Pick<
@@ -35,7 +36,7 @@ export const ProductCard = ({
         </div>
 
         <div className="inline-block border-b dark:border-teal-300 border-teal-600 pb-1 font-medium text-teal-600 dark:text-teal-300">
-          Find out more
+          <Link href={`/product-csr/${id}`}>Find out more</Link>
           <span aria-hidden="true">&rarr;</span>
         </div>
       </div>
