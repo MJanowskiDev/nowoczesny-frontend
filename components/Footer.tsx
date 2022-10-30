@@ -2,7 +2,7 @@ export const Footer = () => {
   return (
     <footer
       aria-label="Site Footer"
-      className="bg-gray-100/50 dark:bg-gray-900 fixed inset-x-0 bottom-0 "
+      className="bg-gray-100/50 dark:bg-gray-900  "
     >
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center sm:justify-between">
