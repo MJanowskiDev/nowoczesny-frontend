@@ -30,9 +30,7 @@ const ProductIdPage = ({
 };
 
 export const getStaticPaths = () => {
-  const products = [...Array(PRODUCT_PAGES_AMOUNT * PRODUCT_TAKE_AMOUNT)].map(
-    (_, i) => i + 1
-  );
+  const products = [...Array(PRODUCT_TAKE_AMOUNT)].map((_, i) => i + 1);
   return {
     paths: products.map((product) => {
       return { params: { id: product.toString() } };
