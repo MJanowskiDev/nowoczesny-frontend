@@ -46,7 +46,7 @@ const ProductsCsr = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <ProductsList data={data} />
+      <ProductsList data={data} link="/product-csr" />
       <Pagination
         baseLink="products-csr"
         pages={[...Array(PRODUCT_PAGES_AMOUNT)].map((_, i) => i + 1)}

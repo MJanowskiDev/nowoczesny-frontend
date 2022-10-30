@@ -1,13 +1,21 @@
 import React from "react";
 
 import Link, { LinkProps } from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 
 interface ActiveLinkProps extends LinkProps {
   children: React.ReactElement;
   classActive?: string;
   className?: string;
 }
+
+const checkMatching = (path: string, href: string) => {
+  if (href !== "/") {
+    return path.includes(href);
+  } else {
+    return href.match(path);
+  }
+};
 
 export const ActiveLink = ({
   children,
@@ -17,7 +25,7 @@ export const ActiveLink = ({
 }: ActiveLinkProps) => {
   const router = useRouter();
 
-  const pathMatches = router.asPath === props.href;
+  const pathMatches = checkMatching(router.asPath, props.href.toString());
   const onlyChild = React.Children.only(children);
 
   return (
