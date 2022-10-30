@@ -10,7 +10,6 @@ const ProductIdPage = ({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
-  const { id } = router.query;
 
   if (router.isFallback) {
     return <Loading />;
@@ -25,11 +24,7 @@ const ProductIdPage = ({
       <Link href={"/products-ssg"}>
         <a>Go back</a>
       </Link>
-      <Product
-        data={{
-          ...data,
-        }}
-      />
+      <Product data={data} />
     </div>
   );
 };
