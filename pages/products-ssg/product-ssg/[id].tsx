@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Product } from "../../../components/Product";
-import { ProductsAPIResponse } from "../../../utills";
-import { PRODUCT_PAGES_AMOUNT, PRODUCT_TAKE_AMOUNT } from "../../../utills";
+import { ProductsAPIResponse } from "../../../utils";
+import { PRODUCT_PAGES_AMOUNT, PRODUCT_TAKE_AMOUNT } from "../../../utils";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next/types";
 import { Loading } from "../../../components/Loading";
+
+import { serialize } from "next-mdx-remote/serialize";
 
 const ProductIdPage = ({
   data,
@@ -56,7 +58,7 @@ export const getStaticProps = async ({
 
   return {
     props: {
-      data,
+      data: { ...data, longDescription: await serialize(data.longDescription) },
     },
   };
 };

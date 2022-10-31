@@ -1,4 +1,4 @@
-import { ProductsAPIResponse } from "../utills";
+import { ProductsAPIResponse } from "../utils";
 import { ProductCard } from "./ProductCard";
 interface ProductsListProps {
   data: ProductsAPIResponse[];

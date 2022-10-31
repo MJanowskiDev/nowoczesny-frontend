@@ -1,14 +1,11 @@
-import { InferGetStaticPropsType, GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Product } from "../../components/Product";
-import { ProductsAPIResponse } from "../../utills";
+import { ProductsAPIResponse } from "../../utils";
 import { useQuery } from "react-query";
 import { Loading } from "../../components/Loading";
 
-interface ProductIdPageProps {
-  data: ProductsAPIResponse;
-}
+import { serialize } from "next-mdx-remote/serialize";
 
 const getProduct = async (id: number) => {
   const res = await fetch(
@@ -16,7 +13,7 @@ const getProduct = async (id: number) => {
   );
   const data: ProductsAPIResponse = await res.json();
 
-  return data;
+  return { ...data, longDescription: await serialize(data.longDescription) };
 };
 
 const ProductIdPage = () => {

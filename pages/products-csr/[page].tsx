@@ -4,11 +4,12 @@ import { Pagination } from "../../components/Pagination";
 import { ProductsList } from "../../components/ProductsList";
 import { Loading } from "../../components/Loading";
 import { useQuery } from "react-query";
+
 import {
   ProductsAPIResponse,
   PRODUCT_PAGES_AMOUNT,
   PRODUCT_TAKE_AMOUNT,
-} from "../../utills";
+} from "../../utils";
 
 const getProducts = async (take: number, offset: number) => {
   const res = await fetch(

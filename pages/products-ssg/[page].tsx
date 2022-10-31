@@ -7,7 +7,7 @@ import {
   ProductsAPIResponse,
   PRODUCT_PAGES_AMOUNT,
   PRODUCT_TAKE_AMOUNT,
-} from "../../utills";
+} from "../../utils";
 
 const ProductsSSG = ({
   data,

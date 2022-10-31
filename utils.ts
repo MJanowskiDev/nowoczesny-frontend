@@ -1,3 +1,5 @@
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
+
 export interface ProductsAPIResponse {
   id: number;
   title: string;
@@ -9,10 +11,14 @@ export interface ProductsAPIResponse {
   longDescription: string;
 }
 
-interface Rating {
+export interface Rating {
   rate: number;
   count: number;
 }
 
 export const PRODUCT_PAGES_AMOUNT = 10;
 export const PRODUCT_TAKE_AMOUNT = 10;
+
+export type MDXResult = MDXRemoteSerializeResult<Record<string, unknown>>;
+
+export const externalLinkRegex = "@https|http|ftp|mailto|file";

@@ -1,9 +1,20 @@
 import Image from "next/image";
-import { ProductsAPIResponse } from "../utills";
-import ReactMarkdown from "react-markdown";
+import { MDXResult, Rating } from "../utils";
+import { NextMarkdown } from "./NextMarkdown";
+
+interface ProductDetails {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  rating: Rating;
+  image: string;
+  longDescription: MDXResult;
+}
 
 interface ProductProps {
-  data: ProductsAPIResponse;
+  data: ProductDetails;
 }
 
 export const Product = ({ data }: ProductProps) => {
@@ -26,7 +37,7 @@ export const Product = ({ data }: ProductProps) => {
         </div>
         <h1 className="text-teal-600 dark:text-teal-300">{data.title}</h1>
         <h6>{data.description}</h6>
-        <ReactMarkdown>{data.longDescription}</ReactMarkdown>
+        <NextMarkdown>{data.longDescription}</NextMarkdown>
         <p>
           Rating: {data.rating.rate} (based on {data.rating.count} reviews)
         </p>
