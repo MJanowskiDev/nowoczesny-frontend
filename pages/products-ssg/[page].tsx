@@ -2,6 +2,8 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from "next/types";
 import { Pagination } from "../../components/Pagination";
 import { ProductsList } from "../../components/ProductsList";
 
+import { NextSeo } from "next-seo";
+
 import {
   ProductsAPIResponse,
   PRODUCT_PAGES_AMOUNT,
@@ -17,6 +19,10 @@ const ProductsSSG = ({
 
   return (
     <div>
+      <NextSeo
+        title="Products SSG"
+        description="About MJanowskiDev E-Commerce App products list"
+      />
       <ProductsList data={data} link="product-ssg" />
       <Pagination
         baseLink="products-ssg"

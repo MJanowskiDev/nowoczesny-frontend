@@ -3,7 +3,7 @@ import { Pagination } from "../../components/Pagination";
 import { ProductsList } from "../../components/ProductsList";
 import { Loading } from "../../components/Loading";
 import { useQuery } from "react-query";
-
+import { NextSeo } from "next-seo";
 import {
   ProductsAPIResponse,
   PRODUCT_PAGES_AMOUNT,
@@ -40,6 +40,10 @@ const ProductsCsr = () => {
 
   return (
     <div>
+      <NextSeo
+        title="Products CSR"
+        description="About MJanowskiDev E-Commerce App products csr list"
+      />
       <ProductsList data={data} link="/product-csr" />
       <Pagination
         baseLink="products-csr"
