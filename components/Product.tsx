@@ -2,6 +2,8 @@ import Image from "next/image";
 import { MDXResult, Rating } from "../utils";
 import { NextMarkdown } from "./NextMarkdown";
 
+import { NextSeo } from "next-seo";
+
 interface ProductDetails {
   id: number;
   title: string;
@@ -20,6 +22,23 @@ interface ProductProps {
 export const Product = ({ data }: ProductProps) => {
   return (
     <div>
+      <NextSeo
+        title={data.title}
+        description={data.description}
+        canonical={`https://naszsklep.vercel.app/products/${data.id}`}
+        openGraph={{
+          url: `https://naszsklep.vercel.app/products/${data.id}`,
+          title: data.title,
+          description: data.description,
+          images: [
+            {
+              url: data.image,
+              alt: data.title,
+              type: "image/jpeg",
+            },
+          ],
+        }}
+      />
       <article className="prose dark:prose-invert ">
         <h2 className="text-gray-600">Category: {data.category}</h2>
         <div className="bg-white h-1/2 mt-4 mb-6">
