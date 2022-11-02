@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ProductsAPIResponse } from "../utills";
+import { ProductsAPIResponse } from "../utils";
 
 interface ProductCardProps {
   data: Pick<ProductsAPIResponse, "title" | "description" | "image" | "id">;
