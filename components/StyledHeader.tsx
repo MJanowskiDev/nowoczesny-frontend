@@ -1,6 +1,7 @@
 import { ActiveLink } from "./ActiveLink";
 import Link from "next/link";
 import { ThemeToggler } from "./ThemeToggler";
+import { CartIcon } from "./Cart/CartIcon";
 export const StyledHeader = () => {
   return (
     <header
@@ -64,6 +65,9 @@ export const StyledHeader = () => {
                   >
                     <a>ProductsSSG</a>
                   </ActiveLink>
+                </li>
+                <li>
+                  <CartIcon />
                 </li>
                 <li>
                   <ThemeToggler />
