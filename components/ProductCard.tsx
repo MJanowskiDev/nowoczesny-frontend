@@ -9,12 +9,18 @@ interface ProductCardProps {
 export const ProductCard = ({ data, link }: ProductCardProps) => {
   const { addItem } = useCartState();
   const onAddToCartClickHandle = () => {
-    addItem({ id: data.id.toString(), price: 5, title: data.title });
+    addItem({
+      id: data.id.toString(),
+      price: 5,
+      title: data.title,
+      count: 1,
+      image: data.image,
+    });
   };
   return (
-    <div className=" overflow-hidden rounded-lg border border-gray-100 shadow-sm w-[300px] h-[500px] m-4">
-      <div className="bg-white h-1/2 ">
-        <div className="pt-3">
+    <div className=" overflow-hidden rounded-lg border border-gray-100 shadow-sm w-[300px] h-[445px] m-4">
+      <div className="bg-white h-[200px] ">
+        <div className="pt-4">
           <Image
             className="mt-2"
             src={data.image}
@@ -27,8 +33,8 @@ export const ProductCard = ({ data, link }: ProductCardProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col h-1/2  justify-between p-6">
-        <div>
+      <div className="flex flex-col  justify-items-stretch p-2">
+        <div className="h-[110px]">
           <h3 className="text-xl font-bold">{data.title}</h3>
           <p className="mt-2 text-sm text-gray-500">{data.description}</p>
         </div>

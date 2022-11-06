@@ -23,7 +23,7 @@ export const CartIcon = () => {
   return (
     <Link href="/cart">
       <a className="inline-flex">
-        <small className="mr-1 pt-1">{cartState.items.length}</small>
+        <small className="mr-1 pt-1">{cartState.totalCount}</small>
         {icon}
       </a>
     </Link>
