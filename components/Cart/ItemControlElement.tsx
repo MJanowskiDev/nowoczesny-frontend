@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { RemoveIcon } from "../UI/Icons";
-import { useCartState, CartItem } from "./CartContext";
+import { useCartState } from "./CartContext";
+import { CartItem } from "./CartUtils";
 
 const CART_MAX_QANTITY = 15;
 const CART_MIN_QANTITY = 1;
