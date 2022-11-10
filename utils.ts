@@ -1,7 +1,7 @@
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 export interface ProductsAPIResponse {
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;

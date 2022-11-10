@@ -8,18 +8,22 @@ import DefaultSeoConfig from "../next-seo.config";
 
 import { CartStateContextProvider } from "../components/Cart/CartContext";
 
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from "../graphql/apolloClient";
 const client = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider client={client}>
-      <CartStateContextProvider>
-        <DefaultSeo {...DefaultSeoConfig} />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </CartStateContextProvider>
-    </QueryClientProvider>
+    <ApolloProvider client={apolloClient}>
+      <QueryClientProvider client={client}>
+        <CartStateContextProvider>
+          <DefaultSeo {...DefaultSeoConfig} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </CartStateContextProvider>
+      </QueryClientProvider>
+    </ApolloProvider>
   );
 }
 

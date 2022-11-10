@@ -10,7 +10,7 @@ export const ProductCard = ({ data, link }: ProductCardProps) => {
   const { addItem } = useCartState();
   const onAddToCartClickHandle = () => {
     addItem({
-      id: data.id.toString(),
+      id: data.id,
       price: 5,
       title: data.title,
       count: 1,

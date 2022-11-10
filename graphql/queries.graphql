@@ -1,0 +1,54 @@
+query ProductsWithPaginationQuery($limit: Int!, $offset: Int!) {
+  products(first: $limit, skip: $offset) {
+    id
+    slug
+    name
+    price
+    images(first: 1) {
+      url
+    }
+  }
+  productsConnection {
+    aggregate {
+      count
+    }
+  }
+}
+
+query ProductsCountQuery {
+  productsConnection {
+    aggregate {
+      count
+    }
+  }
+}
+
+query GetProductsList {
+  products {
+    id
+    slug
+    name
+    price
+    images(first: 1) {
+      url
+    }
+  }
+}
+
+query GetProductDetailsBySlug($slug: String) {
+  products(where: { slug: $slug }) {
+    slug
+    name
+    price
+    description
+    images(first: 1) {
+      url
+    }
+  }
+}
+
+query GetProductsSlugs {
+  products {
+    slug
+  }
+}

@@ -1,14 +1,27 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next/types";
 import { Pagination } from "../../components/Pagination";
-import { ProductsList } from "../../components/ProductsList";
+import { ProductsListGQL } from "../../components/ProductsListGQL";
+
+import { apolloClient } from "../../graphql/apolloClient";
+
+import {
+  GetProductsListDocument,
+  GetProductsListQuery,
+} from "../../graphql/generated/graphql";
 
 import { NextSeo } from "next-seo";
 
-import {
-  ProductsAPIResponse,
-  PRODUCT_PAGES_AMOUNT,
-  PRODUCT_TAKE_AMOUNT,
-} from "../../utils";
+import { PRODUCT_PAGES_AMOUNT, PRODUCT_TAKE_AMOUNT } from "../../utils";
+
+interface ProductsGQL {
+  id: string;
+  slug: string;
+  name: string;
+  price: number;
+  images: {
+    url: string;
+  };
+}
 
 const ProductsSSG = ({
   data,
@@ -23,7 +36,7 @@ const ProductsSSG = ({
         title="Products SSG"
         description="About MJanowskiDev E-Commerce App products list"
       />
-      <ProductsList data={data} link="product-ssg" />
+      <ProductsListGQL data={data} baseLink="/products-ssg" />
       <Pagination
         baseLink="products-ssg"
         pages={[...Array(PRODUCT_PAGES_AMOUNT)].map((_, i) => i + 1)}
@@ -53,11 +66,9 @@ export const getStaticProps = async ({
   const take = PRODUCT_TAKE_AMOUNT;
   const offset = (Number(params.page) - 1) * take;
 
-  const res = await fetch(
-    `https://naszsklep-api.vercel.app/api/products?take=${take}&offset=${offset}`
-  );
-
-  const data: ProductsAPIResponse[] = await res.json();
+  const { data } = await apolloClient.query<GetProductsListQuery>({
+    query: GetProductsListDocument,
+  });
 
   return {
     props: {

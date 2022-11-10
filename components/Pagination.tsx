@@ -7,7 +7,7 @@ interface PaginationProps {
 export const Pagination = ({ baseLink, pages }: PaginationProps) => {
   return (
     <nav className="border-t border-gray-200 px-4 mt-2 flex items-center justify-between sm:px-0">
-      <div className="hidden md:-mt-px md:flex">
+      <div className=" md:-mt-px md:flex">
         {pages.map((pageNumber) => {
           return (
             <ActiveLink
