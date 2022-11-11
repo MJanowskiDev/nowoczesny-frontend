@@ -1,32 +1,24 @@
-import { GetStaticPropsContext, InferGetStaticPropsType } from "next/types";
-import { Pagination } from "../../components/Pagination";
+import {
+  GetStaticPaths,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from "next/types";
+
+import PaginationPage from "../../components/PaginationPage";
 import { ProductsListGQL } from "../../components/ProductsListGQL";
 
-import { apolloClient } from "../../graphql/apolloClient";
-
-import {
-  GetProductsListDocument,
-  GetProductsListQuery,
-} from "../../graphql/generated/graphql";
-
 import { NextSeo } from "next-seo";
+import { getProducts } from "../../lib/getProducts";
 
-import { PRODUCT_PAGES_AMOUNT, PRODUCT_TAKE_AMOUNT } from "../../utils";
-
-interface ProductsGQL {
-  id: string;
-  slug: string;
-  name: string;
-  price: number;
-  images: {
-    url: string;
-  };
-}
+export const PER_PAGE = 3;
+const STATIC_PAGES = 2;
 
 const ProductsSSG = ({
-  data,
+  products,
+  currentPage,
+  totalProducts,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  if (!data) {
+  if (!products) {
     return <div>Coś poszło nie tak</div>;
   }
 
@@ -34,46 +26,49 @@ const ProductsSSG = ({
     <div>
       <NextSeo
         title="Products SSG"
-        description="About MJanowskiDev E-Commerce App products list"
+        description={`About MJanowskiDev E-Commerce App products list, page ${currentPage}`}
       />
-      <ProductsListGQL data={data} baseLink="/products-ssg" />
-      <Pagination
+      <PaginationPage
+        currentPage={currentPage}
+        totalProducts={totalProducts}
+        perPage={PER_PAGE}
         baseLink="products-ssg"
-        pages={[...Array(PRODUCT_PAGES_AMOUNT)].map((_, i) => i + 1)}
       />
+      <ProductsListGQL data={products} baseLink="/products-ssg" />
     </div>
   );
-};
-
-export const getStaticPaths = () => {
-  const pages = [...Array(PRODUCT_PAGES_AMOUNT)].map((_, i) => i + 1);
-
-  return {
-    paths: pages.map((page) => {
-      return { params: { page: page.toString() } };
-    }),
-    fallback: false,
-  };
 };
 
 export const getStaticProps = async ({
   params,
 }: GetStaticPropsContext<{ page: string }>) => {
-  if (!params?.page) {
-    return { props: {}, notFound: true };
+  const page = Number(params?.page) || 1;
+  const { total, data } = await getProducts({ limit: PER_PAGE, page });
+
+  if (!data.products.length) {
+    return {
+      notFound: true,
+    };
   }
-
-  const take = PRODUCT_TAKE_AMOUNT;
-  const offset = (Number(params.page) - 1) * take;
-
-  const { data } = await apolloClient.query<GetProductsListQuery>({
-    query: GetProductsListDocument,
-  });
 
   return {
     props: {
-      data,
+      totalProducts: total,
+      currentPage: page,
+      products: data,
     },
+    revalidate: 60 * 60 * 24, //once a day
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const pages = [...Array(STATIC_PAGES)].map((_, i) => i + 1);
+
+  return {
+    paths: pages.map((page) => {
+      return { params: { page: page.toString() } };
+    }),
+    fallback: "blocking",
   };
 };
 

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ActiveLink } from "./ActiveLink";
 import React from "react";
 import usePagination from "../hooks/usePagination";
 
@@ -30,15 +30,14 @@ const Pagination = ({
             {pageNumber}
           </span>
         ) : (
-          <Link
+          <ActiveLink
+            classActive="border-teal-600 dark:border-teal-300 dark:text-teal-300 text-teal-600 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
+            className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
             key={i}
             href={renderPageLink(pageNumber as number)}
-            className={`${
-              pageNumber === currentPage ? "text-success-dark" : "text-black"
-            } px-4 py-2 mx-1 rounded-full text-sm font-semibold no-underline`}
           >
-            {pageNumber}
-          </Link>
+            <a key={`a--${pageNumber}`}>{pageNumber}</a>
+          </ActiveLink>
         )
       )}
     </div>

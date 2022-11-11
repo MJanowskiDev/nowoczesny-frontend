@@ -3,25 +3,17 @@ import React from "react";
 import Pagination from "./Pagination_v2";
 
 type PageProps = {
-  products: any[];
   currentPage: number;
   totalProducts: number;
   perPage: number;
+  baseLink: string;
 };
-
-const ProductCard = ({ name, description, price }: any) => (
-  <div className="my-10 border-2 border-sky-500 p-3">
-    <div>{name}</div>
-    <div className="my-3">${price}</div>
-    <div className="my-8">{description}</div>
-  </div>
-);
 
 const PaginationPage = ({
   currentPage,
   totalProducts,
   perPage,
-  products,
+  baseLink,
 }: PageProps): JSX.Element => {
   return (
     <div>
@@ -30,13 +22,8 @@ const PaginationPage = ({
         totalItems={totalProducts}
         currentPage={currentPage}
         itemsPerPage={perPage}
-        renderPageLink={(page) => `/category/${page}`}
+        renderPageLink={(page) => `/${baseLink}/${page}`}
       />
-      <div className="grid grid-cols-3 gap-8">
-        {products.map((product, i) => (
-          <ProductCard key={i} {...product} />
-        ))}
-      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { Product } from "../../../components/Product";
 import { ProductsAPIResponse } from "../../../utils";
-import { PRODUCT_PAGES_AMOUNT, PRODUCT_TAKE_AMOUNT } from "../../../utils";
+import { PRODUCT_TAKE_AMOUNT } from "../../../utils";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next/types";
 import { Loading } from "../../../components/Loading";
 

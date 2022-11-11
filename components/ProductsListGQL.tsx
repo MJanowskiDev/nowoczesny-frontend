@@ -1,11 +1,10 @@
-import { ProductsAPIResponse } from "../utils";
 import { ProductCard } from "./ProductCard";
+import { ProductsWithPaginationQueryQuery } from "../graphql/generated/graphql";
+
 interface ProductsListProps {
-  data: GetProductsListQuery;
+  data: ProductsWithPaginationQueryQuery;
   baseLink: string;
 }
-
-import { GetProductsListQuery } from "../graphql/generated/graphql";
 
 export const ProductsListGQL = ({ data, baseLink }: ProductsListProps) => {
   return (
