@@ -21,9 +21,8 @@ const CartPage = () => {
   }
   return (
     <div>
-      <div className="grid grid-cols-3 gap-4 divide-x-2 divide-slate-50">
+      <div className=" gap-4 divide-x-2 divide-slate-50  grid grid-cols-1 md:grid-cols-3">
         <CartContent />
-
         <CartSummary />
       </div>
     </div>
@@ -40,10 +39,10 @@ const CartContent = () => {
         {cartState.items.map((cartItem) => (
           <li
             key={cartItem.id}
-            className="py-4 flex justify-between items-center"
+            className="py-4 flex flex-col md:flex-row items-start md:items-center text-sm  md:text-lg"
           >
-            <div className="flex justify-center items-center gap-2">
-              <div className="rounded-lg">
+            <div className="flex  justify-center items-center gap-2">
+              <div className="rounded-lg ">
                 <Image
                   src={cartItem.image}
                   alt={cartItem.title}
@@ -54,11 +53,14 @@ const CartContent = () => {
                 />
               </div>
               <div>
-                {cartItem.title} <small>x{cartItem.count}</small>
+                {cartItem.title}{" "}
+                <small className="text-teal-600 dark:text-teal-300">
+                  x{cartItem.count}
+                </small>
               </div>
             </div>
 
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center md:justify-end justify-between w-full">
               <div>{cartItem.price}$ each,</div>
               <div>total: {cartItem.price * cartItem.count}$</div>
               <ItemControlElement {...cartItem} />
