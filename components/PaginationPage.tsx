@@ -17,7 +17,6 @@ const PaginationPage = ({
 }: PageProps): JSX.Element => {
   return (
     <div>
-      <div>Page {currentPage}</div>
       <Pagination
         totalItems={totalProducts}
         currentPage={currentPage}
