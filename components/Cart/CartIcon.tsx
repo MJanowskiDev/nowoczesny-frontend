@@ -22,7 +22,7 @@ export const CartIcon = () => {
 
   return (
     <Link href="/cart">
-      <a className="inline-flex">
+      <a className="inline-flex rounded-md bpx-2 py-1 text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75">
         <small className="mr-1 pt-1">{cartState.totalCount}</small>
         {icon}
       </a>

@@ -53,7 +53,7 @@ export const ThemeToggler = () => {
   return (
     <div
       onClick={handleModeChange}
-      className="rounded-md bg-gray-200/90 dark:bg-gray-100/20 px-2 py-1 text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+      className="rounded-md bpx-2 py-1 text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
     >
       {darkMode ? <MoonIcon /> : <SunIcon />}
     </div>
