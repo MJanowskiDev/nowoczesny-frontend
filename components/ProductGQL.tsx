@@ -35,9 +35,7 @@ export const ProductGQL = ({ product, longDescription }: ProductProps) => {
           description: product?.description,
           images: [
             {
-              url: product?.images[0].url
-                ? product?.images[0].url
-                : defaultOGImageUrl,
+              url: product?.images ? product?.images[0].url : defaultOGImageUrl,
               alt: product?.name,
               type: "image/jpeg",
             },
@@ -45,9 +43,11 @@ export const ProductGQL = ({ product, longDescription }: ProductProps) => {
         }}
       />
       <article className="prose dark:prose-invert ">
-        <h2 className="text-gray-600">
-          Category: {product?.categories[0].name}
-        </h2>
+        {product?.categories[0] && (
+          <h2 className="text-gray-600">
+            Category: {product?.categories[0]?.name}
+          </h2>
+        )}
         <div className="bg-white h-1/2 mt-4 mb-6">
           <div className="pt-3">
             {product?.images[0].url && (
