@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Pagination } from "../../components/Pagination";
+// import { Pagination } from "../../components/Pagination";
 import { ProductsList } from "../../components/ProductsList";
 import { Loading } from "../../components/Loading";
 import { useQuery } from "react-query";
@@ -45,10 +45,10 @@ const ProductsCsr = () => {
         description="About MJanowskiDev E-Commerce App products csr list"
       />
       <ProductsList data={data} link="/product-csr" />
-      <Pagination
+      {/* <Pagination
         baseLink="products-csr"
         pages={[...Array(PRODUCT_PAGES_AMOUNT)].map((_, i) => i + 1)}
-      />
+      /> */}
     </div>
   );
 };

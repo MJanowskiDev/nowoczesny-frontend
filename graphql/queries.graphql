@@ -15,40 +15,26 @@ query ProductsWithPaginationQuery($limit: Int!, $offset: Int!) {
   }
 }
 
-query ProductsCountQuery {
-  productsConnection {
-    aggregate {
-      count
-    }
+query getProductSlugs($amount: Int!) {
+  products(first: $amount, orderBy: updatedAt_DESC) {
+    slug
   }
 }
 
-query GetProductsList {
-  products {
-    id
-    slug
+query getProductBySlug($slug: String!) {
+  product(where: { slug: $slug }) {
     name
-    price
-    images(first: 1) {
-      url
-    }
-  }
-}
-
-query GetProductDetailsBySlug($slug: String) {
-  products(where: { slug: $slug }) {
     slug
-    name
     price
     description
+    categories {
+      name
+    }
+    reviews {
+      rating
+    }
     images(first: 1) {
       url
     }
-  }
-}
-
-query GetProductsSlugs {
-  products {
-    slug
   }
 }

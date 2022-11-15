@@ -19,7 +19,7 @@ const ProductsSSG = ({
   totalProducts,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (!products) {
-    return <div>Coś poszło nie tak</div>;
+    return <div>Something went wrong...</div>;
   }
 
   return (
@@ -34,7 +34,7 @@ const ProductsSSG = ({
         perPage={PER_PAGE}
         baseLink="products-ssg"
       />
-      <ProductsListGQL data={products} baseLink="/products-ssg" />
+      <ProductsListGQL data={products} baseLink="/products-ssg/product" />
     </div>
   );
 };

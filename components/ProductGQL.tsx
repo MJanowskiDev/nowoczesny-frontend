@@ -1,0 +1,62 @@
+import Image from "next/image";
+import { MDXResult } from "../utils";
+import { NextMarkdown } from "./NextMarkdown";
+
+import { defaultOGImageUrl } from "../next-seo.config";
+
+import { NextSeo } from "next-seo";
+import { GetProductBySlugQuery } from "../graphql/generated/graphql";
+
+interface ProductProps {
+  product: GetProductBySlugQuery["product"];
+  longDescription: MDXResult;
+}
+
+export const ProductGQL = ({ product, longDescription }: ProductProps) => {
+  return (
+    <div>
+      <NextSeo
+        title={product?.name}
+        description={product?.description}
+        canonical={`https://naszsklep.vercel.app/products/${product?.slug}`}
+        openGraph={{
+          url: `https://naszsklep.vercel.app/products/${product?.slug}`,
+          title: product?.name,
+          description: product?.description,
+          images: [
+            {
+              url: product?.images[0].url
+                ? product?.images[0].url
+                : defaultOGImageUrl,
+              alt: product?.name,
+              type: "image/jpeg",
+            },
+          ],
+        }}
+      />
+      <article className="prose dark:prose-invert ">
+        <h2 className="text-gray-600">
+          Category: {product?.categories[0].name}
+        </h2>
+        <div className="bg-white h-1/2 mt-4 mb-6">
+          <div className="pt-3">
+            {product?.images[0].url && (
+              <Image
+                className="mt-2"
+                src={product?.images[0].url}
+                alt={product?.name}
+                layout="responsive"
+                width={16}
+                height={9}
+                objectFit="contain"
+              />
+            )}
+          </div>
+        </div>
+        <h1 className="text-teal-600 dark:text-teal-300">{product?.name}</h1>
+        <NextMarkdown>{longDescription}</NextMarkdown>
+        <p className="font-bold">Price: {product?.price}</p>
+      </article>
+    </div>
+  );
+};

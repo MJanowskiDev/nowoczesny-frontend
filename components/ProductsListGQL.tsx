@@ -13,7 +13,7 @@ export const ProductsListGQL = ({ data, baseLink }: ProductsListProps) => {
         <ProductCard
           key={element.id}
           data={{
-            id: element.id,
+            id: element.slug,
             title: element.name,
             description: element.name,
             image: element.images[0].url,
