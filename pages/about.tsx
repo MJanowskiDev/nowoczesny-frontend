@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div>
       <NextSeo title="About" description="About MJanowskiDev E-Commerce App" />
-      <main className="w-full h-[calc(100vh_-_168px)] flex justify-center">
+      <main className="w-full md:h-[calc(100vh_-_168px)] h-[calc(100vh_-_198px)] flex justify-center">
         <article className=" h-full w-full prose dark:prose-invert flex flex-col justify-center">
           <h1>
             Homework project along{" "}
@@ -32,7 +32,10 @@ const About = () => {
             !
           </h2>
 
-          <a href="https://hyperfunctor.com/nextjs-react-graphql-typescript">
+          <a
+            className="text-right"
+            href="https://hyperfunctor.com/nextjs-react-graphql-typescript"
+          >
             Detailed course program
           </a>
         </article>
