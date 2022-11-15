@@ -5,7 +5,7 @@ import { NextMarkdown } from "./NextMarkdown";
 import { NextSeo } from "next-seo";
 
 interface ProductDetails {
-  id: number;
+  id: string;
   title: string;
   price: number;
   description: string;
