@@ -1,11 +1,11 @@
 const title = "MJanowskiDev E-Commerce App";
 const description = "Ecommerce app made using Next.js.";
-export const defaultOGImageUrl =
-  "https://naszsklep.vercel.app/_next/image?url=https%3A%2F%2Fnaszsklep-api.vercel.app%2Fimages%2F61pHAEJ4NML._AC_UX679_.jpg&w=1920&q=75";
+export const defaultOGImageUrl = proces.env.DEFAULT_OG_IMAGE;
 
 const nextSeoConfig = {
   title,
   description,
+  canonical: process.env.CANONICAL,
   openGraph: {
     title,
     description,

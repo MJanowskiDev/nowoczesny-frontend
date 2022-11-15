@@ -28,9 +28,9 @@ export const ProductGQL = ({ product, longDescription }: ProductProps) => {
       <NextSeo
         title={product?.name}
         description={product?.description}
-        canonical={`https://naszsklep.vercel.app/products/${product?.slug}`}
+        canonical={`${process.env.CANONICAL}/${product?.slug}`}
         openGraph={{
-          url: `https://naszsklep.vercel.app/products/${product?.slug}`,
+          url: `${process.env.CANONICAL}/${product?.slug}`,
           title: product?.name,
           description: product?.description,
           images: [
