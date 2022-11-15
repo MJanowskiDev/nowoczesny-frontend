@@ -6,6 +6,8 @@ import { defaultOGImageUrl } from "../next-seo.config";
 
 import { NextSeo } from "next-seo";
 import { GetProductBySlugQuery } from "../graphql/generated/graphql";
+import { AddToCartButton } from "./Cart/AddToCartButton";
+import { CartItem } from "./Cart/CartUtils";
 
 interface ProductProps {
   product: GetProductBySlugQuery["product"];
@@ -13,6 +15,14 @@ interface ProductProps {
 }
 
 export const ProductGQL = ({ product, longDescription }: ProductProps) => {
+  const cartItem: CartItem = {
+    id: product?.slug || "error",
+    price: product?.price || 0,
+    title: product?.name || "error",
+    count: 1,
+    image: product?.images[0].url || "",
+  };
+
   return (
     <div>
       <NextSeo
@@ -53,6 +63,7 @@ export const ProductGQL = ({ product, longDescription }: ProductProps) => {
             )}
           </div>
         </div>
+        <AddToCartButton item={cartItem} />
         <h1 className="text-teal-600 dark:text-teal-300">{product?.name}</h1>
         <NextMarkdown>{longDescription}</NextMarkdown>
         <p className="font-bold">Price: {product?.price}</p>
