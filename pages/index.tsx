@@ -19,7 +19,7 @@ const Home: NextPage = () => {
           />
         </div>
         <h2 className="text-right">
-          Lets indulge in a{" "}
+          Let&apos;s indulge in a{" "}
           <span className="text-teal-600 dark:text-teal-300 ">
             shopping spree
           </span>
