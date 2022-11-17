@@ -34,19 +34,27 @@ export const Input = <TFormData extends Record<string, unknown>>({
   if (!register) return null;
 
   return (
-    <div className={`dark:text-gray-600  ${wrappingElementStyle}`}>
-      <label className="mb-1 block text-sm text-gray-600" htmlFor={id}>
-        {label}
-      </label>
+    <div
+      className={`dark:text-gray-600  ${
+        wrappingElementStyle ? wrappingElementStyle : ""
+      }`}
+    >
+      {label && (
+        <label className="mb-1 block text-sm text-gray-600" htmlFor={id}>
+          {label}
+        </label>
+      )}
       <input
         placeholder={placeholder}
-        className="w-full rounded-lg border-gray-200 p-2.5 text-sm shadow-sm"
-        type={type}
+        className="w-full rounded-lg p-2.5 text-sm shadow-sm border-gray-200"
+        type={type ? type : "text"}
         id={id}
         {...attributes}
         {...register(id, registerOptions)}
       />
-      {errors && <p className="text-red-400 text-sm">{errors[id]?.message}</p>}
+      {errors && (
+        <p className="text-red-400 text-sm h-5 mt-1">{errors[id]?.message}</p>
+      )}
     </div>
   );
 };
