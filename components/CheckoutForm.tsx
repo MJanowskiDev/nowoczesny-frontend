@@ -4,10 +4,11 @@ import { validateCardYearMonth } from "../utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Image from "next/image";
+import { Input } from "./Form/Input";
 
 const checkoutFormSchema = yup
   .object({
-    firstName: yup.string().required(),
+    firstName: yup.string().required().uppercase(),
     lastName: yup.string().required(),
     email: yup.string().required().email(),
     phone: yup.string().required(),
@@ -135,75 +136,40 @@ export const CheckoutForm = () => {
             <div className="bg-white py-12 md:py-24">
               <div className="mx-auto max-w-lg px-4 lg:px-8">
                 <form onSubmit={onSubmit} className="grid grid-cols-6 gap-4">
-                  <div className="col-span-3">
-                    <label
-                      className="mb-1 block text-sm text-gray-600"
-                      htmlFor="first_name"
-                    >
-                      First Name
-                    </label>
+                  <Input<CheckoutFormData>
+                    wrappingElementStyle="col-span-3"
+                    register={register}
+                    id={"firstName"}
+                    label="First name"
+                    errors={errors}
+                  />
 
-                    <input
-                      className="w-full rounded-lg border-gray-200 p-2.5 text-sm shadow-sm"
-                      type="text"
-                      id="first_name"
-                      {...register("firstName", {
-                        required: "This field is required",
-                      })}
-                    />
+                  <Input<CheckoutFormData>
+                    wrappingElementStyle="col-span-3"
+                    register={register}
+                    id={"lastName"}
+                    label="Last name"
+                    errors={errors}
+                  />
 
-                    <p className="text-red-400 text-sm">
-                      {errors.firstName?.message}
-                    </p>
-                  </div>
+                  <Input<CheckoutFormData>
+                    wrappingElementStyle="col-span-6"
+                    register={register}
+                    id={"email"}
+                    label="E-Mail"
+                    registerOptions={{ required: true }}
+                    type="email"
+                    errors={errors}
+                  />
 
-                  <div className="col-span-3">
-                    <label
-                      className="mb-1 block text-sm text-gray-600"
-                      htmlFor="last_name"
-                    >
-                      Last Name
-                    </label>
-
-                    <input
-                      className="w-full rounded-lg border-gray-200 p-2.5 text-sm shadow-sm"
-                      type="text"
-                      id="last_name"
-                      {...register("lastName", { required: true })}
-                    />
-                  </div>
-
-                  <div className="col-span-6">
-                    <label
-                      className="mb-1 block text-sm text-gray-600"
-                      htmlFor="email"
-                    >
-                      Email
-                    </label>
-
-                    <input
-                      className="w-full rounded-lg border-gray-200 p-2.5 text-sm shadow-sm"
-                      type="email"
-                      id="email"
-                      {...(register("email"), { required: true })}
-                    />
-                  </div>
-
-                  <div className="col-span-6">
-                    <label
-                      className="mb-1 block text-sm text-gray-600"
-                      htmlFor="phone"
-                    >
-                      Phone
-                    </label>
-
-                    <input
-                      className="w-full rounded-lg border-gray-200 p-2.5 text-sm shadow-sm"
-                      type="tel"
-                      id="phone"
-                      {...register("phone")}
-                    />
-                  </div>
+                  <Input<CheckoutFormData>
+                    wrappingElementStyle="col-span-6"
+                    register={register}
+                    id="phone"
+                    label="Phone"
+                    type="tel"
+                    errors={errors}
+                  />
 
                   <fieldset className="col-span-6">
                     <legend className="mb-1 block text-sm text-gray-600">
@@ -211,55 +177,40 @@ export const CheckoutForm = () => {
                     </legend>
 
                     <div className="-space-y-px rounded-lg bg-white shadow-sm">
-                      <div>
-                        <label className="sr-only" htmlFor="card-number">
-                          Card Number
-                        </label>
-
-                        <input
-                          className="relative w-full rounded-t-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
-                          type="text"
-                          id="card-number"
-                          placeholder="Card number"
-                          {...register("cardNumber")}
-                        />
-                      </div>
+                      <Input<CheckoutFormData>
+                        register={register}
+                        id="cardNumber"
+                        type="text"
+                        placeholder="Card number"
+                        errors={errors}
+                      />
 
                       <div className="flex -space-x-px">
-                        <div className="flex-1">
-                          <label
-                            className="sr-only"
-                            htmlFor="card-expiration-date"
-                          >
-                            Expiration Date
-                          </label>
+                        <Input<CheckoutFormData>
+                          wrappingElementStyle="flex-1"
+                          register={register}
+                          id="cardExpirationDate"
+                          type="text"
+                          placeholder="MM / YY"
+                          registerOptions={{
+                            required: true,
+                            validate: validateCardYearMonth,
+                          }}
+                          errors={errors}
+                        />
 
-                          <input
-                            className="relative w-full rounded-bl-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
-                            type="text"
-                            id="card-expiration-date"
-                            placeholder="MM / YY"
-                            {...register("cardExpirationDate", {
-                              required: true,
-                              validate: validateCardYearMonth,
-                            })}
-                          />
-                          <p>{errors.cardExpirationDate?.message}</p>
-                        </div>
-
-                        <div className="flex-1">
-                          <label className="sr-only" htmlFor="card-cvc">
-                            CVC
-                          </label>
-
-                          <input
-                            className="relative w-full rounded-br-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
-                            type="text"
-                            id="card-cvc"
-                            placeholder="CVC"
-                            {...register("cardCVC")}
-                          />
-                        </div>
+                        <Input<CheckoutFormData>
+                          wrappingElementStyle="flex-1"
+                          register={register}
+                          id="cardCVC"
+                          type="text"
+                          placeholder="CVC"
+                          registerOptions={{
+                            required: true,
+                            validate: validateCardYearMonth,
+                          }}
+                          errors={errors}
+                        />
                       </div>
                     </div>
                   </fieldset>
@@ -290,20 +241,14 @@ export const CheckoutForm = () => {
                         </select>
                       </div>
 
-                      <div>
-                        <label className="sr-only" htmlFor="postal-code">
-                          ZIP/Post Code
-                        </label>
-
-                        <input
-                          className="relative w-full rounded-b-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
-                          type="text"
-                          id="postal-code"
-                          autoComplete="postal-code"
-                          placeholder="ZIP/Post Code"
-                          {...register("postalCode")}
-                        />
-                      </div>
+                      <Input<CheckoutFormData>
+                        register={register}
+                        id="postalCode"
+                        type="text"
+                        placeholder="ZIP/Post Code"
+                        errors={errors}
+                        attributes={{ autoComplete: "postal-code" }}
+                      />
                     </div>
                   </fieldset>
 
@@ -312,7 +257,7 @@ export const CheckoutForm = () => {
                       className="block w-full rounded-lg bg-black p-2.5 text-sm text-white"
                       type="submit"
                     >
-                      Pay Now
+                      Proceed
                     </button>
                   </div>
                 </form>
