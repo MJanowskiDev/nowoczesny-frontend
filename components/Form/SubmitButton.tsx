@@ -6,7 +6,7 @@ interface SubmitButtonProps {
 export const SubmitButton = ({ children }: SubmitButtonProps) => {
   return (
     <button
-      className="block w-full rounded-lg bg-black p-2.5 text-sm text-white"
+      className="block w-full rounded-lg bg-teal-600  text-md p-2.5"
       type="submit"
     >
       {children}

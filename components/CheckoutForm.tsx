@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { Input } from "./Form/Input";
 import { SubmitButton } from "./Form/SubmitButton";
 import { CheckoutSummary } from "./CheckoutSummary";
+import { Select } from "./Form/Select";
 
 const checkoutFormSchema = yup
   .object({
@@ -31,9 +32,7 @@ export const CheckoutForm = () => {
     formState: { errors },
   } = useForm<CheckoutFormData>({ resolver: yupResolver(checkoutFormSchema) });
 
-  console.log(errors);
-
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit((data) => console.log(data, errors));
 
   return (
     <div>
@@ -42,7 +41,7 @@ export const CheckoutForm = () => {
         <div className="relative mx-auto max-w-screen-2xl ">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <CheckoutSummary />
-            <div className="bg-white py-12 md:py-24">
+            <div className="dark:text-white  py-12 md:py-24">
               <div className="mx-auto max-w-lg px-4 lg:px-8">
                 <form onSubmit={onSubmit} className="grid grid-cols-6 gap-4">
                   <Input<CheckoutFormData>
@@ -81,7 +80,7 @@ export const CheckoutForm = () => {
                   />
 
                   <fieldset className="col-span-6">
-                    <legend className="mb-1 block text-sm text-gray-600">
+                    <legend className="mb-1 block text-sm ">
                       Card Details
                     </legend>
 
@@ -94,9 +93,9 @@ export const CheckoutForm = () => {
                         errors={errors}
                       />
 
-                      <div className="flex -space-x-px">
+                      <div className="flex">
                         <Input<CheckoutFormData>
-                          wrappingElementStyle="flex-1"
+                          wrappingElementStyle="flex-1 pr-4"
                           register={register}
                           id="cardExpirationDate"
                           type="text"
@@ -125,36 +124,30 @@ export const CheckoutForm = () => {
                   </fieldset>
 
                   <fieldset className="col-span-6">
-                    <legend className="mb-1 block text-sm text-gray-600">
+                    <legend className="mb-1 block text-sm ">
                       Billing Address
                     </legend>
 
-                    <div className="-space-y-px rounded-lg bg-white shadow-sm">
-                      <div>
-                        <label className="sr-only" htmlFor="country">
-                          Country
-                        </label>
-
-                        <select
-                          className="relative w-full rounded-t-lg border-gray-200 p-2.5 text-sm focus:z-10"
-                          id="country"
-                          {...register("country")}
-                          autoComplete="country-name"
-                        >
-                          <option>England</option>
-                          <option>Wales</option>
-                          <option>Scotland</option>
-                          <option>France</option>
-                          <option>Belgium</option>
-                          <option>Japan</option>
-                        </select>
-                      </div>
+                    <div className="-space-y-px rounded-lg bg-white shadow-sm ">
+                      <Select<CheckoutFormData>
+                        register={register}
+                        errors={errors}
+                        id="country"
+                      >
+                        <option>England</option>
+                        <option>Wales</option>
+                        <option>Scotland</option>
+                        <option>France</option>
+                        <option>Belgium</option>
+                        <option>Japan</option>
+                      </Select>
 
                       <Input<CheckoutFormData>
                         register={register}
                         id="postalCode"
+                        label="ZIP/Post Code"
                         type="text"
-                        placeholder="ZIP/Post Code"
+                        placeholder="XX-XXX"
                         errors={errors}
                         attributes={{ autoComplete: "postal-code" }}
                       />

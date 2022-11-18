@@ -1,24 +1,4 @@
-import { HTMLInputTypeAttribute, SelectHTMLAttributes } from "react";
-import {
-  UseFormRegister,
-  FieldValues,
-  Path,
-  DeepMap,
-  FieldError,
-  RegisterOptions,
-} from "react-hook-form";
-
-export type FormInputProps<TFormData extends FieldValues> = {
-  register?: UseFormRegister<TFormData>;
-  id: Path<TFormData>;
-  label?: string;
-  errors?: Partial<DeepMap<TFormData, FieldError>>;
-  placeholder?: string;
-  registerOptions?: RegisterOptions;
-  type?: HTMLInputTypeAttribute;
-  attributes?: SelectHTMLAttributes<HTMLInputElement>;
-  wrappingElementStyle?: string;
-};
+import { FormInputProps } from "../../utils/FormTypes";
 
 export const Input = <TFormData extends Record<string, unknown>>({
   register,
@@ -35,25 +15,27 @@ export const Input = <TFormData extends Record<string, unknown>>({
 
   return (
     <div
-      className={`dark:text-gray-600  ${
+      className={` bg-gray-100/50 dark:bg-gray-900 dark:text-white ${
         wrappingElementStyle ? wrappingElementStyle : ""
       }`}
     >
       {label && (
-        <label className="mb-1 block text-sm text-gray-600" htmlFor={id}>
+        <label className="mb-1 block text-sm " htmlFor={id}>
           {label}
         </label>
       )}
       <input
         placeholder={placeholder}
-        className="w-full rounded-lg p-2.5 text-sm shadow-sm border-gray-200"
+        className="w-full rounded-lg p-2.5 text-sm shadow-sm border-gray-50/20 bg-white dark:bg-gray-800/70 "
         type={type ? type : "text"}
         id={id}
         {...attributes}
         {...register(id, registerOptions)}
       />
       {errors && (
-        <p className="text-red-400 text-sm h-5 mt-1">{errors[id]?.message}</p>
+        <p className="text-red-400 text-sm h-5 mt-1 italic font-semibold">
+          {errors[id]?.message}
+        </p>
       )}
     </div>
   );
