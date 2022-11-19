@@ -1,3 +1,4 @@
+import { DefaultTFuncReturn } from "i18next";
 import { HTMLInputTypeAttribute, ReactNode, SelectHTMLAttributes } from "react";
 import {
   UseFormRegister,
@@ -11,9 +12,9 @@ import {
 export type FormInputProps<TFormData extends FieldValues> = {
   register?: UseFormRegister<TFormData>;
   id: Path<TFormData>;
-  label?: string;
+  label?: string | DefaultTFuncReturn;
   errors?: Partial<DeepMap<TFormData, FieldError>>;
-  placeholder?: string;
+  placeholder?: string | DefaultTFuncReturn;
   registerOptions?: RegisterOptions;
   type?: HTMLInputTypeAttribute;
   attributes?: SelectHTMLAttributes<HTMLInputElement>;
@@ -23,7 +24,7 @@ export type FormInputProps<TFormData extends FieldValues> = {
 export type FormSelectProps<TFormData extends FieldValues> = {
   register?: UseFormRegister<TFormData>;
   id: Path<TFormData>;
-  label?: string;
+  label?: string | DefaultTFuncReturn;
   errors?: Partial<DeepMap<TFormData, FieldError>>;
   registerOptions?: RegisterOptions;
   attributes?: SelectHTMLAttributes<HTMLSelectElement>;
