@@ -117,7 +117,7 @@ export const CheckoutForm = () => {
         <fieldset className="col-span-6">
           <legend className="mb-1 block text-sm ">{t("Card details")}</legend>
 
-          <div className="-space-y-px rounded-lg bg-white shadow-sm">
+          <div className="-space-y-px rounded-lg  shadow-sm grid gap-4">
             <Input<CheckoutFormData>
               register={register}
               id="cardNumber"
