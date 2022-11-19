@@ -7,7 +7,7 @@ const config: CodegenConfig = {
   generates: {
     "graphql/generated/": {
       preset: "client",
-      plugins: [],
+      plugins: ["typescript-react-apollo"],
     },
   },
 };
