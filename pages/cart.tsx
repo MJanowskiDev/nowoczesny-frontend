@@ -75,23 +75,32 @@ const CartContent = () => {
 const CartSummary = () => {
   const { removeAllItems, totalCount, totalPrice } = useCartState();
   return (
-    <div className="grid justify-items-end content-start text-right">
-      <h2 className="heading">Checkout</h2>
-      <p>
-        Total product quantity: <span className="font-bold">{totalCount}</span>
-      </p>
-      <p>
-        Total cost: <span className="font-bold">{totalPrice}$</span>
-      </p>
-      <button
-        onClick={removeAllItems}
-        className="flex justify-between items-center w-32 rounded border border-red-600 px-1 py-1 my-2 text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-red-500 "
-      >
-        Clear cart{" "}
-        <span className="pl-2">
-          <RemoveIcon />
-        </span>
-      </button>
+    <div className="flex h-full flex-col justify-between items-end">
+      <div className="grid justify-items-end content-start text-right">
+        <h2 className="heading">Checkout</h2>
+        <p>
+          Total product quantity:{" "}
+          <span className="font-bold">{totalCount}</span>
+        </p>
+        <p>
+          Total cost: <span className="font-bold">{totalPrice}$</span>
+        </p>
+        <button
+          onClick={removeAllItems}
+          className="flex justify-between items-center w-32 rounded border border-red-600 px-1 py-1 my-2 text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white focus:outline-none focus:ring active:bg-red-500 "
+        >
+          Clear cart{" "}
+          <span className="pl-2">
+            <RemoveIcon />
+          </span>
+        </button>
+      </div>
+
+      <Link href="/checkout">
+        <a className="border border-teal-600 rounded-md px-4 py-2 hover:bg-teal-300/30">
+          Checkout
+        </a>
+      </Link>
     </div>
   );
 };

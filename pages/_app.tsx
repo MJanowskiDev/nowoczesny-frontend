@@ -10,6 +10,8 @@ import { CartStateContextProvider } from "../components/Cart/CartContext";
 
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "../graphql/apolloClient";
+
+import "../i18";
 const client = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
