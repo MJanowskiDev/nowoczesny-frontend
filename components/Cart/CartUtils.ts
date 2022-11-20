@@ -6,6 +6,9 @@ export interface CartItem {
   readonly image: string;
 }
 
+export const CART_MAX_QANTITY = 15;
+export const CART_MIN_QANTITY = 1;
+
 const localStorageKey = "SHOPPING_CART_MJanowskiDev";
 
 export const getCartAmount = (cartItems: CartItem[]) => {
@@ -24,14 +27,18 @@ export const addItemFn = (prevState: CartItem[], item: CartItem) => {
   const existingItem = prevState.find((prevItem) => prevItem.id === item.id);
 
   if (!existingItem) {
-    return [...prevState, (item = { ...item, count: 1 })];
+    return [...prevState, (item = { ...item, count: CART_MIN_QANTITY })];
   }
 
   return prevState.map((existingItem) => {
     if (existingItem.id === item.id) {
       return {
         ...existingItem,
-        count: existingItem.count ? existingItem.count + 1 : 1,
+        count: existingItem.count
+          ? existingItem.count < CART_MAX_QANTITY
+            ? existingItem.count + 1
+            : CART_MAX_QANTITY
+          : CART_MIN_QANTITY,
       };
     } else {
       return existingItem;
@@ -54,7 +61,8 @@ export const editProductCountFn = (
     if (existingItem.id === id) {
       return {
         ...existingItem,
-        count: updatedCount,
+        count:
+          updatedCount < CART_MAX_QANTITY ? updatedCount : CART_MAX_QANTITY,
       };
     } else {
       return existingItem;

@@ -2,9 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { RemoveIcon } from "../UI/Icons";
 import { useCartState } from "./CartContext";
 import { CartItem } from "./CartUtils";
-
-const CART_MAX_QANTITY = 15;
-const CART_MIN_QANTITY = 1;
+import { CART_MAX_QANTITY, CART_MIN_QANTITY } from "./CartUtils";
 
 export const ItemControlElement = (cartItem: CartItem) => {
   const { removeItem, editProductCount } = useCartState();
