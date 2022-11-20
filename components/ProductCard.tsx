@@ -4,7 +4,10 @@ import { ProductsAPIResponse } from "../utils";
 import { AddToCartButton } from "./Cart/AddToCartButton";
 import { CartItem } from "./Cart/CartUtils";
 interface ProductCardProps {
-  data: Pick<ProductsAPIResponse, "title" | "description" | "image" | "id">;
+  data: Pick<
+    ProductsAPIResponse,
+    "title" | "description" | "image" | "id" | "slug"
+  >;
   link: string;
 }
 export const ProductCard = ({ data, link }: ProductCardProps) => {
@@ -40,7 +43,7 @@ export const ProductCard = ({ data, link }: ProductCardProps) => {
 
         <div className="inline-block border-b dark:border-teal-300 border-teal-600 pb-1 font-medium text-teal-600 dark:text-teal-300">
           <AddToCartButton item={cartItem} />
-          <Link href={`${link}/${data.id}`}>Find out more</Link>
+          <Link href={`${link}/${data.slug}`}>Find out more</Link>
           <span aria-hidden="true">&rarr;</span>
         </div>
       </div>

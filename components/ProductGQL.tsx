@@ -5,7 +5,7 @@ import { NextMarkdown } from "./NextMarkdown";
 import { defaultOGImageUrl } from "../next-seo.config";
 
 import { NextSeo } from "next-seo";
-import { GetProductBySlugQuery } from "../graphql/generated/graphql";
+import { GetProductBySlugQuery } from "../graphql/generated/gql-types";
 import { AddToCartButton } from "./Cart/AddToCartButton";
 import { CartItem } from "./Cart/CartUtils";
 
@@ -16,7 +16,7 @@ interface ProductProps {
 
 export const ProductGQL = ({ product, longDescription }: ProductProps) => {
   const cartItem: CartItem = {
-    id: product?.slug || "error",
+    id: product?.id || "error",
     price: product?.price || 0,
     title: product?.name || "error",
     count: 1,
@@ -28,9 +28,9 @@ export const ProductGQL = ({ product, longDescription }: ProductProps) => {
       <NextSeo
         title={product?.name}
         description={product?.description}
-        canonical={`${process.env.CANONICAL}/${product?.slug}`}
+        canonical={`${process.env.NEXT_PUBLIC_CANONICAL}/${product?.slug}`}
         openGraph={{
-          url: `${process.env.CANONICAL}/${product?.slug}`,
+          url: `${process.env.NEXT_PUBLIC_CANONICAL}/${product?.slug}`,
           title: product?.name,
           description: product?.description,
           images: [

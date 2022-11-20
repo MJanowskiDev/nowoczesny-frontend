@@ -34,8 +34,9 @@ const ProductIdPage = ({
 };
 
 export const getStaticPaths = async () => {
-  const products2 = await getProductSlugs(PRODUCT_TAKE_AMOUNT);
-  const slugArray = products2.data.products.map((product) => product.slug);
+  const products = await getProductSlugs(PRODUCT_TAKE_AMOUNT);
+
+  const slugArray = products.data.products.map((product) => product.slug);
 
   return {
     paths: slugArray.map((product) => {

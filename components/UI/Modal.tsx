@@ -28,7 +28,9 @@ export default function Modal({
                 </div>
 
                 <div className="relative p-6 flex-auto">
-                  <p className="my-4 t text-lg leading-relaxed">{content}</p>
+                  <div className="my-4 t text-lg leading-relaxed">
+                    {content}
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">

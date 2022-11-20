@@ -9,6 +9,7 @@ export interface ProductsAPIResponse {
   rating: Rating;
   image: string;
   longDescription: string;
+  slug: string;
 }
 
 export interface Rating {

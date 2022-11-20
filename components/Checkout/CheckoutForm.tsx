@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 
 import { Input } from "../Form/Input";
 import { SubmitButton } from "../Form/SubmitButton";
@@ -13,6 +13,10 @@ import { useForm } from "react-hook-form";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useCreateOrderMutationMutation } from "../../graphql/generated/gql-types";
+import { useCartState } from "../Cart/CartContext";
+
+const STRIPE_CHECKOUT_ID = "!!stripe-checkout-id!!";
 
 yup.setLocale({
   mixed: {
@@ -43,6 +47,10 @@ export const CheckoutForm = () => {
 
   const [showModal, setShowModal] = useState(false);
 
+  const [createOrder, createOrderResult] = useCreateOrderMutationMutation();
+
+  const cartState = useCartState();
+
   const {
     register,
     handleSubmit,
@@ -52,19 +60,33 @@ export const CheckoutForm = () => {
     resolver: yupResolver(checkoutFormSchema),
   });
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     if (isValid) {
+      await createOrder({
+        variables: {
+          order: {
+            email: data.email,
+            total: cartState.totalPrice,
+            stripeCheckoutId: STRIPE_CHECKOUT_ID,
+            orderItems: {
+              create: cartState.items.map((item) => ({
+                quantity: item.count,
+                total: item.price,
+                product: {
+                  connect: {
+                    id: item.id,
+                  },
+                },
+              })),
+            },
+          },
+        },
+      });
+
       setShowModal(true);
       reset();
     }
-    console.log(data, errors);
   });
-
-  useEffect(() => {
-    if (formRef.current && !isValid && isDirty) {
-      formRef.current.requestSubmit();
-    }
-  }, [i18n.language, isValid, isDirty]);
 
   return (
     <>
@@ -72,8 +94,14 @@ export const CheckoutForm = () => {
         showModal={showModal}
         closeModal={() => setShowModal(false)}
         title={t("Success")}
-        content={t("Form submission succeeded!")}
+        content={
+          <div>
+            <h1>{t("Form submission succeeded!")}</h1>
+            <pre>{JSON.stringify(createOrderResult.data, null, 2)}</pre>
+          </div>
+        }
       />
+
       <form
         ref={formRef}
         onSubmit={onSubmit}
