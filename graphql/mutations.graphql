@@ -5,6 +5,13 @@ mutation CreateProductReview($review: ReviewCreateInput!) {
   }
 }
 
+mutation PublishProductReview($id: ID!) {
+  publishReview(to: PUBLISHED, where: { id: $id }) {
+    stage
+    id
+  }
+}
+
 mutation CreateOrderMutation($order: OrderCreateInput!) {
   order: createOrder(data: $order) {
     id

@@ -10681,6 +10681,13 @@ export type CreateProductReviewMutationVariables = Exact<{
 
 export type CreateProductReviewMutation = { __typename?: 'Mutation', createReview?: { __typename?: 'Review', id: string, stage: Stage } | null };
 
+export type PublishProductReviewMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type PublishProductReviewMutation = { __typename?: 'Mutation', publishReview?: { __typename?: 'Review', stage: Stage, id: string } | null };
+
 export type CreateOrderMutationMutationVariables = Exact<{
   order: OrderCreateInput;
 }>;
@@ -10752,6 +10759,40 @@ export function useCreateProductReviewMutation(baseOptions?: Apollo.MutationHook
 export type CreateProductReviewMutationHookResult = ReturnType<typeof useCreateProductReviewMutation>;
 export type CreateProductReviewMutationResult = Apollo.MutationResult<CreateProductReviewMutation>;
 export type CreateProductReviewMutationOptions = Apollo.BaseMutationOptions<CreateProductReviewMutation, CreateProductReviewMutationVariables>;
+export const PublishProductReviewDocument = gql`
+    mutation PublishProductReview($id: ID!) {
+  publishReview(to: PUBLISHED, where: {id: $id}) {
+    stage
+    id
+  }
+}
+    `;
+export type PublishProductReviewMutationFn = Apollo.MutationFunction<PublishProductReviewMutation, PublishProductReviewMutationVariables>;
+
+/**
+ * __usePublishProductReviewMutation__
+ *
+ * To run a mutation, you first call `usePublishProductReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePublishProductReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [publishProductReviewMutation, { data, loading, error }] = usePublishProductReviewMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePublishProductReviewMutation(baseOptions?: Apollo.MutationHookOptions<PublishProductReviewMutation, PublishProductReviewMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<PublishProductReviewMutation, PublishProductReviewMutationVariables>(PublishProductReviewDocument, options);
+      }
+export type PublishProductReviewMutationHookResult = ReturnType<typeof usePublishProductReviewMutation>;
+export type PublishProductReviewMutationResult = Apollo.MutationResult<PublishProductReviewMutation>;
+export type PublishProductReviewMutationOptions = Apollo.BaseMutationOptions<PublishProductReviewMutation, PublishProductReviewMutationVariables>;
 export const CreateOrderMutationDocument = gql`
     mutation CreateOrderMutation($order: OrderCreateInput!) {
   order: createOrder(data: $order) {

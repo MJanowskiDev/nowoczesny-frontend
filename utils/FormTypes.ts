@@ -31,3 +31,14 @@ export type FormSelectProps<TFormData extends FieldValues> = {
   wrappingElementStyle?: string;
   children: ReactNode;
 };
+
+export type TextareaProps<TFormData extends FieldValues> = {
+  register?: UseFormRegister<TFormData>;
+  id: Path<TFormData>;
+  label?: string | DefaultTFuncReturn;
+  errors?: Partial<DeepMap<TFormData, FieldError>>;
+  placeholder?: string | DefaultTFuncReturn;
+  registerOptions?: RegisterOptions;
+  attributes?: SelectHTMLAttributes<HTMLTextAreaElement>;
+  wrappingElementStyle?: string;
+};

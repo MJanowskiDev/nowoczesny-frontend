@@ -10,11 +10,13 @@ import { getProductBySlug } from "../../../lib/getProductBySlug";
 import { getProductSlugs } from "../../../lib/getProductSlugs";
 import { getReviews } from "../../../lib/getReviews";
 import { AllComments } from "../../../components/Comments/AllComments";
+import { CommentForm } from "../../../components/Comments/CommentForm";
 
 const ProductIdPage = ({
   data,
   longDescription,
   reviews,
+  id,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
@@ -32,6 +34,7 @@ const ProductIdPage = ({
         <a>Go back</a>
       </Link>
       <ProductGQL product={data} longDescription={longDescription} />
+      <CommentForm productId={id} />
       <AllComments reviews={reviews} />
     </div>
   );
@@ -68,6 +71,7 @@ export const getStaticProps = async ({
       data: {
         ...data.product,
       },
+      id: data.product.id,
       reviews: reviewsData.data.reviews,
       longDescription: await serialize(data.product.description),
     },

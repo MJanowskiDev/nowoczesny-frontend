@@ -6,6 +6,7 @@ interface AllCommentsProps {
 export const AllComments = ({ reviews }: AllCommentsProps) => {
   return (
     <>
+      <h1 className="text-5xl font-bold pb-4">Comments</h1>
       {reviews.edges.map((review) => (
         <Comment key={review.node.id} review={review.node} />
       ))}
