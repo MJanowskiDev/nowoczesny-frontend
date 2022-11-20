@@ -79,7 +79,7 @@ export const ItemControlElement = (cartItem: CartItem) => {
       </button>
       <input
         ref={inputRef}
-        className="w-4 dark:bg-gray-900 text-center h-7 border-none"
+        className="w-5 dark:bg-gray-900 text-center h-7 border-none"
         onBlur={handleSetAmount}
         onKeyDown={handleKeyDown}
       ></input>
