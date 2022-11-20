@@ -33,7 +33,7 @@ const ProductIdPage = ({
       <Link href={"/products-ssg"}>
         <a>Go back</a>
       </Link>
-      <ProductGQL product={data} longDescription={longDescription} />
+      <ProductGQL data={data} longDescription={longDescription} />
       <CommentForm productId={id} />
       <AllComments reviews={reviews} />
     </div>
@@ -68,13 +68,12 @@ export const getStaticProps = async ({
 
   return {
     props: {
-      data: {
-        ...data.product,
-      },
+      data: data,
       id: data.product.id,
       reviews: reviewsData.data.reviews,
       longDescription: await serialize(data.product.description),
     },
   };
 };
+
 export default ProductIdPage;
