@@ -50,6 +50,7 @@ export const ItemControlElement = (cartItem: CartItem) => {
 
   const setAmountValue = () => {
     const val = Number(inputRef.current?.value);
+
     if (val < CART_MAX_QANTITY && val > CART_MIN_QANTITY) {
       setAmount(val);
     } else {
@@ -78,13 +79,11 @@ export const ItemControlElement = (cartItem: CartItem) => {
       <button className="action-button" onClick={handleSubtractOne}>
         -
       </button>
-
       <input
         ref={inputRef}
-        className="w-4 dark:bg-gray-900 text-center appearance-none"
+        className="w-4 dark:bg-gray-900 text-center h-7 border-none"
         onBlur={handleSetAmount}
         onKeyDown={handleKeyDown}
-        type={"number"}
       ></input>
       <button className="action-button" onClick={handleAddOne}>
         +
