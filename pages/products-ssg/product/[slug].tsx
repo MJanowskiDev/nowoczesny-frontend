@@ -8,10 +8,13 @@ import { Loading } from "../../../components/Loading";
 import { serialize } from "next-mdx-remote/serialize";
 import { getProductBySlug } from "../../../lib/getProductBySlug";
 import { getProductSlugs } from "../../../lib/getProductSlugs";
+import { getReviews } from "../../../lib/getReviews";
+import { AllComments } from "../../../components/Comments/AllComments";
 
 const ProductIdPage = ({
   data,
   longDescription,
+  reviews,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
@@ -29,6 +32,7 @@ const ProductIdPage = ({
         <a>Go back</a>
       </Link>
       <ProductGQL product={data} longDescription={longDescription} />
+      <AllComments reviews={reviews} />
     </div>
   );
 };
@@ -57,11 +61,14 @@ export const getStaticProps = async ({
 
   if (!data.product) return { notFound: true };
 
+  const reviewsData = await getReviews(data.product.id);
+
   return {
     props: {
       data: {
         ...data.product,
       },
+      reviews: reviewsData.data.reviews,
       longDescription: await serialize(data.product.description),
     },
   };

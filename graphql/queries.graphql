@@ -1,3 +1,22 @@
+query ProductReviewsQuery($id: ID!) {
+  reviews: reviewsConnection(where: { product: { id: $id } }) {
+    edges {
+      node {
+        id
+        content
+        createdAt
+        email
+        headline
+        name
+        rating
+      }
+    }
+    aggregate {
+      count
+    }
+  }
+}
+
 query ProductsWithPaginationQuery($limit: Int!, $offset: Int!) {
   products(first: $limit, skip: $offset) {
     id
