@@ -1,5 +1,5 @@
 import { ProductCard } from "./ProductCard";
-import { ProductsWithPaginationQueryQuery } from "../graphql/generated/graphql";
+import { ProductsWithPaginationQueryQuery } from "../graphql/generated/gql-types";
 
 interface ProductsListProps {
   data: ProductsWithPaginationQueryQuery;
@@ -13,7 +13,8 @@ export const ProductsListGQL = ({ data, baseLink }: ProductsListProps) => {
         <ProductCard
           key={element.id}
           data={{
-            id: element.slug,
+            id: element.id,
+            slug: element.slug,
             title: element.name,
             description: element.name,
             image: element.images[0].url,

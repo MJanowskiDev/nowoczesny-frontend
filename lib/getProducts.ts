@@ -2,7 +2,7 @@ import { apolloClient } from "../graphql/apolloClient";
 import {
   ProductsWithPaginationQueryQuery,
   ProductsWithPaginationQueryDocument,
-} from "../graphql/generated/graphql";
+} from "../graphql/generated/gql-types";
 
 export async function getProducts({
   limit,

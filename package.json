@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen-local": "graphql-codegen --require dotenv/config --config ./codegen.ts dotenv_config_path=./.env.local"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.1",
+    "@apollo/client": "^3.6.9",
     "@hookform/resolvers": "^2.9.10",
     "@tailwindcss/typography": "^0.5.7",
     "graphql": "^16.6.0",

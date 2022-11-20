@@ -2,7 +2,7 @@ import {
   GetProductBySlugQuery,
   GetProductBySlugDocument,
   Product,
-} from "../graphql/generated/graphql";
+} from "../graphql/generated/gql-types";
 import { apolloClient } from "../graphql/apolloClient";
 
 export const getProductBySlug = async (slug: Product["slug"]) => {

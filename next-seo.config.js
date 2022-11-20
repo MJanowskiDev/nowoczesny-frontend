@@ -1,11 +1,11 @@
 const title = "MJanowskiDev E-Commerce App";
 const description = "Ecommerce app made using Next.js.";
-export const defaultOGImageUrl = process.env.DEFAULT_OG_IMAGE || "";
+export const defaultOGImageUrl = process.env.NEXT_PUBLIC_DEFAULT_OG_IMAGE || "";
 
 const nextSeoConfig = {
   title,
   description,
-  canonical: process.env.CANONICAL,
+  canonical: process.env.NEXT_PUBLIC_CANONICAL,
   openGraph: {
     title,
     description,

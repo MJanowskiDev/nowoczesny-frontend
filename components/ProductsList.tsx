@@ -12,6 +12,7 @@ export const ProductsList = ({ data, link }: ProductsListProps) => {
         <ProductCard
           key={element.id}
           data={{
+            slug: element.slug,
             id: element.id,
             title: element.title,
             description: element.description,
