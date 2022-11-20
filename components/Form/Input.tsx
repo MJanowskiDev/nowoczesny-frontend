@@ -27,7 +27,7 @@ export const Input = <TFormData extends Record<string, unknown>>({
       <input
         placeholder={placeholder || ""}
         className={`w-full rounded-lg p-2.5 text-sm shadow-sm border-gray-50/20 bg-white dark:bg-gray-800/70 ${
-          errors ? "border-red-400" : ""
+          errors && errors[id] ? "border-red-400" : ""
         } `}
         type={type ? type : "text"}
         id={id}

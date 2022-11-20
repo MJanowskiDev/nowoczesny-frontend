@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 
 import { Input } from "../Form/Input";
 import { SubmitButton } from "../Form/SubmitButton";
@@ -87,12 +87,6 @@ export const CheckoutForm = () => {
       reset();
     }
   });
-
-  useEffect(() => {
-    if (formRef.current && !isValid && isDirty) {
-      formRef.current.requestSubmit();
-    }
-  }, [i18n.language, isValid, isDirty]);
 
   return (
     <>
