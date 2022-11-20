@@ -11,6 +11,8 @@ import { getProductSlugs } from "../../../lib/getProductSlugs";
 import { getReviews } from "../../../lib/getReviews";
 import { AllComments } from "../../../components/Comments/AllComments";
 import { CommentForm } from "../../../components/Comments/CommentForm";
+import { useState } from "react";
+import { ProductReviewsQueryQuery } from "../../../graphql/generated/gql-types";
 
 const ProductIdPage = ({
   data,
@@ -20,6 +22,9 @@ const ProductIdPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
+  const [reviewsState, setReviewsState] =
+    useState<ProductReviewsQueryQuery["reviews"]>(reviews);
+
   if (router.isFallback) {
     return <Loading />;
   }
@@ -28,14 +33,19 @@ const ProductIdPage = ({
     return <div>Something went wrong...</div>;
   }
 
+  const newCommentHandle = async () => {
+    const reviewsData = await getReviews(id);
+    setReviewsState(reviewsData.data.reviews);
+  };
+
   return (
     <div>
       <Link href={"/products-ssg"}>
         <a>Go back</a>
       </Link>
       <ProductGQL data={data} longDescription={longDescription} />
-      <CommentForm productId={id} />
-      <AllComments reviews={reviews} />
+      <CommentForm productId={id} newCommentHandle={newCommentHandle} />
+      <AllComments reviews={reviewsState} />
     </div>
   );
 };

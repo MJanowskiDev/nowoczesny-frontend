@@ -24,9 +24,13 @@ type CommentFormData = yup.InferType<typeof commentFormSchema>;
 
 interface CommentFormProps {
   productId: string;
+  readonly newCommentHandle: () => void;
 }
 
-export const CommentForm = ({ productId }: CommentFormProps) => {
+export const CommentForm = ({
+  productId,
+  newCommentHandle,
+}: CommentFormProps) => {
   const {
     register,
     handleSubmit,
@@ -64,7 +68,9 @@ export const CommentForm = ({ productId }: CommentFormProps) => {
       await publishReview({
         variables: { id: res.data?.createReview?.id || "" },
       });
-
+      if (!publishRewievResult.error) {
+        newCommentHandle();
+      }
       setShowModal(true);
       reset();
     }
