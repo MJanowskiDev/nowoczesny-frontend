@@ -4,7 +4,7 @@ import { Input } from "../Form/Input";
 import { SubmitButton } from "../Form/SubmitButton";
 import { Select } from "../Form/Select";
 import { validateCardYearMonth } from "../../utils";
-import Modal from "../UI/Modal";
+import { Modal } from "../UI/Modal";
 
 import i18n from "../../i18";
 import { useTranslation } from "react-i18next";

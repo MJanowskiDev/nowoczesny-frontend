@@ -8,12 +8,12 @@ interface ModalProps {
   closeModal: () => void;
 }
 
-export default function Modal({
+export const Modal = ({
   title,
   content,
   showModal,
   closeModal,
-}: ModalProps) {
+}: ModalProps) => {
   return (
     <>
       {showModal ? (
@@ -50,4 +50,4 @@ export default function Modal({
       ) : null}
     </>
   );
-}
+};

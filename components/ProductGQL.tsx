@@ -10,11 +10,12 @@ import { AddToCartButton } from "./Cart/AddToCartButton";
 import { CartItem } from "./Cart/CartUtils";
 
 interface ProductProps {
-  product: GetProductBySlugQuery["product"];
+  data: GetProductBySlugQuery;
   longDescription: MDXResult;
 }
 
-export const ProductGQL = ({ product, longDescription }: ProductProps) => {
+export const ProductGQL = ({ data, longDescription }: ProductProps) => {
+  const product = data?.product;
   const cartItem: CartItem = {
     id: product?.id || "error",
     price: product?.price || 0,

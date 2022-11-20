@@ -8,10 +8,15 @@ import { Loading } from "../../../components/Loading";
 import { serialize } from "next-mdx-remote/serialize";
 import { getProductBySlug } from "../../../lib/getProductBySlug";
 import { getProductSlugs } from "../../../lib/getProductSlugs";
+import { getReviews } from "../../../lib/getReviews";
+import { AllComments } from "../../../components/Comments/AllComments";
+import { CommentForm } from "../../../components/Comments/CommentForm";
 
 const ProductIdPage = ({
   data,
   longDescription,
+  reviews,
+  id,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
@@ -28,7 +33,9 @@ const ProductIdPage = ({
       <Link href={"/products-ssg"}>
         <a>Go back</a>
       </Link>
-      <ProductGQL product={data} longDescription={longDescription} />
+      <ProductGQL data={data} longDescription={longDescription} />
+      <CommentForm productId={id} />
+      <AllComments reviews={reviews} />
     </div>
   );
 };
@@ -57,13 +64,16 @@ export const getStaticProps = async ({
 
   if (!data.product) return { notFound: true };
 
+  const reviewsData = await getReviews(data.product.id);
+
   return {
     props: {
-      data: {
-        ...data.product,
-      },
+      data: data,
+      id: data.product.id,
+      reviews: reviewsData.data.reviews,
       longDescription: await serialize(data.product.description),
     },
   };
 };
+
 export default ProductIdPage;
