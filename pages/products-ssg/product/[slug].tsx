@@ -9,8 +9,6 @@ import { serialize } from "next-mdx-remote/serialize";
 import { getProductBySlug } from "../../../lib/getProductBySlug";
 import { getProductSlugs } from "../../../lib/getProductSlugs";
 import { getReviews } from "../../../lib/getReviews";
-import { AllComments } from "../../../components/Comments/AllComments";
-import { CommentForm } from "../../../components/Comments/CommentForm";
 import { useState } from "react";
 import { ProductReviewsQueryQuery } from "../../../graphql/generated/gql-types";
 
@@ -44,8 +42,6 @@ const ProductIdPage = ({
         <a>Go back</a>
       </Link>
       <ProductGQL data={data} longDescription={longDescription} />
-      <CommentForm productId={id} newCommentHandle={newCommentHandle} />
-      <AllComments reviews={reviewsState} />
     </div>
   );
 };

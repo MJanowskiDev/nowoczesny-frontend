@@ -1,3 +1,21 @@
+fragment reviewContent on Review {
+  id
+  content
+  createdAt
+  email
+  headline
+  name
+  rating
+}
+
+query GetReviewsForProductSlug($slug: String!) {
+  product(where: { slug: $slug }) {
+    reviews(orderBy: createdAt_DESC) {
+      ...reviewContent
+    }
+  }
+}
+
 query ProductReviewsQuery($id: ID!) {
   reviews: reviewsConnection(where: { product: { id: $id } }) {
     edges {

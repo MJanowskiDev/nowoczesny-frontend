@@ -1,7 +1,6 @@
 mutation CreateProductReview($review: ReviewCreateInput!) {
-  createReview(data: $review) {
-    id
-    stage
+  review: createReview(data: $review) {
+    ...reviewContent
   }
 }
 

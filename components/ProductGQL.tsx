@@ -8,6 +8,7 @@ import { NextSeo } from "next-seo";
 import { GetProductBySlugQuery } from "../graphql/generated/gql-types";
 import { AddToCartButton } from "./Cart/AddToCartButton";
 import { CartItem } from "./Cart/CartUtils";
+import { ProductReviewContainer } from "./Comments/ProductReviewContainer";
 
 interface ProductProps {
   data: GetProductBySlugQuery;
@@ -68,6 +69,10 @@ export const ProductGQL = ({ data, longDescription }: ProductProps) => {
         <h1 className="text-teal-600 dark:text-teal-300">{product?.name}</h1>
         <NextMarkdown>{longDescription}</NextMarkdown>
         <p className="font-bold">Price: {product?.price}</p>
+
+        {data.product?.slug && (
+          <ProductReviewContainer productSlug={data.product?.slug} />
+        )}
       </article>
     </div>
   );

@@ -10679,7 +10679,7 @@ export type CreateProductReviewMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductReviewMutation = { __typename?: 'Mutation', createReview?: { __typename?: 'Review', id: string, stage: Stage } | null };
+export type CreateProductReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, content: string, createdAt: any, email: string, headline: string, name: string, rating?: number | null } | null };
 
 export type PublishProductReviewMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -10694,6 +10694,15 @@ export type CreateOrderMutationMutationVariables = Exact<{
 
 
 export type CreateOrderMutationMutation = { __typename?: 'Mutation', order?: { __typename?: 'Order', id: string } | null };
+
+export type ReviewContentFragment = { __typename?: 'Review', id: string, content: string, createdAt: any, email: string, headline: string, name: string, rating?: number | null };
+
+export type GetReviewsForProductSlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type GetReviewsForProductSlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', reviews: Array<{ __typename?: 'Review', id: string, content: string, createdAt: any, email: string, headline: string, name: string, rating?: number | null }> } | null };
 
 export type ProductReviewsQueryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -10724,15 +10733,24 @@ export type GetProductBySlugQueryVariables = Exact<{
 
 export type GetProductBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', name: string, slug: string, id: string, price: number, description: string, categories: Array<{ __typename?: 'Category', name: string }>, reviews: Array<{ __typename?: 'Review', rating?: number | null }>, images: Array<{ __typename?: 'Asset', url: string }> } | null };
 
-
-export const CreateProductReviewDocument = gql`
-    mutation CreateProductReview($review: ReviewCreateInput!) {
-  createReview(data: $review) {
-    id
-    stage
-  }
+export const ReviewContentFragmentDoc = gql`
+    fragment reviewContent on Review {
+  id
+  content
+  createdAt
+  email
+  headline
+  name
+  rating
 }
     `;
+export const CreateProductReviewDocument = gql`
+    mutation CreateProductReview($review: ReviewCreateInput!) {
+  review: createReview(data: $review) {
+    ...reviewContent
+  }
+}
+    ${ReviewContentFragmentDoc}`;
 export type CreateProductReviewMutationFn = Apollo.MutationFunction<CreateProductReviewMutation, CreateProductReviewMutationVariables>;
 
 /**
@@ -10826,6 +10844,43 @@ export function useCreateOrderMutationMutation(baseOptions?: Apollo.MutationHook
 export type CreateOrderMutationMutationHookResult = ReturnType<typeof useCreateOrderMutationMutation>;
 export type CreateOrderMutationMutationResult = Apollo.MutationResult<CreateOrderMutationMutation>;
 export type CreateOrderMutationMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutationMutation, CreateOrderMutationMutationVariables>;
+export const GetReviewsForProductSlugDocument = gql`
+    query GetReviewsForProductSlug($slug: String!) {
+  product(where: {slug: $slug}) {
+    reviews(orderBy: createdAt_DESC) {
+      ...reviewContent
+    }
+  }
+}
+    ${ReviewContentFragmentDoc}`;
+
+/**
+ * __useGetReviewsForProductSlugQuery__
+ *
+ * To run a query within a React component, call `useGetReviewsForProductSlugQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReviewsForProductSlugQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetReviewsForProductSlugQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetReviewsForProductSlugQuery(baseOptions: Apollo.QueryHookOptions<GetReviewsForProductSlugQuery, GetReviewsForProductSlugQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetReviewsForProductSlugQuery, GetReviewsForProductSlugQueryVariables>(GetReviewsForProductSlugDocument, options);
+      }
+export function useGetReviewsForProductSlugLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReviewsForProductSlugQuery, GetReviewsForProductSlugQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetReviewsForProductSlugQuery, GetReviewsForProductSlugQueryVariables>(GetReviewsForProductSlugDocument, options);
+        }
+export type GetReviewsForProductSlugQueryHookResult = ReturnType<typeof useGetReviewsForProductSlugQuery>;
+export type GetReviewsForProductSlugLazyQueryHookResult = ReturnType<typeof useGetReviewsForProductSlugLazyQuery>;
+export type GetReviewsForProductSlugQueryResult = Apollo.QueryResult<GetReviewsForProductSlugQuery, GetReviewsForProductSlugQueryVariables>;
 export const ProductReviewsQueryDocument = gql`
     query ProductReviewsQuery($id: ID!) {
   reviews: reviewsConnection(where: {product: {id: $id}}) {

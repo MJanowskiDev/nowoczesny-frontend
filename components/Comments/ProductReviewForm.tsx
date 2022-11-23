@@ -6,43 +6,65 @@ import { useForm } from "react-hook-form";
 import {
   useCreateProductReviewMutation,
   usePublishProductReviewMutation,
+  GetReviewsForProductSlugDocument,
+  GetReviewsForProductSlugQuery,
 } from "../../graphql/generated/gql-types";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
-import { Modal } from "../UI/Modal";
-import { Select } from "../Form/Select";
 
 const commentFormSchema = yup.object({
   headline: yup.string().required(),
   name: yup.string().required(),
   email: yup.string().required().email(),
-  comment: yup.string().required(),
-  rating: yup.number().required(),
+  content: yup.string().required(),
+  rating: yup.number().min(1).max(5).required(),
 });
 
-type CommentFormData = yup.InferType<typeof commentFormSchema>;
+type ProductReviewFormData = yup.InferType<typeof commentFormSchema>;
 
-interface CommentFormProps {
-  productId: string;
-  readonly newCommentHandle: () => void;
+interface ProductReviewFormProps {
+  productSlug: string;
 }
 
-export const CommentForm = ({
-  productId,
-  newCommentHandle,
-}: CommentFormProps) => {
+export const ProductReviewForm = ({ productSlug }: ProductReviewFormProps) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid, isDirty },
-  } = useForm<CommentFormData>({
+  } = useForm<ProductReviewFormData>({
     resolver: yupResolver(commentFormSchema),
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const [createReview, createReviewResult] = useCreateProductReviewMutation({
+    update(cache, result) {
+      const originalReviewsQuery =
+        cache.readQuery<GetReviewsForProductSlugQuery>({
+          query: GetReviewsForProductSlugDocument,
+          variables: { slug: productSlug },
+        });
 
-  const [createReview, createReviewResult] = useCreateProductReviewMutation();
+      if (!originalReviewsQuery?.product?.reviews || !result.data?.review) {
+        return;
+      }
+
+      const newReviewsQuery = {
+        ...originalReviewsQuery,
+        product: {
+          ...originalReviewsQuery.product,
+          reviews: [
+            result.data?.review,
+            ...originalReviewsQuery.product.reviews,
+          ],
+        },
+      };
+
+      cache.writeQuery({
+        query: GetReviewsForProductSlugDocument,
+        variables: { slug: productSlug },
+        data: newReviewsQuery,
+      });
+    },
+  });
   const [publishReview, publishRewievResult] =
     usePublishProductReviewMutation();
 
@@ -51,46 +73,40 @@ export const CommentForm = ({
       const res = await createReview({
         variables: {
           review: {
-            headline: data.headline,
-            name: data.name,
-            email: data.email,
-            content: data.comment,
-            rating: data.rating,
+            ...data,
             product: {
               connect: {
-                id: productId,
+                slug: productSlug,
               },
             },
+          },
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          review: {
+            __typename: "Review",
+            id: (-Math.random()).toString(),
+            createdAt: Date.now().toString(),
+            ...data,
           },
         },
       });
 
       await publishReview({
-        variables: { id: res.data?.createReview?.id || "" },
+        variables: { id: res.data?.review?.id || "" },
       });
-      if (!publishRewievResult.error) {
-        newCommentHandle();
-      }
-      setShowModal(true);
+      // if (!publishRewievResult.error) {
+      //   newCommentHandle();
+      // }
+
       reset();
     }
   });
 
   return (
     <div className="my-4">
-      <h1 className="text-5xl font-bold pb-4">Create comment</h1>
-      <Modal
-        showModal={showModal}
-        closeModal={() => setShowModal(false)}
-        title="Success"
-        content={
-          <div>
-            <h1>Form submission succeeded!</h1>
-            <pre>{JSON.stringify(createReviewResult.data, null, 2)}</pre>
-            <pre>{JSON.stringify(publishRewievResult.data, null, 2)}</pre>
-          </div>
-        }
-      />
+      <h1 className="text-5xl font-bold pb-4">Create content</h1>
+
       <form className="space-y-4" onSubmit={onSubmit}>
         <Input
           id="headline"
@@ -109,22 +125,18 @@ export const CommentForm = ({
           />
         </div>
         <Textarea
-          id="comment"
+          id="content"
           register={register}
           errors={errors}
           label="Comment"
         />
-        <Select<CommentFormData>
+        <Input<ProductReviewFormData>
           register={register}
+          label={"Rating"}
+          type={"number"}
           errors={errors}
           id="rating"
-        >
-          <option>{1}</option>
-          <option>{2}</option>
-          <option>{3}</option>
-          <option>{4}</option>
-          <option>{5}</option>
-        </Select>
+        ></Input>
         <SubmitButton>Submit</SubmitButton>
       </form>
     </div>
