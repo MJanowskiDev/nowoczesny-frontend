@@ -2,11 +2,16 @@ import { ReactNode } from "react";
 
 interface SubmitButtonProps {
   children: ReactNode;
+  className?: string;
 }
-export const SubmitButton = ({ children }: SubmitButtonProps) => {
+export const SubmitButton = ({ children, className }: SubmitButtonProps) => {
   return (
     <button
-      className="block w-full rounded-lg bg-teal-600  text-md p-2.5"
+      className={`${
+        className
+          ? className
+          : "block w-full rounded-lg bg-teal-600  text-md p-2.5"
+      }`}
       type="submit"
     >
       {children}
