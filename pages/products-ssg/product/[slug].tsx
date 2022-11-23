@@ -9,19 +9,12 @@ import { serialize } from "next-mdx-remote/serialize";
 import { getProductBySlug } from "../../../lib/getProductBySlug";
 import { getProductSlugs } from "../../../lib/getProductSlugs";
 import { getReviews } from "../../../lib/getReviews";
-import { useState } from "react";
-import { ProductReviewsQueryQuery } from "../../../graphql/generated/gql-types";
 
 const ProductIdPage = ({
   data,
   longDescription,
-  reviews,
-  id,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
-
-  const [reviewsState, setReviewsState] =
-    useState<ProductReviewsQueryQuery["reviews"]>(reviews);
 
   if (router.isFallback) {
     return <Loading />;
@@ -30,11 +23,6 @@ const ProductIdPage = ({
   if (!data) {
     return <div>Something went wrong...</div>;
   }
-
-  const newCommentHandle = async () => {
-    const reviewsData = await getReviews(id);
-    setReviewsState(reviewsData.data.reviews);
-  };
 
   return (
     <div>
@@ -52,7 +40,7 @@ export const getStaticPaths = async () => {
   const slugArray = products.data.products.map((product) => product.slug);
 
   return {
-    paths: slugArray.map((product) => {
+    paths: slugArray.slice(0, 3).map((product) => {
       return { params: { slug: product.toString() } };
     }),
     fallback: true,
