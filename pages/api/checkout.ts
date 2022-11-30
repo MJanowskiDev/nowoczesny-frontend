@@ -9,6 +9,18 @@ import {
 
 const checkoutHandler: NextApiHandler = async (req, res) => {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
+  const successUrl = process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL;
+  const cancelUrl = process.env.NEXT_PUBLIC_STRIPE_CANCEL_URL;
+
+  if (!cancelUrl) {
+    res.status(500).json({ messge: "Missing stripe cancel url!" });
+    return;
+  }
+
+  if (!successUrl) {
+    res.status(500).json({ messge: "Missing stripe success url!" });
+    return;
+  }
 
   if (!stripeKey) {
     res.status(500).json({ messge: "Missing stripe secret key!" });
@@ -44,9 +56,8 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
     mode: "payment",
     locale: "pl",
     payment_method_types: ["p24", "card"],
-    success_url:
-      "http://localhost:3000/checkout/success?session_id={CHECKOUT_SESSION_ID}",
-    cancel_url: "http://localhost:3000/checkout/cancel",
+    success_url: successUrl,
+    cancel_url: cancelUrl,
     line_items: productList.map((product) => {
       if (!product?.cartItem) {
         res.status(500).json({ messge: "Error fetching cart content" });
