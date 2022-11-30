@@ -53,7 +53,7 @@ export const getStaticProps = async ({
   if (!params?.slug) {
     return { props: {}, notFound: true };
   }
-
+  await new Promise((r) => setTimeout(r, 5000));
   const { data } = await getProductBySlug(params.slug);
 
   if (!data.product) return { notFound: true };
