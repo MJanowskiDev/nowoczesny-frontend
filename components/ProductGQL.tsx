@@ -23,6 +23,7 @@ export const ProductGQL = ({ data, longDescription }: ProductProps) => {
     title: product?.name || "error",
     count: 1,
     image: product?.images[0].url || "",
+    slug: product?.slug || "",
   };
 
   return (

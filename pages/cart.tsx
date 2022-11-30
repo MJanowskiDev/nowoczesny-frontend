@@ -3,6 +3,10 @@ import Image from "next/image";
 import { useCartState } from "../components/Cart/CartContext";
 import { ItemControlElement } from "../components/Cart/ItemControlElement";
 import { RemoveIcon } from "../components/UI/Icons";
+
+import Stripe from "stripe";
+import { loadStripe } from "@stripe/stripe-js";
+
 const ProductCartIsEmpty = () => (
   <div className="flex justify-center">
     <div>
@@ -73,7 +77,37 @@ const CartContent = () => {
 };
 
 const CartSummary = () => {
-  const { removeAllItems, totalCount, totalPrice } = useCartState();
+  const { removeAllItems, totalCount, totalPrice, items } = useCartState();
+
+  const pay = async () => {
+    const stripe = await loadStripe(
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+    );
+
+    if (!stripe) {
+      throw new Error("Problem with stripe ");
+    }
+
+    const res = await fetch("/api/checkout", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        items.map((cartItem) => {
+          return {
+            slug: cartItem.slug,
+            count: cartItem.count,
+          };
+        })
+      ),
+    });
+    const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
+      await res.json();
+
+    await stripe.redirectToCheckout({ sessionId: session.id });
+  };
+
   return (
     <div className="flex h-full flex-col justify-between items-end">
       <div className="grid justify-items-end content-start text-right">
@@ -96,11 +130,20 @@ const CartSummary = () => {
         </button>
       </div>
 
-      <Link href="/checkout">
-        <a className="border border-teal-600 rounded-md px-4 py-2 hover:bg-teal-300/30">
-          Checkout
-        </a>
-      </Link>
+      <div className="flex gap-2">
+        <Link href="/checkout">
+          <a className="border border-teal-600 rounded-md px-4 py-2 hover:bg-teal-300/30">
+            Checkout
+          </a>
+        </Link>
+
+        <button
+          onClick={pay}
+          className="border border-teal-600 rounded-md px-4 py-2 hover:bg-teal-300/30"
+        >
+          Checkout with Stripe
+        </button>
+      </div>
     </div>
   );
 };

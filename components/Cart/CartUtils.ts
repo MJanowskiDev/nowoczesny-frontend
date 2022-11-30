@@ -4,6 +4,7 @@ export interface CartItem {
   readonly title: string;
   readonly count: number;
   readonly image: string;
+  readonly slug: string;
 }
 
 export const CART_MAX_QANTITY = 15;

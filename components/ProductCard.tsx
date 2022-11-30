@@ -17,6 +17,7 @@ export const ProductCard = ({ data, link }: ProductCardProps) => {
     title: data.title,
     count: 1,
     image: data.image,
+    slug: data.slug,
   };
 
   return (
