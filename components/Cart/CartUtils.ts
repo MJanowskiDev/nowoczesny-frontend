@@ -1,3 +1,20 @@
+import { apolloClient } from "../../graphql/apolloClient";
+import {
+  AddItemToCartDocument,
+  AddItemToCartMutation,
+  AddItemToCartMutationVariables,
+  ClearCartDocument,
+  ClearCartMutation,
+  ClearCartMutationVariables,
+  GetUserCartDocument,
+  RemoveCartItemDocument,
+  RemoveCartItemMutation,
+  RemoveCartItemMutationVariables,
+  UpdateCartDocument,
+  UpdateCartMutation,
+  UpdateCartMutationVariables,
+} from "../../graphql/generated/gql-types";
+
 export interface CartItem {
   readonly id: string;
   readonly price: number;
@@ -24,61 +41,67 @@ export const getTotalPrice = (cartItems: CartItem[]) => {
   }, 0);
 };
 
-export const addItemFn = (prevState: CartItem[], item: CartItem) => {
+export const addItemFn = async (prevState: CartItem[], item: CartItem) => {
   const existingItem = prevState.find((prevItem) => prevItem.id === item.id);
 
   if (!existingItem) {
-    return [...prevState, (item = { ...item, count: CART_MIN_QANTITY })];
+    const res = await apolloClient.mutate<
+      AddItemToCartMutation,
+      AddItemToCartMutationVariables
+    >({
+      mutation: AddItemToCartDocument,
+      variables: { ...item, userUUID: "123-123-123" },
+      refetchQueries: [
+        {
+          query: GetUserCartDocument,
+          variables: { userUUID: "123-123-123" },
+        },
+      ],
+    });
+  } else {
+    await editProductCountFn(existingItem.id, existingItem.count + 1);
   }
-
-  return prevState.map((existingItem) => {
-    if (existingItem.id === item.id) {
-      return {
-        ...existingItem,
-        count: existingItem.count
-          ? existingItem.count < CART_MAX_QANTITY
-            ? existingItem.count + 1
-            : CART_MAX_QANTITY
-          : CART_MIN_QANTITY,
-      };
-    } else {
-      return existingItem;
-    }
-  });
 };
 
-export const editProductCountFn = (
-  prevState: CartItem[],
-  id: CartItem["id"],
-  updatedCount: CartItem["count"]
-) => {
-  const existingItem = prevState.find((prevItem) => prevItem.id === id);
-
-  if (!existingItem) {
-    return [...prevState];
-  }
-
-  return prevState.map((existingItem) => {
-    if (existingItem.id === id) {
-      return {
-        ...existingItem,
-        count:
-          updatedCount < CART_MAX_QANTITY ? updatedCount : CART_MAX_QANTITY,
-      };
-    } else {
-      return existingItem;
-    }
+export const editProductCountFn = async (id: string, updatedCount: number) => {
+  await apolloClient.mutate<UpdateCartMutation, UpdateCartMutationVariables>({
+    mutation: UpdateCartDocument,
+    variables: { id, count: updatedCount },
+    refetchQueries: [
+      {
+        query: GetUserCartDocument,
+        variables: { userUUID: "123-123-123" },
+      },
+    ],
   });
 };
 
 export const removeItemFn = (prevState: CartItem[], id: CartItem["id"]) => {
   const existingItem = prevState.find((existingItem) => existingItem.id === id);
 
-  if (existingItem) {
-    return prevState.filter((el) => el.id !== id);
-  } else {
-    return prevState;
-  }
+  apolloClient.mutate<RemoveCartItemMutation, RemoveCartItemMutationVariables>({
+    mutation: RemoveCartItemDocument,
+    variables: { id },
+    refetchQueries: [
+      {
+        query: GetUserCartDocument,
+        variables: { userUUID: "123-123-123" },
+      },
+    ],
+  });
+};
+
+export const removeAllCartItems = async () => {
+  await apolloClient.mutate<ClearCartMutation, ClearCartMutationVariables>({
+    mutation: ClearCartDocument,
+    variables: { userUUID: "123-123-123" },
+    refetchQueries: [
+      {
+        query: GetUserCartDocument,
+        variables: { userUUID: "123-123-123" },
+      },
+    ],
+  });
 };
 
 export const getCartItemsLocalStorage = () => {

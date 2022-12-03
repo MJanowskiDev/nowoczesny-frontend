@@ -2,9 +2,11 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useState,
   useEffect,
+  useState,
 } from "react";
+
+import { useGetUserCartQuery } from "../../graphql/generated/gql-types";
 
 import {
   CartItem,
@@ -13,6 +15,7 @@ import {
   addItemFn,
   editProductCountFn,
   removeItemFn,
+  removeAllCartItems,
   getCartItemsLocalStorage,
   setCartItemsLocalStorage,
 } from "./CartUtils";
@@ -35,52 +38,59 @@ export const CartStateContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+
+  const { data, loading, error } = useGetUserCartQuery({
+    variables: { userUUID: "123-123-123" },
+    fetchPolicy: "network-only",
+  });
+
+  let cartItems = [] as CartItem[];
+
+  const cartItemsQuery = data?.userData;
+  if (cartItemsQuery?.cartItems.length) {
+    cartItems = cartItemsQuery.cartItems.map((item) => ({
+      id: item.id || "",
+      price: item.product?.price || 0,
+      title: item.product?.name || "",
+      count: item.count,
+      image: item.product?.images[0].url || "",
+      slug: item.product?.slug || "",
+    }));
+  }
 
   useEffect(() => {
-    const items = getCartItemsLocalStorage();
-    setCartItems(items);
-    setLoaded(true);
-    setTotalCount(getCartAmount(items));
-    setTotalPrice(getTotalPrice(items));
-  }, []);
-
-  useEffect(() => {
-    if (loaded) {
-      setCartItemsLocalStorage(cartItems);
-      setTotalCount(getCartAmount(cartItems));
-      setTotalPrice(getTotalPrice(cartItems));
-    }
-  }, [cartItems, loaded]);
+    setTotalCount(getCartAmount(cartItems));
+    setTotalPrice(getTotalPrice(cartItems));
+  }, [cartItems]);
 
   const addItem = (item: CartItem) => {
-    setCartItems((prevState) => {
-      return addItemFn(prevState, item);
-    });
+    if (data?.userData?.cartItems) {
+      const res = data?.userData?.cartItems.find((el) =>
+        el.product?.id ? el.product.id === item.id : false
+      );
+      if (res?.id) {
+        addItemFn(cartItems, { ...item, id: res.id });
+      } else {
+        addItemFn(cartItems, item);
+      }
+    }
   };
 
   const editProductCount = (
     id: CartItem["id"],
     updatedCount: CartItem["count"]
   ) => {
-    setCartItems((prevState) => {
-      return editProductCountFn(prevState, id, updatedCount);
-    });
+    editProductCountFn(id, updatedCount);
   };
 
   const removeAllItems = () => {
-    setCartItems([]);
-    setTotalCount(0);
-    setTotalPrice(0);
+    removeAllCartItems();
   };
 
-  const removeItem = (id: CartItem["id"]) => {
-    setCartItems((prevState) => {
-      return removeItemFn(prevState, id);
-    });
+  const removeItem = (id: string) => {
+    removeItemFn(cartItems, id);
   };
 
   return (
