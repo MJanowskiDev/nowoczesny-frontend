@@ -16,3 +16,55 @@ mutation CreateOrderMutation($order: OrderCreateInput!) {
     id
   }
 }
+
+mutation RemoveCartItem($id: ID!) {
+  deleteCartItem(where: { id: $id }) {
+    id
+  }
+}
+
+mutation UpdateCart($count: Int!, $id: ID!) {
+  updateCartItem(data: { count: $count }, where: { id: $id }) {
+    id
+    count
+  }
+  publishCartItem(where: { id: $id }, to: PUBLISHED) {
+    stage
+  }
+}
+
+mutation ClearCart($userUUID: String!) {
+  deleteManyCartItemsConnection(where: { userUUID: $userUUID }) {
+    aggregate {
+      count
+    }
+  }
+}
+
+mutation addItemToCart($count: Int!, $id: ID!, $userUUID: String!) {
+  createCartItem(
+    data: {
+      count: $count
+      product: { connect: { id: $id } }
+      userUUID: $userUUID
+      userData: { connect: { userUUID: $userUUID } }
+    }
+  ) {
+    count
+  }
+  publishManyCartItemsConnection(where: { userUUID: $userUUID }) {
+    edges {
+      node {
+        userUUID
+      }
+    }
+  }
+}
+mutation createUserData($userUUID: String!) {
+  createUserData(data: { userUUID: $userUUID }) {
+    userUUID
+  }
+  publishUserData(where: { userUUID: $userUUID }) {
+    userUUID
+  }
+}

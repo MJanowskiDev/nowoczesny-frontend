@@ -1,94 +1,86 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useState,
-  useEffect,
-} from "react";
+import { createContext, ReactNode, useContext, useEffect } from "react";
+
+import { useGetUserCartQuery } from "../../graphql/generated/gql-types";
 
 import {
   CartItem,
-  getCartAmount,
-  getTotalPrice,
   addItemFn,
   editProductCountFn,
   removeItemFn,
-  getCartItemsLocalStorage,
-  setCartItemsLocalStorage,
+  removeAllCartItems,
+  getUserUUID,
+  createUserData,
+  getCartAmount,
+  getTotalPrice,
+  CartState,
 } from "./CartUtils";
-
-export interface CartState {
-  readonly items: readonly CartItem[];
-  readonly totalCount: number;
-  readonly totalPrice: number;
-  readonly addItem: (item: CartItem) => void;
-  readonly removeItem: (id: CartItem["id"]) => void;
-  readonly removeAllItems: () => void;
-  readonly editProductCount: (
-    id: CartItem["id"],
-    newCount: CartItem["count"]
-  ) => void;
-}
 
 export const CartStateContextProvider = ({
   children,
 }: {
   children: ReactNode;
 }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+  const userUUID = getUserUUID();
 
   useEffect(() => {
-    const items = getCartItemsLocalStorage();
-    setCartItems(items);
-    setLoaded(true);
-    setTotalCount(getCartAmount(items));
-    setTotalPrice(getTotalPrice(items));
-  }, []);
-
-  useEffect(() => {
-    if (loaded) {
-      setCartItemsLocalStorage(cartItems);
-      setTotalCount(getCartAmount(cartItems));
-      setTotalPrice(getTotalPrice(cartItems));
+    const generateUUID = async () => {
+      await createUserData();
+    };
+    if (!userUUID) {
+      generateUUID();
     }
-  }, [cartItems, loaded]);
+  }, [userUUID]);
+
+  const { data } = useGetUserCartQuery({
+    variables: { userUUID },
+  });
+
+  const cartItems =
+    data?.userData?.cartItems.map((item) => ({
+      id: item.id || "",
+      price: item.product?.price || 0,
+      title: item.product?.name || "",
+      count: item.count,
+      image: item.product?.images[0].url || "",
+      slug: item.product?.slug || "",
+    })) || [];
 
   const addItem = (item: CartItem) => {
-    setCartItems((prevState) => {
-      return addItemFn(prevState, item);
-    });
+    if (data?.userData?.cartItems) {
+      const res = data?.userData?.cartItems.find((el) =>
+        el.product?.id ? el.product.id === item.id : false
+      );
+      if (res?.id) {
+        addItemFn(cartItems, { ...item, id: res.id });
+      } else {
+        addItemFn(cartItems, item);
+      }
+    } else {
+      addItemFn(cartItems, item);
+    }
   };
 
   const editProductCount = (
     id: CartItem["id"],
     updatedCount: CartItem["count"]
   ) => {
-    setCartItems((prevState) => {
-      return editProductCountFn(prevState, id, updatedCount);
-    });
+    editProductCountFn(id, updatedCount);
   };
 
   const removeAllItems = () => {
-    setCartItems([]);
-    setTotalCount(0);
-    setTotalPrice(0);
+    removeAllCartItems();
   };
 
-  const removeItem = (id: CartItem["id"]) => {
-    setCartItems((prevState) => {
-      return removeItemFn(prevState, id);
-    });
+  const removeItem = (id: string) => {
+    removeItemFn(id);
   };
 
   return (
     <CartStateContext.Provider
       value={{
         items: cartItems,
-        totalCount,
-        totalPrice,
+        totalCount: getCartAmount(cartItems),
+        totalPrice: getTotalPrice(cartItems),
         addItem,
         removeItem,
         removeAllItems,
