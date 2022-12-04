@@ -1,69 +1,49 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 
 import { useGetUserCartQuery } from "../../graphql/generated/gql-types";
 
 import {
   CartItem,
-  getCartAmount,
-  getTotalPrice,
   addItemFn,
   editProductCountFn,
   removeItemFn,
   removeAllCartItems,
-  getCartItemsLocalStorage,
-  setCartItemsLocalStorage,
+  getUserUUID,
+  createUserData,
+  getCartAmount,
+  getTotalPrice,
+  CartState,
 } from "./CartUtils";
-
-export interface CartState {
-  readonly items: readonly CartItem[];
-  readonly totalCount: number;
-  readonly totalPrice: number;
-  readonly addItem: (item: CartItem) => void;
-  readonly removeItem: (id: CartItem["id"]) => void;
-  readonly removeAllItems: () => void;
-  readonly editProductCount: (
-    id: CartItem["id"],
-    newCount: CartItem["count"]
-  ) => void;
-}
 
 export const CartStateContextProvider = ({
   children,
 }: {
   children: ReactNode;
 }) => {
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const userUUID = getUserUUID();
 
-  const { data, loading, error } = useGetUserCartQuery({
-    variables: { userUUID: "123-123-123" },
-    fetchPolicy: "network-only",
+  useEffect(() => {
+    const generateUUID = async () => {
+      await createUserData();
+    };
+    if (!userUUID) {
+      generateUUID();
+    }
+  }, [userUUID]);
+
+  const { data } = useGetUserCartQuery({
+    variables: { userUUID },
   });
 
-  let cartItems = [] as CartItem[];
-
-  const cartItemsQuery = data?.userData;
-  if (cartItemsQuery?.cartItems.length) {
-    cartItems = cartItemsQuery.cartItems.map((item) => ({
+  const cartItems =
+    data?.userData?.cartItems.map((item) => ({
       id: item.id || "",
       price: item.product?.price || 0,
       title: item.product?.name || "",
       count: item.count,
       image: item.product?.images[0].url || "",
       slug: item.product?.slug || "",
-    }));
-  }
-
-  useEffect(() => {
-    setTotalCount(getCartAmount(cartItems));
-    setTotalPrice(getTotalPrice(cartItems));
-  }, [cartItems]);
+    })) || [];
 
   const addItem = (item: CartItem) => {
     if (data?.userData?.cartItems) {
@@ -75,6 +55,8 @@ export const CartStateContextProvider = ({
       } else {
         addItemFn(cartItems, item);
       }
+    } else {
+      addItemFn(cartItems, item);
     }
   };
 
@@ -90,15 +72,15 @@ export const CartStateContextProvider = ({
   };
 
   const removeItem = (id: string) => {
-    removeItemFn(cartItems, id);
+    removeItemFn(id);
   };
 
   return (
     <CartStateContext.Provider
       value={{
         items: cartItems,
-        totalCount,
-        totalPrice,
+        totalCount: getCartAmount(cartItems),
+        totalPrice: getTotalPrice(cartItems),
         addItem,
         removeItem,
         removeAllItems,

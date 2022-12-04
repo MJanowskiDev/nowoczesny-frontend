@@ -60,3 +60,11 @@ mutation addItemToCart($count: Int!, $id: ID!, $userUUID: String!) {
     }
   }
 }
+mutation createUserData($userUUID: String!) {
+  createUserData(data: { userUUID: $userUUID }) {
+    userUUID
+  }
+  publishUserData(where: { userUUID: $userUUID }) {
+    userUUID
+  }
+}

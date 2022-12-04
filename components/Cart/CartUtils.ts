@@ -1,4 +1,5 @@
 import { apolloClient } from "../../graphql/apolloClient";
+import { v4 as uuidv4 } from "uuid";
 import {
   AddItemToCartDocument,
   AddItemToCartMutation,
@@ -6,6 +7,9 @@ import {
   ClearCartDocument,
   ClearCartMutation,
   ClearCartMutationVariables,
+  CreateUserDataDocument,
+  CreateUserDataMutation,
+  CreateUserDataMutationVariables,
   GetUserCartDocument,
   RemoveCartItemDocument,
   RemoveCartItemMutation,
@@ -24,10 +28,22 @@ export interface CartItem {
   readonly slug: string;
 }
 
+export interface CartState {
+  readonly items: readonly CartItem[];
+  readonly totalCount: number;
+  readonly totalPrice: number;
+  readonly addItem: (item: CartItem) => void;
+  readonly removeItem: (id: CartItem["id"]) => void;
+  readonly removeAllItems: () => void;
+  readonly editProductCount: (
+    id: CartItem["id"],
+    newCount: CartItem["count"]
+  ) => void;
+}
+
+const localStorageKey = "MJanowskiDev_STORE_USER_UUID";
 export const CART_MAX_QANTITY = 15;
 export const CART_MIN_QANTITY = 1;
-
-const localStorageKey = "SHOPPING_CART_MJanowskiDev";
 
 export const getCartAmount = (cartItems: CartItem[]) => {
   return cartItems.reduce((accumulator, cartItem) => {
@@ -45,21 +61,23 @@ export const addItemFn = async (prevState: CartItem[], item: CartItem) => {
   const existingItem = prevState.find((prevItem) => prevItem.id === item.id);
 
   if (!existingItem) {
-    const res = await apolloClient.mutate<
+    await apolloClient.mutate<
       AddItemToCartMutation,
       AddItemToCartMutationVariables
     >({
       mutation: AddItemToCartDocument,
-      variables: { ...item, userUUID: "123-123-123" },
+      variables: { ...item, userUUID: getUserUUID() },
       refetchQueries: [
         {
           query: GetUserCartDocument,
-          variables: { userUUID: "123-123-123" },
+          variables: { userUUID: getUserUUID() },
         },
       ],
     });
   } else {
-    await editProductCountFn(existingItem.id, existingItem.count + 1);
+    if (existingItem.count < CART_MAX_QANTITY) {
+      await editProductCountFn(existingItem.id, existingItem.count + 1);
+    }
   }
 };
 
@@ -70,22 +88,20 @@ export const editProductCountFn = async (id: string, updatedCount: number) => {
     refetchQueries: [
       {
         query: GetUserCartDocument,
-        variables: { userUUID: "123-123-123" },
+        variables: { userUUID: getUserUUID() },
       },
     ],
   });
 };
 
-export const removeItemFn = (prevState: CartItem[], id: CartItem["id"]) => {
-  const existingItem = prevState.find((existingItem) => existingItem.id === id);
-
+export const removeItemFn = (id: CartItem["id"]) => {
   apolloClient.mutate<RemoveCartItemMutation, RemoveCartItemMutationVariables>({
     mutation: RemoveCartItemDocument,
     variables: { id },
     refetchQueries: [
       {
         query: GetUserCartDocument,
-        variables: { userUUID: "123-123-123" },
+        variables: { userUUID: getUserUUID() },
       },
     ],
   });
@@ -94,30 +110,52 @@ export const removeItemFn = (prevState: CartItem[], id: CartItem["id"]) => {
 export const removeAllCartItems = async () => {
   await apolloClient.mutate<ClearCartMutation, ClearCartMutationVariables>({
     mutation: ClearCartDocument,
-    variables: { userUUID: "123-123-123" },
+    variables: { userUUID: getUserUUID() },
     refetchQueries: [
       {
         query: GetUserCartDocument,
-        variables: { userUUID: "123-123-123" },
+        variables: { userUUID: getUserUUID() },
       },
     ],
   });
 };
 
-export const getCartItemsLocalStorage = () => {
-  const localStorageItems = localStorage.getItem(localStorageKey);
-  if (!localStorageItems) {
-    return [];
+export const getUserUUID = (): string => {
+  if (typeof window === "undefined") {
+    return "";
   }
-  try {
-    const items = JSON.parse(localStorageItems);
-    return items;
-  } catch (error) {
-    console.error(error);
-    return [];
+  const localStorageUserUUID = localStorage.getItem(localStorageKey);
+
+  if (!localStorageUserUUID) {
+    return "";
+  } else {
+    try {
+      const { userUUID } = JSON.parse(localStorageUserUUID);
+      return userUUID;
+    } catch (error) {
+      throw Error("Error while parsing local storage");
+    }
   }
 };
 
-export const setCartItemsLocalStorage = (items: CartItem[]) => {
-  localStorage.setItem(localStorageKey, JSON.stringify(items));
+export const createUserData = async (): Promise<string> => {
+  const userUUID = uuidv4();
+
+  const res = await apolloClient.mutate<
+    CreateUserDataMutation,
+    CreateUserDataMutationVariables
+  >({
+    mutation: CreateUserDataDocument,
+    variables: { userUUID },
+  });
+  const createdUserUUID = res.data?.createUserData?.userUUID;
+  if (createdUserUUID) {
+    localStorage.setItem(
+      localStorageKey,
+      JSON.stringify({ userUUID: createdUserUUID })
+    );
+    return createdUserUUID;
+  } else {
+    throw new Error("Wrong userUUID response value");
+  }
 };

@@ -11177,8 +11177,6 @@ export type UserData = Node & {
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
-  totalCartCount: Scalars['Int'];
-  totalCartPrice: Scalars['Int'];
   /** The time the document was updated */
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
@@ -11258,8 +11256,6 @@ export type UserDataConnection = {
 export type UserDataCreateInput = {
   cartItems?: InputMaybe<CartItemCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
-  totalCartCount: Scalars['Int'];
-  totalCartPrice: Scalars['Int'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   userUUID: Scalars['String'];
 };
@@ -11357,36 +11353,6 @@ export type UserDataManyWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  totalCartCount?: InputMaybe<Scalars['Int']>;
-  /** All values greater than the given value. */
-  totalCartCount_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  totalCartCount_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  totalCartCount_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  totalCartCount_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  totalCartCount_lte?: InputMaybe<Scalars['Int']>;
-  /** All values that are not equal to given value. */
-  totalCartCount_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  totalCartCount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  totalCartPrice?: InputMaybe<Scalars['Int']>;
-  /** All values greater than the given value. */
-  totalCartPrice_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  totalCartPrice_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  totalCartPrice_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  totalCartPrice_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  totalCartPrice_lte?: InputMaybe<Scalars['Int']>;
-  /** All values that are not equal to given value. */
-  totalCartPrice_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  totalCartPrice_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -11431,10 +11397,6 @@ export enum UserDataOrderByInput {
   IdDesc = 'id_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
-  TotalCartCountAsc = 'totalCartCount_ASC',
-  TotalCartCountDesc = 'totalCartCount_DESC',
-  TotalCartPriceAsc = 'totalCartPrice_ASC',
-  TotalCartPriceDesc = 'totalCartPrice_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC',
   UserUuidAsc = 'userUUID_ASC',
@@ -11443,8 +11405,6 @@ export enum UserDataOrderByInput {
 
 export type UserDataUpdateInput = {
   cartItems?: InputMaybe<CartItemUpdateManyInlineInput>;
-  totalCartCount?: InputMaybe<Scalars['Int']>;
-  totalCartPrice?: InputMaybe<Scalars['Int']>;
   userUUID?: InputMaybe<Scalars['String']>;
 };
 
@@ -11466,8 +11426,8 @@ export type UserDataUpdateManyInlineInput = {
 };
 
 export type UserDataUpdateManyInput = {
-  totalCartCount?: InputMaybe<Scalars['Int']>;
-  totalCartPrice?: InputMaybe<Scalars['Int']>;
+  /** No fields in updateMany data input */
+  _?: InputMaybe<Scalars['String']>;
 };
 
 export type UserDataUpdateManyWithNestedWhereInput = {
@@ -11589,36 +11549,6 @@ export type UserDataWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  totalCartCount?: InputMaybe<Scalars['Int']>;
-  /** All values greater than the given value. */
-  totalCartCount_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  totalCartCount_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  totalCartCount_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  totalCartCount_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  totalCartCount_lte?: InputMaybe<Scalars['Int']>;
-  /** All values that are not equal to given value. */
-  totalCartCount_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  totalCartCount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  totalCartPrice?: InputMaybe<Scalars['Int']>;
-  /** All values greater than the given value. */
-  totalCartPrice_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  totalCartPrice_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  totalCartPrice_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  totalCartPrice_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  totalCartPrice_lte?: InputMaybe<Scalars['Int']>;
-  /** All values that are not equal to given value. */
-  totalCartPrice_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  totalCartPrice_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -12152,6 +12082,13 @@ export type AddItemToCartMutationVariables = Exact<{
 
 export type AddItemToCartMutation = { __typename?: 'Mutation', createCartItem?: { __typename?: 'CartItem', count: number } | null, publishManyCartItemsConnection: { __typename?: 'CartItemConnection', edges: Array<{ __typename?: 'CartItemEdge', node: { __typename?: 'CartItem', userUUID: string } }> } };
 
+export type CreateUserDataMutationVariables = Exact<{
+  userUUID: Scalars['String'];
+}>;
+
+
+export type CreateUserDataMutation = { __typename?: 'Mutation', createUserData?: { __typename?: 'UserData', userUUID: string } | null, publishUserData?: { __typename?: 'UserData', userUUID: string } | null };
+
 export type ReviewContentFragment = { __typename?: 'Review', id: string, content: string, createdAt: any, email: string, headline: string, name: string, rating?: number | null };
 
 export type GetReviewsForProductSlugQueryVariables = Exact<{
@@ -12195,7 +12132,7 @@ export type GetUserCartQueryVariables = Exact<{
 }>;
 
 
-export type GetUserCartQuery = { __typename?: 'Query', userData?: { __typename?: 'UserData', totalCartCount: number, totalCartPrice: number, cartItems: Array<{ __typename?: 'CartItem', id: string, count: number, product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string }> } | null }> } | null };
+export type GetUserCartQuery = { __typename?: 'Query', userData?: { __typename?: 'UserData', cartItems: Array<{ __typename?: 'CartItem', id: string, count: number, product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string }> } | null }> } | null };
 
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
@@ -12458,6 +12395,42 @@ export function useAddItemToCartMutation(baseOptions?: Apollo.MutationHookOption
 export type AddItemToCartMutationHookResult = ReturnType<typeof useAddItemToCartMutation>;
 export type AddItemToCartMutationResult = Apollo.MutationResult<AddItemToCartMutation>;
 export type AddItemToCartMutationOptions = Apollo.BaseMutationOptions<AddItemToCartMutation, AddItemToCartMutationVariables>;
+export const CreateUserDataDocument = gql`
+    mutation createUserData($userUUID: String!) {
+  createUserData(data: {userUUID: $userUUID}) {
+    userUUID
+  }
+  publishUserData(where: {userUUID: $userUUID}) {
+    userUUID
+  }
+}
+    `;
+export type CreateUserDataMutationFn = Apollo.MutationFunction<CreateUserDataMutation, CreateUserDataMutationVariables>;
+
+/**
+ * __useCreateUserDataMutation__
+ *
+ * To run a mutation, you first call `useCreateUserDataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserDataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserDataMutation, { data, loading, error }] = useCreateUserDataMutation({
+ *   variables: {
+ *      userUUID: // value for 'userUUID'
+ *   },
+ * });
+ */
+export function useCreateUserDataMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserDataMutation, CreateUserDataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserDataMutation, CreateUserDataMutationVariables>(CreateUserDataDocument, options);
+      }
+export type CreateUserDataMutationHookResult = ReturnType<typeof useCreateUserDataMutation>;
+export type CreateUserDataMutationResult = Apollo.MutationResult<CreateUserDataMutation>;
+export type CreateUserDataMutationOptions = Apollo.BaseMutationOptions<CreateUserDataMutation, CreateUserDataMutationVariables>;
 export const GetReviewsForProductSlugDocument = gql`
     query GetReviewsForProductSlug($slug: String!) {
   product(where: {slug: $slug}) {
@@ -12676,8 +12649,6 @@ export type GetProductBySlugQueryResult = Apollo.QueryResult<GetProductBySlugQue
 export const GetUserCartDocument = gql`
     query getUserCart($userUUID: String) {
   userData(where: {userUUID: $userUUID}) {
-    totalCartCount
-    totalCartPrice
     cartItems {
       id
       count

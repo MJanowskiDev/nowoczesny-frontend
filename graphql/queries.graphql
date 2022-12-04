@@ -79,8 +79,6 @@ query getProductBySlug($slug: String!) {
 
 query getUserCart($userUUID: String) {
   userData(where: { userUUID: $userUUID }) {
-    totalCartCount
-    totalCartPrice
     cartItems {
       id
       count

@@ -36,8 +36,6 @@ const CartPage = () => {
 const CartContent = () => {
   const cartState = useCartState();
 
-  console.log(cartState, "CartState");
-
   return (
     <div className="col-span-2">
       <h1 className="heading">Cart items</h1>
