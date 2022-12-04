@@ -62,26 +62,26 @@ export const CheckoutForm = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     if (isValid) {
-      await createOrder({
-        variables: {
-          order: {
-            email: data.email,
-            total: cartState.totalPrice,
-            stripeCheckoutId: STRIPE_CHECKOUT_ID,
-            orderItems: {
-              create: cartState.items.map((item) => ({
-                quantity: item.count,
-                total: item.price,
-                product: {
-                  connect: {
-                    id: item.id,
-                  },
-                },
-              })),
-            },
-          },
-        },
-      });
+      // await createOrder({
+      //   variables: {
+      //     order: {
+      //       email: data.email,
+      //       total: cartState.totalPrice,
+      //       stripeCheckoutId: STRIPE_CHECKOUT_ID,
+      //       orderItems: {
+      //         create: cartState.items.map((item) => ({
+      //           quantity: item.count,
+      //           total: item.price,
+      //           product: {
+      //             connect: {
+      //               id: item.id,
+      //             },
+      //           },
+      //         })),
+      //       },
+      //     },
+      //   },
+      // });
 
       setShowModal(true);
       reset();

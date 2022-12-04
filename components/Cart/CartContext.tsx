@@ -38,11 +38,11 @@ export const CartStateContextProvider = ({
   const cartItems =
     data?.userData?.cartItems.map((item) => ({
       id: item.id || "",
-      price: item.product?.price || 0,
-      title: item.product?.name || "",
+      price: item.product?.price!,
+      title: item.product?.name!,
       count: item.count,
-      image: item.product?.images[0].url || "",
-      slug: item.product?.slug || "",
+      image: item.product?.images[0].url!,
+      slug: item.product?.slug!,
     })) || [];
 
   const addItem = (item: CartItem) => {
@@ -79,6 +79,7 @@ export const CartStateContextProvider = ({
     <CartStateContext.Provider
       value={{
         items: cartItems,
+        userUUID: userUUID,
         totalCount: getCartAmount(cartItems),
         totalPrice: getTotalPrice(cartItems),
         addItem,

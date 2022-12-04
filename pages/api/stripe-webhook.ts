@@ -3,6 +3,17 @@ import { NextApiHandler } from "next";
 import { StripeWebhookEvents } from "../../utils/stripeEvents";
 import Stripe from "stripe";
 import { buffer } from "micro";
+import { apolloClient } from "../../graphql/apolloClient";
+import {
+  CompleteOrderDocument,
+  CompleteOrderMutation,
+  CompleteOrderMutationVariables,
+  OrderStatus,
+  PublishOrderAfterCompleteDocument,
+  PublishOrderAfterCompleteMutation,
+  PublishOrderAfterCompleteMutationVariables,
+  PublishOrderAndCartItemsDocument,
+} from "../../graphql/generated/gql-types";
 
 export const config = {
   api: {
@@ -42,6 +53,32 @@ const stripeWebhook: NextApiHandler = async (req, res) => {
   switch (event.type) {
     case "checkout.session.completed":
       console.log("CURRENCY:", event.data.object.currency);
+      try {
+        const res = await apolloClient.mutate<
+          CompleteOrderMutation,
+          CompleteOrderMutationVariables
+        >({
+          mutation: CompleteOrderDocument,
+          variables: {
+            stripeCheckoutId: event.data.object.id,
+            orderStatus: OrderStatus.Paid,
+            email: event.data.object.customer_details?.email!,
+          },
+        });
+
+        const orderId = res.data?.updateOrder?.id;
+        assert(orderId, "cannot publish order without id");
+        await apolloClient.mutate<
+          PublishOrderAfterCompleteMutation,
+          PublishOrderAfterCompleteMutationVariables
+        >({
+          mutation: PublishOrderAfterCompleteDocument,
+          variables: { id: orderId },
+        });
+      } catch (error) {
+        console.log(JSON.stringify(error));
+        res.status(400).send(`Webhook Error: ${error}`);
+      }
   }
 
   res.status(204).end();

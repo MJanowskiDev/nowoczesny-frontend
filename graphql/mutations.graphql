@@ -68,3 +68,54 @@ mutation createUserData($userUUID: String!) {
     userUUID
   }
 }
+
+mutation CreatePaidOrder(
+  $stripeCheckoutId: String!
+  $total: Int!
+  $userUUID: String!
+  $create: [OrderItemCreateInput!]
+  $orderStatus: OrderStatus!
+) {
+  createOrder(
+    data: {
+      total: $total
+      stripeCheckoutId: $stripeCheckoutId
+      userUUID: $userUUID
+      orderItems: { create: $create }
+      orderStatus: $orderStatus
+    }
+  ) {
+    id
+    orderItems {
+      id
+    }
+  }
+}
+
+mutation CompleteOrder(
+  $stripeCheckoutId: String!
+  $orderStatus: OrderStatus!
+  $email: String!
+) {
+  updateOrder(
+    where: { stripeCheckoutId: $stripeCheckoutId }
+    data: { orderStatus: $orderStatus, email: $email }
+  ) {
+    id
+  }
+}
+
+mutation publishOrderAndCartItems($id: ID!, $id_in: [ID]) {
+  publishOrder(where: { id: $id }) {
+    id
+  }
+  publishManyOrderItems(where: { id_in: $id_in }) {
+    count
+  }
+}
+
+mutation publishOrderAfterComplete($id: ID!) {
+  publishOrder(where: { id: $id }) {
+    id
+  }
+}

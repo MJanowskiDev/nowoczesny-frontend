@@ -77,7 +77,7 @@ const CartContent = () => {
 };
 
 const CartSummary = () => {
-  const { removeAllItems, totalCount, totalPrice, items } = useCartState();
+  const { removeAllItems, totalCount, totalPrice, userUUID } = useCartState();
 
   const pay = async () => {
     const stripe = await loadStripe(
@@ -93,14 +93,8 @@ const CartSummary = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(
-        items.map((cartItem) => {
-          return {
-            slug: cartItem.slug,
-            count: cartItem.count,
-          };
-        })
-      ),
+
+      body: JSON.stringify({ userUUID: userUUID }),
     });
     const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
       await res.json();
