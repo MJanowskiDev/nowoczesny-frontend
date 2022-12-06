@@ -15,10 +15,19 @@ import {
   PublishOrderAndCartItemsDocument,
 } from "../../graphql/generated/gql-types";
 
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]";
+
 const checkoutHandler: NextApiHandler = async (req, res) => {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const successUrl = process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL;
   const cancelUrl = process.env.NEXT_PUBLIC_STRIPE_CANCEL_URL;
+
+  const session = await unstable_getServerSession(req, res, authOptions);
+
+  if (!session) {
+    res.status(401).json({});
+  }
 
   if (!cancelUrl) {
     res.status(500).json({ messge: "Missing stripe cancel url!" });

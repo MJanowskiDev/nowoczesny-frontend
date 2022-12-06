@@ -12,8 +12,10 @@ import {
   PublishOrderAfterCompleteDocument,
   PublishOrderAfterCompleteMutation,
   PublishOrderAfterCompleteMutationVariables,
-  PublishOrderAndCartItemsDocument,
 } from "../../graphql/generated/gql-types";
+
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]";
 
 export const config = {
   api: {
@@ -22,6 +24,12 @@ export const config = {
 };
 
 const stripeWebhook: NextApiHandler = async (req, res) => {
+  const session = await unstable_getServerSession(req, res, authOptions);
+
+  if (!session) {
+    res.status(401).json({});
+  }
+
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   assert(stripeKey, "MIssing stripe secret key ");
 
