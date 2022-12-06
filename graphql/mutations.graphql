@@ -119,3 +119,9 @@ mutation publishOrderAfterComplete($id: ID!) {
     id
   }
 }
+
+mutation UserRegister($email: String = "", $password: String = "") {
+  createAccount(data: { email: $email, password: $password }) {
+    id
+  }
+}
