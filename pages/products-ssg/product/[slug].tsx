@@ -40,7 +40,7 @@ export const getStaticPaths = async () => {
   const slugArray = products.data.products.map((product) => product.slug);
 
   return {
-    paths: slugArray.map((product) => {
+    paths: slugArray.slice(0, 5).map((product) => {
       return { params: { slug: product.toString() } };
     }),
     fallback: true,

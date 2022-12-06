@@ -116,17 +116,9 @@ const MenuList = ({ className, ulClickHandle }: MenuListProps) => (
     <li>
       <ActiveLink
         className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-        href="/products-csr/1"
-      >
-        <a>ProductsCSR</a>
-      </ActiveLink>
-    </li>
-    <li>
-      <ActiveLink
-        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
         href="/products-ssg/1"
       >
-        <a>ProductsSSG</a>
+        <a>Products</a>
       </ActiveLink>
     </li>
   </ul>
