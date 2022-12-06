@@ -25,6 +25,7 @@ export type Scalars = {
 
 export type Account = Node & {
   __typename?: 'Account';
+  cartItems: Array<CartItem>;
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
   /** User that created this document */
@@ -48,6 +49,18 @@ export type Account = Node & {
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
+};
+
+
+export type AccountCartItemsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<CartItemOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<CartItemWhereInput>;
 };
 
 
@@ -108,6 +121,7 @@ export type AccountConnection = {
 };
 
 export type AccountCreateInput = {
+  cartItems?: InputMaybe<CartItemCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   password: Scalars['String'];
@@ -147,6 +161,9 @@ export type AccountManyWhereInput = {
   OR?: InputMaybe<Array<AccountWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  cartItems_every?: InputMaybe<CartItemWhereInput>;
+  cartItems_none?: InputMaybe<CartItemWhereInput>;
+  cartItems_some?: InputMaybe<CartItemWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -276,6 +293,7 @@ export enum AccountOrderByInput {
 }
 
 export type AccountUpdateInput = {
+  cartItems?: InputMaybe<CartItemUpdateManyInlineInput>;
   email?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
 };
@@ -360,6 +378,9 @@ export type AccountWhereInput = {
   OR?: InputMaybe<Array<AccountWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  cartItems_every?: InputMaybe<CartItemWhereInput>;
+  cartItems_none?: InputMaybe<CartItemWhereInput>;
+  cartItems_some?: InputMaybe<CartItemWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -1181,6 +1202,7 @@ export type BatchPayload = {
 
 export type CartItem = Node & {
   __typename?: 'CartItem';
+  account?: Maybe<Account>;
   count: Scalars['Int'];
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -1205,7 +1227,12 @@ export type CartItem = Node & {
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
   userData?: Maybe<UserData>;
-  userUUID: Scalars['String'];
+  userUUID?: Maybe<Scalars['String']>;
+};
+
+
+export type CartItemAccountArgs = {
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 
@@ -1276,12 +1303,13 @@ export type CartItemConnection = {
 };
 
 export type CartItemCreateInput = {
+  account?: InputMaybe<AccountCreateOneInlineInput>;
   count: Scalars['Int'];
   createdAt?: InputMaybe<Scalars['DateTime']>;
   product?: InputMaybe<ProductCreateOneInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   userData?: InputMaybe<UserDataCreateOneInlineInput>;
-  userUUID: Scalars['String'];
+  userUUID?: InputMaybe<Scalars['String']>;
 };
 
 export type CartItemCreateManyInlineInput = {
@@ -1317,6 +1345,7 @@ export type CartItemManyWhereInput = {
   OR?: InputMaybe<Array<CartItemWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  account?: InputMaybe<AccountWhereInput>;
   count?: InputMaybe<Scalars['Int']>;
   /** All values greater than the given value. */
   count_gt?: InputMaybe<Scalars['Int']>;
@@ -1444,6 +1473,7 @@ export enum CartItemOrderByInput {
 }
 
 export type CartItemUpdateInput = {
+  account?: InputMaybe<AccountUpdateOneInlineInput>;
   count?: InputMaybe<Scalars['Int']>;
   product?: InputMaybe<ProductUpdateOneInlineInput>;
   userData?: InputMaybe<UserDataUpdateOneInlineInput>;
@@ -1531,6 +1561,7 @@ export type CartItemWhereInput = {
   OR?: InputMaybe<Array<CartItemWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  account?: InputMaybe<AccountWhereInput>;
   count?: InputMaybe<Scalars['Int']>;
   /** All values greater than the given value. */
   count_gt?: InputMaybe<Scalars['Int']>;
@@ -13034,7 +13065,7 @@ export type UpdateCartMutationVariables = Exact<{
 export type UpdateCartMutation = { __typename?: 'Mutation', updateCartItem?: { __typename?: 'CartItem', id: string, count: number } | null, publishCartItem?: { __typename?: 'CartItem', stage: Stage } | null };
 
 export type ClearCartMutationVariables = Exact<{
-  userUUID: Scalars['String'];
+  id: Scalars['ID'];
 }>;
 
 
@@ -13043,18 +13074,11 @@ export type ClearCartMutation = { __typename?: 'Mutation', deleteManyCartItemsCo
 export type AddItemToCartMutationVariables = Exact<{
   count: Scalars['Int'];
   id: Scalars['ID'];
-  userUUID: Scalars['String'];
+  userUUID: Scalars['ID'];
 }>;
 
 
-export type AddItemToCartMutation = { __typename?: 'Mutation', createCartItem?: { __typename?: 'CartItem', count: number } | null, publishManyCartItemsConnection: { __typename?: 'CartItemConnection', edges: Array<{ __typename?: 'CartItemEdge', node: { __typename?: 'CartItem', userUUID: string } }> } };
-
-export type CreateUserDataMutationVariables = Exact<{
-  userUUID: Scalars['String'];
-}>;
-
-
-export type CreateUserDataMutation = { __typename?: 'Mutation', createUserData?: { __typename?: 'UserData', userUUID: string } | null, publishUserData?: { __typename?: 'UserData', userUUID: string } | null };
+export type AddItemToCartMutation = { __typename?: 'Mutation', createCartItem?: { __typename?: 'CartItem', count: number } | null };
 
 export type CreatePaidOrderMutationVariables = Exact<{
   stripeCheckoutId: Scalars['String'];
@@ -13150,6 +13174,13 @@ export type GetAccountByEmailQueryVariables = Exact<{
 
 
 export type GetAccountByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, email: string, password: string } | null };
+
+export type GetCartItemsQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetCartItemsQuery = { __typename?: 'Query', cartItems: Array<{ __typename?: 'CartItem', id: string, count: number, product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string }> } | null }> };
 
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
@@ -13334,8 +13365,8 @@ export type UpdateCartMutationHookResult = ReturnType<typeof useUpdateCartMutati
 export type UpdateCartMutationResult = Apollo.MutationResult<UpdateCartMutation>;
 export type UpdateCartMutationOptions = Apollo.BaseMutationOptions<UpdateCartMutation, UpdateCartMutationVariables>;
 export const ClearCartDocument = gql`
-    mutation ClearCart($userUUID: String!) {
-  deleteManyCartItemsConnection(where: {userUUID: $userUUID}) {
+    mutation ClearCart($id: ID!) {
+  deleteManyCartItemsConnection(where: {account: {id: $id}}) {
     aggregate {
       count
     }
@@ -13357,7 +13388,7 @@ export type ClearCartMutationFn = Apollo.MutationFunction<ClearCartMutation, Cle
  * @example
  * const [clearCartMutation, { data, loading, error }] = useClearCartMutation({
  *   variables: {
- *      userUUID: // value for 'userUUID'
+ *      id: // value for 'id'
  *   },
  * });
  */
@@ -13369,18 +13400,11 @@ export type ClearCartMutationHookResult = ReturnType<typeof useClearCartMutation
 export type ClearCartMutationResult = Apollo.MutationResult<ClearCartMutation>;
 export type ClearCartMutationOptions = Apollo.BaseMutationOptions<ClearCartMutation, ClearCartMutationVariables>;
 export const AddItemToCartDocument = gql`
-    mutation addItemToCart($count: Int!, $id: ID!, $userUUID: String!) {
+    mutation addItemToCart($count: Int!, $id: ID!, $userUUID: ID!) {
   createCartItem(
-    data: {count: $count, product: {connect: {id: $id}}, userUUID: $userUUID, userData: {connect: {userUUID: $userUUID}}}
+    data: {count: $count, product: {connect: {id: $id}}, account: {connect: {id: $userUUID}}}
   ) {
     count
-  }
-  publishManyCartItemsConnection(where: {userUUID: $userUUID}) {
-    edges {
-      node {
-        userUUID
-      }
-    }
   }
 }
     `;
@@ -13412,42 +13436,6 @@ export function useAddItemToCartMutation(baseOptions?: Apollo.MutationHookOption
 export type AddItemToCartMutationHookResult = ReturnType<typeof useAddItemToCartMutation>;
 export type AddItemToCartMutationResult = Apollo.MutationResult<AddItemToCartMutation>;
 export type AddItemToCartMutationOptions = Apollo.BaseMutationOptions<AddItemToCartMutation, AddItemToCartMutationVariables>;
-export const CreateUserDataDocument = gql`
-    mutation createUserData($userUUID: String!) {
-  createUserData(data: {userUUID: $userUUID}) {
-    userUUID
-  }
-  publishUserData(where: {userUUID: $userUUID}) {
-    userUUID
-  }
-}
-    `;
-export type CreateUserDataMutationFn = Apollo.MutationFunction<CreateUserDataMutation, CreateUserDataMutationVariables>;
-
-/**
- * __useCreateUserDataMutation__
- *
- * To run a mutation, you first call `useCreateUserDataMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateUserDataMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createUserDataMutation, { data, loading, error }] = useCreateUserDataMutation({
- *   variables: {
- *      userUUID: // value for 'userUUID'
- *   },
- * });
- */
-export function useCreateUserDataMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserDataMutation, CreateUserDataMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateUserDataMutation, CreateUserDataMutationVariables>(CreateUserDataDocument, options);
-      }
-export type CreateUserDataMutationHookResult = ReturnType<typeof useCreateUserDataMutation>;
-export type CreateUserDataMutationResult = Apollo.MutationResult<CreateUserDataMutation>;
-export type CreateUserDataMutationOptions = Apollo.BaseMutationOptions<CreateUserDataMutation, CreateUserDataMutationVariables>;
 export const CreatePaidOrderDocument = gql`
     mutation CreatePaidOrder($stripeCheckoutId: String!, $total: Int!, $userUUID: String!, $create: [OrderItemCreateInput!], $orderStatus: OrderStatus!) {
   createOrder(
@@ -13933,3 +13921,49 @@ export function useGetAccountByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetAccountByEmailQueryHookResult = ReturnType<typeof useGetAccountByEmailQuery>;
 export type GetAccountByEmailLazyQueryHookResult = ReturnType<typeof useGetAccountByEmailLazyQuery>;
 export type GetAccountByEmailQueryResult = Apollo.QueryResult<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>;
+export const GetCartItemsDocument = gql`
+    query GetCartItems($id: ID!) {
+  cartItems(where: {account: {id: $id}}, stage: DRAFT) {
+    id
+    count
+    product {
+      id
+      slug
+      name
+      price
+      description
+      images {
+        url
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCartItemsQuery__
+ *
+ * To run a query within a React component, call `useGetCartItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCartItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCartItemsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetCartItemsQuery(baseOptions: Apollo.QueryHookOptions<GetCartItemsQuery, GetCartItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCartItemsQuery, GetCartItemsQueryVariables>(GetCartItemsDocument, options);
+      }
+export function useGetCartItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCartItemsQuery, GetCartItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCartItemsQuery, GetCartItemsQueryVariables>(GetCartItemsDocument, options);
+        }
+export type GetCartItemsQueryHookResult = ReturnType<typeof useGetCartItemsQuery>;
+export type GetCartItemsLazyQueryHookResult = ReturnType<typeof useGetCartItemsLazyQuery>;
+export type GetCartItemsQueryResult = Apollo.QueryResult<GetCartItemsQuery, GetCartItemsQueryVariables>;

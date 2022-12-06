@@ -104,3 +104,20 @@ query GetAccountByEmail($email: String!) {
     password
   }
 }
+
+query GetCartItems($id: ID!) {
+  cartItems(where: { account: { id: $id } }, stage: DRAFT) {
+    id
+    count
+    product {
+      id
+      slug
+      name
+      price
+      description
+      images {
+        url
+      }
+    }
+  }
+}

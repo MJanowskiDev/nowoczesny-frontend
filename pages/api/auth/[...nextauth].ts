@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session, TokenSet, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authorizedApolloClient } from "../../../graphql/apolloClient";
 import {
@@ -10,14 +10,15 @@ import {
 import * as bcrypt from "bcrypt";
 
 export const authOptions = {
-  // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
       name: "Credentials",
+
       credentials: {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials, req) {
         if (!credentials) {
           return null;
@@ -51,5 +52,11 @@ export const authOptions = {
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token }: { session: Session; token: TokenSet }) {
+      session.user.id = token.sub as string;
+      return session;
+    },
+  },
 };
 export default NextAuth(authOptions);

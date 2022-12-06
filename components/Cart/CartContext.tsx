@@ -1,6 +1,7 @@
+import { useSession } from "next-auth/react";
 import { createContext, ReactNode, useContext, useEffect } from "react";
 
-import { useGetUserCartQuery } from "../../graphql/generated/gql-types";
+import { useGetCartItemsQuery } from "../../graphql/generated/gql-types";
 
 import {
   CartItem,
@@ -8,11 +9,10 @@ import {
   editProductCountFn,
   removeItemFn,
   removeAllCartItems,
-  getUserUUID,
-  createUserData,
   getCartAmount,
   getTotalPrice,
   CartState,
+  setUserUUID,
 } from "./CartUtils";
 
 export const CartStateContextProvider = ({
@@ -20,23 +20,21 @@ export const CartStateContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const userUUID = getUserUUID();
+  const session = useSession();
+  const userUUID = session.data?.user.id;
 
   useEffect(() => {
-    const generateUUID = async () => {
-      await createUserData();
-    };
-    if (!userUUID) {
-      generateUUID();
+    if (userUUID) {
+      setUserUUID(userUUID);
     }
   }, [userUUID]);
 
-  const { data } = useGetUserCartQuery({
-    variables: { userUUID },
+  const { data } = useGetCartItemsQuery({
+    variables: { id: userUUID },
   });
 
   const cartItems =
-    data?.userData?.cartItems.map((item) => ({
+    data?.cartItems?.map((item) => ({
       id: item.id || "",
       price: item.product?.price!,
       title: item.product?.name!,
@@ -46,8 +44,8 @@ export const CartStateContextProvider = ({
     })) || [];
 
   const addItem = (item: CartItem) => {
-    if (data?.userData?.cartItems) {
-      const res = data?.userData?.cartItems.find((el) =>
+    if (data?.cartItems) {
+      const res = data?.cartItems.find((el) =>
         el.product?.id ? el.product.id === item.id : false
       );
       if (res?.id) {
@@ -79,7 +77,7 @@ export const CartStateContextProvider = ({
     <CartStateContext.Provider
       value={{
         items: cartItems,
-        userUUID: userUUID,
+        userUUID: userUUID || "",
         totalCount: getCartAmount(cartItems),
         totalPrice: getTotalPrice(cartItems),
         addItem,
