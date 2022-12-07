@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Input } from "./Form/Input";
@@ -18,12 +19,28 @@ export const SignupForm = () => {
     resolver: yupResolver(signupFormSchema),
   });
 
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
   const onSubmit = handleSubmit(async (data) => {
-    await fetch("/api/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 500 || res.status === 400) {
+        setError(true);
+        setSuccess(false);
+      } else {
+        setSuccess(true);
+        setError(false);
+      }
+    } catch (error) {
+      setError(true);
+      setSuccess(false);
+    }
   });
 
   return (
@@ -46,6 +63,9 @@ export const SignupForm = () => {
         />
 
         <SubmitButton>Register</SubmitButton>
+
+        {success && <p className="text-green-500">Registration success!</p>}
+        {error && <p className="text-red-500">Registration failed</p>}
       </form>
     </div>
   );

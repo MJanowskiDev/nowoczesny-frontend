@@ -30,12 +30,12 @@ export const CartStateContextProvider = ({
   }, [userUUID]);
 
   const { data } = useGetCartItemsQuery({
-    variables: { id: userUUID },
+    variables: { id: userUUID! },
   });
 
   const cartItems =
     data?.cartItems?.map((item) => ({
-      id: item.id || "",
+      id: item.id!,
       price: item.product?.price!,
       title: item.product?.name!,
       count: item.count,

@@ -60,7 +60,6 @@ const stripeWebhook: NextApiHandler = async (req, res) => {
 
   switch (event.type) {
     case "checkout.session.completed":
-      console.log("CURRENCY:", event.data.object.currency);
       try {
         const res = await apolloClient.mutate<
           CompleteOrderMutation,

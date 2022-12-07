@@ -37,6 +37,7 @@ export type Account = Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  orders: Array<Order>;
   password: Scalars['String'];
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
@@ -83,6 +84,18 @@ export type AccountHistoryArgs = {
 };
 
 
+export type AccountOrdersArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<OrderOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrderWhereInput>;
+};
+
+
 export type AccountPublishedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
@@ -124,6 +137,7 @@ export type AccountCreateInput = {
   cartItems?: InputMaybe<CartItemCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
+  orders?: InputMaybe<OrderCreateManyInlineInput>;
   password: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -221,6 +235,9 @@ export type AccountManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  orders_every?: InputMaybe<OrderWhereInput>;
+  orders_none?: InputMaybe<OrderWhereInput>;
+  orders_some?: InputMaybe<OrderWhereInput>;
   password?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   password_contains?: InputMaybe<Scalars['String']>;
@@ -295,6 +312,7 @@ export enum AccountOrderByInput {
 export type AccountUpdateInput = {
   cartItems?: InputMaybe<CartItemUpdateManyInlineInput>;
   email?: InputMaybe<Scalars['String']>;
+  orders?: InputMaybe<OrderUpdateManyInlineInput>;
   password?: InputMaybe<Scalars['String']>;
 };
 
@@ -438,6 +456,9 @@ export type AccountWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  orders_every?: InputMaybe<OrderWhereInput>;
+  orders_none?: InputMaybe<OrderWhereInput>;
+  orders_some?: InputMaybe<OrderWhereInput>;
   password?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   password_contains?: InputMaybe<Scalars['String']>;
@@ -5933,6 +5954,7 @@ export type Node = {
 
 export type Order = Node & {
   __typename?: 'Order';
+  account?: Maybe<Account>;
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
   /** User that created this document */
@@ -5959,7 +5981,12 @@ export type Order = Node & {
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
-  userUUID: Scalars['String'];
+  userUUID?: Maybe<Scalars['String']>;
+};
+
+
+export type OrderAccountArgs = {
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 
@@ -6032,6 +6059,7 @@ export type OrderConnection = {
 };
 
 export type OrderCreateInput = {
+  account?: InputMaybe<AccountCreateOneInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
   orderItems?: InputMaybe<OrderItemCreateManyInlineInput>;
@@ -6039,7 +6067,7 @@ export type OrderCreateInput = {
   stripeCheckoutId: Scalars['String'];
   total: Scalars['Int'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
-  userUUID: Scalars['String'];
+  userUUID?: InputMaybe<Scalars['String']>;
 };
 
 export type OrderCreateManyInlineInput = {
@@ -6769,6 +6797,7 @@ export type OrderManyWhereInput = {
   OR?: InputMaybe<Array<OrderWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  account?: InputMaybe<AccountWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -6953,6 +6982,7 @@ export enum OrderStatus {
 }
 
 export type OrderUpdateInput = {
+  account?: InputMaybe<AccountUpdateOneInlineInput>;
   email?: InputMaybe<Scalars['String']>;
   orderItems?: InputMaybe<OrderItemUpdateManyInlineInput>;
   orderStatus?: InputMaybe<OrderStatus>;
@@ -7044,6 +7074,7 @@ export type OrderWhereInput = {
   OR?: InputMaybe<Array<OrderWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']>;
+  account?: InputMaybe<AccountWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -13086,6 +13117,7 @@ export type CreatePaidOrderMutationVariables = Exact<{
   userUUID: Scalars['String'];
   create?: InputMaybe<Array<OrderItemCreateInput> | OrderItemCreateInput>;
   orderStatus: OrderStatus;
+  id: Scalars['ID'];
 }>;
 
 
@@ -13116,8 +13148,8 @@ export type PublishOrderAfterCompleteMutationVariables = Exact<{
 export type PublishOrderAfterCompleteMutation = { __typename?: 'Mutation', publishOrder?: { __typename?: 'Order', id: string } | null };
 
 export type UserRegisterMutationVariables = Exact<{
-  email?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
 }>;
 
 
@@ -13160,13 +13192,6 @@ export type GetProductBySlugQueryVariables = Exact<{
 
 
 export type GetProductBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', name: string, slug: string, id: string, price: number, description: string, categories: Array<{ __typename?: 'Category', name: string }>, reviews: Array<{ __typename?: 'Review', rating?: number | null }>, images: Array<{ __typename?: 'Asset', url: string }> } | null };
-
-export type GetUserCartQueryVariables = Exact<{
-  userUUID?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type GetUserCartQuery = { __typename?: 'Query', userData?: { __typename?: 'UserData', id: string, cartItems: Array<{ __typename?: 'CartItem', id: string, count: number, product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string }> } | null }> } | null };
 
 export type GetAccountByEmailQueryVariables = Exact<{
   email: Scalars['String'];
@@ -13437,9 +13462,9 @@ export type AddItemToCartMutationHookResult = ReturnType<typeof useAddItemToCart
 export type AddItemToCartMutationResult = Apollo.MutationResult<AddItemToCartMutation>;
 export type AddItemToCartMutationOptions = Apollo.BaseMutationOptions<AddItemToCartMutation, AddItemToCartMutationVariables>;
 export const CreatePaidOrderDocument = gql`
-    mutation CreatePaidOrder($stripeCheckoutId: String!, $total: Int!, $userUUID: String!, $create: [OrderItemCreateInput!], $orderStatus: OrderStatus!) {
+    mutation CreatePaidOrder($stripeCheckoutId: String!, $total: Int!, $userUUID: String!, $create: [OrderItemCreateInput!], $orderStatus: OrderStatus!, $id: ID!) {
   createOrder(
-    data: {total: $total, stripeCheckoutId: $stripeCheckoutId, userUUID: $userUUID, orderItems: {create: $create}, orderStatus: $orderStatus}
+    data: {total: $total, stripeCheckoutId: $stripeCheckoutId, userUUID: $userUUID, orderItems: {create: $create}, orderStatus: $orderStatus, account: {connect: {id: $id}}}
   ) {
     id
     orderItems {
@@ -13468,6 +13493,7 @@ export type CreatePaidOrderMutationFn = Apollo.MutationFunction<CreatePaidOrderM
  *      userUUID: // value for 'userUUID'
  *      create: // value for 'create'
  *      orderStatus: // value for 'orderStatus'
+ *      id: // value for 'id'
  *   },
  * });
  */
@@ -13587,7 +13613,7 @@ export type PublishOrderAfterCompleteMutationHookResult = ReturnType<typeof useP
 export type PublishOrderAfterCompleteMutationResult = Apollo.MutationResult<PublishOrderAfterCompleteMutation>;
 export type PublishOrderAfterCompleteMutationOptions = Apollo.BaseMutationOptions<PublishOrderAfterCompleteMutation, PublishOrderAfterCompleteMutationVariables>;
 export const UserRegisterDocument = gql`
-    mutation UserRegister($email: String = "", $password: String = "") {
+    mutation UserRegister($email: String!, $password: String!) {
   createAccount(data: {email: $email, password: $password}) {
     id
   }
@@ -13835,55 +13861,6 @@ export function useGetProductBySlugLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetProductBySlugQueryHookResult = ReturnType<typeof useGetProductBySlugQuery>;
 export type GetProductBySlugLazyQueryHookResult = ReturnType<typeof useGetProductBySlugLazyQuery>;
 export type GetProductBySlugQueryResult = Apollo.QueryResult<GetProductBySlugQuery, GetProductBySlugQueryVariables>;
-export const GetUserCartDocument = gql`
-    query getUserCart($userUUID: String) {
-  userData(where: {userUUID: $userUUID}) {
-    id
-    cartItems {
-      id
-      count
-      product {
-        id
-        slug
-        name
-        price
-        description
-        images {
-          url
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUserCartQuery__
- *
- * To run a query within a React component, call `useGetUserCartQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserCartQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserCartQuery({
- *   variables: {
- *      userUUID: // value for 'userUUID'
- *   },
- * });
- */
-export function useGetUserCartQuery(baseOptions?: Apollo.QueryHookOptions<GetUserCartQuery, GetUserCartQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserCartQuery, GetUserCartQueryVariables>(GetUserCartDocument, options);
-      }
-export function useGetUserCartLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserCartQuery, GetUserCartQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserCartQuery, GetUserCartQueryVariables>(GetUserCartDocument, options);
-        }
-export type GetUserCartQueryHookResult = ReturnType<typeof useGetUserCartQuery>;
-export type GetUserCartLazyQueryHookResult = ReturnType<typeof useGetUserCartLazyQuery>;
-export type GetUserCartQueryResult = Apollo.QueryResult<GetUserCartQuery, GetUserCartQueryVariables>;
 export const GetAccountByEmailDocument = gql`
     query GetAccountByEmail($email: String!) {
   account(where: {email: $email}, stage: DRAFT) {

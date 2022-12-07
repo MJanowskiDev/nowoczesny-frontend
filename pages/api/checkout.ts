@@ -7,12 +7,12 @@ import {
   CreatePaidOrderMutation,
   CreatePaidOrderMutationVariables,
   OrderStatus,
-  GetUserCartDocument,
-  GetUserCartQuery,
-  GetUserCartQueryVariables,
   PublishOrderAndCartItemsMutation,
   PublishOrderAndCartItemsMutationVariables,
   PublishOrderAndCartItemsDocument,
+  GetCartItemsQuery,
+  GetCartItemsQueryVariables,
+  GetCartItemsDocument,
 } from "../../graphql/generated/gql-types";
 
 import { unstable_getServerSession } from "next-auth/next";
@@ -49,14 +49,14 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
   };
 
   const userCart = await apolloClient.query<
-    GetUserCartQuery,
-    GetUserCartQueryVariables
+    GetCartItemsQuery,
+    GetCartItemsQueryVariables
   >({
-    query: GetUserCartDocument,
-    variables: { userUUID: body.userUUID },
+    query: GetCartItemsDocument,
+    variables: { id: body.userUUID },
   });
 
-  const productList = userCart.data.userData?.cartItems;
+  const productList = userCart.data?.cartItems;
   assert(productList, "Product list cannot be empty");
 
   const line_items = productList.map((cartItem) => {
@@ -108,6 +108,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
         stripeCheckoutId: stripeCheckoutSession.id,
         total: stripeCheckoutSession.amount_total || 0,
         userUUID: body.userUUID,
+        id: body.userUUID,
         orderStatus: OrderStatus.InProgress,
         create: productList.map((cartItem) => {
           return {
