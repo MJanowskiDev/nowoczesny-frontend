@@ -101,3 +101,32 @@ query GetCartItems($id: ID!) {
     }
   }
 }
+
+query GetOrdersByUser($id: ID!) {
+  orders(where: { account: { id: $id } }, stage: DRAFT) {
+    createdAt
+    email
+    id
+    orderStatus
+    total
+  }
+}
+
+query GetOrderDetails($id: ID!) {
+  order(where: { id: $id }, stage: DRAFT) {
+    id
+    createdAt
+    email
+    orderStatus
+    total
+    orderItems {
+      id
+      imageUrl
+      name
+      productId
+      quantity
+      slug
+      total
+    }
+  }
+}
