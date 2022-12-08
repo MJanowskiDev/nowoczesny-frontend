@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import { useCartState } from "./CartContext";
 import { CartItem } from "./CartUtils";
 
@@ -7,6 +8,14 @@ interface AddToCartButtonProps {
 
 export const AddToCartButton = ({ item }: AddToCartButtonProps) => {
   const { addItem } = useCartState();
+
+  const { status } = useSession();
+
+  const notAuthetnicated = status !== "authenticated";
+
+  if (notAuthetnicated) {
+    return null;
+  }
 
   const onAddToCartClickHandle = () => {
     addItem(item);

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ThemeToggler } from "./ThemeToggler";
 import { CartIcon } from "./Cart/CartIcon";
 import { SetStateAction, useState } from "react";
+import { LoginLogoutButton } from "./UI/LoginLogoutButton";
 
 export const StyledHeader = () => {
   const [menuToggle, setMenuToggle] = useState(false);
@@ -63,6 +64,9 @@ const ActionList = ({ onBurgerClickHandle }: ActionListProps) => (
     <li>
       <BurgerButton onClickHandle={onBurgerClickHandle} />
     </li>
+    <li>
+      <LoginLogoutButton />
+    </li>
   </ul>
 );
 
@@ -112,17 +116,18 @@ const MenuList = ({ className, ulClickHandle }: MenuListProps) => (
     <li>
       <ActiveLink
         className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-        href="/products-csr/1"
+        href="/products-ssg/1"
       >
-        <a>ProductsCSR</a>
+        <a>Products</a>
       </ActiveLink>
     </li>
+
     <li>
       <ActiveLink
         className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-        href="/products-ssg/1"
+        href="/orders"
       >
-        <a>ProductsSSG</a>
+        <a>Orders</a>
       </ActiveLink>
     </li>
   </ul>

@@ -33,39 +33,23 @@ mutation UpdateCart($count: Int!, $id: ID!) {
   }
 }
 
-mutation ClearCart($userUUID: String!) {
-  deleteManyCartItemsConnection(where: { userUUID: $userUUID }) {
+mutation ClearCart($id: ID!) {
+  deleteManyCartItemsConnection(where: { account: { id: $id } }) {
     aggregate {
       count
     }
   }
 }
 
-mutation addItemToCart($count: Int!, $id: ID!, $userUUID: String!) {
+mutation addItemToCart($count: Int!, $id: ID!, $userUUID: ID!) {
   createCartItem(
     data: {
       count: $count
       product: { connect: { id: $id } }
-      userUUID: $userUUID
-      userData: { connect: { userUUID: $userUUID } }
+      account: { connect: { id: $userUUID } }
     }
   ) {
     count
-  }
-  publishManyCartItemsConnection(where: { userUUID: $userUUID }) {
-    edges {
-      node {
-        userUUID
-      }
-    }
-  }
-}
-mutation createUserData($userUUID: String!) {
-  createUserData(data: { userUUID: $userUUID }) {
-    userUUID
-  }
-  publishUserData(where: { userUUID: $userUUID }) {
-    userUUID
   }
 }
 
@@ -75,6 +59,7 @@ mutation CreatePaidOrder(
   $userUUID: String!
   $create: [OrderItemCreateInput!]
   $orderStatus: OrderStatus!
+  $id: ID!
 ) {
   createOrder(
     data: {
@@ -83,6 +68,7 @@ mutation CreatePaidOrder(
       userUUID: $userUUID
       orderItems: { create: $create }
       orderStatus: $orderStatus
+      account: { connect: { id: $id } }
     }
   ) {
     id
@@ -105,17 +91,8 @@ mutation CompleteOrder(
   }
 }
 
-mutation publishOrderAndCartItems($id: ID!, $id_in: [ID]) {
-  publishOrder(where: { id: $id }) {
-    id
-  }
-  publishManyOrderItems(where: { id_in: $id_in }) {
-    count
-  }
-}
-
-mutation publishOrderAfterComplete($id: ID!) {
-  publishOrder(where: { id: $id }) {
+mutation UserRegister($email: String!, $password: String!) {
+  createAccount(data: { email: $email, password: $password }) {
     id
   }
 }

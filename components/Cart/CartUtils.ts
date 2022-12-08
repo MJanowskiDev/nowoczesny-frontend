@@ -1,5 +1,4 @@
 import { apolloClient } from "../../graphql/apolloClient";
-import { v4 as uuidv4 } from "uuid";
 import {
   AddItemToCartDocument,
   AddItemToCartMutation,
@@ -7,10 +6,7 @@ import {
   ClearCartDocument,
   ClearCartMutation,
   ClearCartMutationVariables,
-  CreateUserDataDocument,
-  CreateUserDataMutation,
-  CreateUserDataMutationVariables,
-  GetUserCartDocument,
+  GetCartItemsDocument,
   RemoveCartItemDocument,
   RemoveCartItemMutation,
   RemoveCartItemMutationVariables,
@@ -42,7 +38,7 @@ export interface CartState {
   ) => void;
 }
 
-const localStorageKey = "MJanowskiDev_STORE_USER_UUID";
+let userUUID = "";
 export const CART_MAX_QANTITY = 15;
 export const CART_MIN_QANTITY = 1;
 
@@ -67,11 +63,11 @@ export const addItemFn = async (prevState: CartItem[], item: CartItem) => {
       AddItemToCartMutationVariables
     >({
       mutation: AddItemToCartDocument,
-      variables: { ...item, userUUID: getUserUUID() },
+      variables: { ...item, userUUID: getUserId() },
       refetchQueries: [
         {
-          query: GetUserCartDocument,
-          variables: { userUUID: getUserUUID() },
+          query: GetCartItemsDocument,
+          variables: { id: getUserId() },
         },
       ],
     });
@@ -88,8 +84,8 @@ export const editProductCountFn = async (id: string, updatedCount: number) => {
     variables: { id, count: updatedCount },
     refetchQueries: [
       {
-        query: GetUserCartDocument,
-        variables: { userUUID: getUserUUID() },
+        query: GetCartItemsDocument,
+        variables: { id: getUserId() },
       },
     ],
   });
@@ -101,8 +97,8 @@ export const removeItemFn = (id: CartItem["id"]) => {
     variables: { id },
     refetchQueries: [
       {
-        query: GetUserCartDocument,
-        variables: { userUUID: getUserUUID() },
+        query: GetCartItemsDocument,
+        variables: { id: getUserId() },
       },
     ],
   });
@@ -111,52 +107,23 @@ export const removeItemFn = (id: CartItem["id"]) => {
 export const removeAllCartItems = async () => {
   await apolloClient.mutate<ClearCartMutation, ClearCartMutationVariables>({
     mutation: ClearCartDocument,
-    variables: { userUUID: getUserUUID() },
+    variables: { id: getUserId() },
     refetchQueries: [
       {
-        query: GetUserCartDocument,
-        variables: { userUUID: getUserUUID() },
+        query: GetCartItemsDocument,
+        variables: { id: getUserId() },
       },
     ],
   });
 };
 
-export const getUserUUID = (): string => {
-  if (typeof window === "undefined") {
-    return "";
-  }
-  const localStorageUserUUID = localStorage.getItem(localStorageKey);
-
-  if (!localStorageUserUUID) {
-    return "";
-  } else {
-    try {
-      const { userUUID } = JSON.parse(localStorageUserUUID);
-      return userUUID;
-    } catch (error) {
-      throw Error("Error while parsing local storage");
-    }
-  }
+export const setUserUUID = (uuid: string) => {
+  userUUID = uuid;
 };
 
-export const createUserData = async (): Promise<string> => {
-  const userUUID = uuidv4();
-
-  const res = await apolloClient.mutate<
-    CreateUserDataMutation,
-    CreateUserDataMutationVariables
-  >({
-    mutation: CreateUserDataDocument,
-    variables: { userUUID },
-  });
-  const createdUserUUID = res.data?.createUserData?.userUUID;
-  if (createdUserUUID) {
-    localStorage.setItem(
-      localStorageKey,
-      JSON.stringify({ userUUID: createdUserUUID })
-    );
-    return createdUserUUID;
-  } else {
-    throw new Error("Wrong userUUID response value");
+export const getUserId = (): string => {
+  if (!userUUID) {
+    throw new Error("NO USER ID!!!!!");
   }
+  return userUUID;
 };

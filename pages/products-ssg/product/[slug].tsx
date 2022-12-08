@@ -40,7 +40,7 @@ export const getStaticPaths = async () => {
   const slugArray = products.data.products.map((product) => product.slug);
 
   return {
-    paths: slugArray.map((product) => {
+    paths: slugArray.slice(0, 2).map((product) => {
       return { params: { slug: product.toString() } };
     }),
     fallback: true,
@@ -53,7 +53,8 @@ export const getStaticProps = async ({
   if (!params?.slug) {
     return { props: {}, notFound: true };
   }
-  await new Promise((r) => setTimeout(r, 5000));
+
+  //await new Promise((r) => setTimeout(r, 5000));
   const { data } = await getProductBySlug(params.slug);
 
   if (!data.product) return { notFound: true };

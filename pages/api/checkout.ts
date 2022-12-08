@@ -7,18 +7,24 @@ import {
   CreatePaidOrderMutation,
   CreatePaidOrderMutationVariables,
   OrderStatus,
-  GetUserCartDocument,
-  GetUserCartQuery,
-  GetUserCartQueryVariables,
-  PublishOrderAndCartItemsMutation,
-  PublishOrderAndCartItemsMutationVariables,
-  PublishOrderAndCartItemsDocument,
+  GetCartItemsQuery,
+  GetCartItemsQueryVariables,
+  GetCartItemsDocument,
 } from "../../graphql/generated/gql-types";
+
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]";
 
 const checkoutHandler: NextApiHandler = async (req, res) => {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const successUrl = process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL;
   const cancelUrl = process.env.NEXT_PUBLIC_STRIPE_CANCEL_URL;
+
+  const session = await unstable_getServerSession(req, res, authOptions);
+
+  if (!session) {
+    res.status(401).json({});
+  }
 
   if (!cancelUrl) {
     res.status(500).json({ messge: "Missing stripe cancel url!" });
@@ -40,14 +46,14 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
   };
 
   const userCart = await apolloClient.query<
-    GetUserCartQuery,
-    GetUserCartQueryVariables
+    GetCartItemsQuery,
+    GetCartItemsQueryVariables
   >({
-    query: GetUserCartDocument,
-    variables: { userUUID: body.userUUID },
+    query: GetCartItemsDocument,
+    variables: { id: body.userUUID },
   });
 
-  const productList = userCart.data.userData?.cartItems;
+  const productList = userCart.data?.cartItems;
   assert(productList, "Product list cannot be empty");
 
   const line_items = productList.map((cartItem) => {
@@ -90,7 +96,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
   });
 
   try {
-    const res = await apolloClient.mutate<
+    await apolloClient.mutate<
       CreatePaidOrderMutation,
       CreatePaidOrderMutationVariables
     >({
@@ -99,6 +105,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
         stripeCheckoutId: stripeCheckoutSession.id,
         total: stripeCheckoutSession.amount_total || 0,
         userUUID: body.userUUID,
+        id: body.userUUID,
         orderStatus: OrderStatus.InProgress,
         create: productList.map((cartItem) => {
           return {
@@ -114,19 +121,8 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
         }),
       },
     });
-
-    const orderId = res.data?.createOrder?.id;
-    const orderItemsId = res.data?.createOrder?.orderItems;
-
-    await apolloClient.mutate<
-      PublishOrderAndCartItemsMutation,
-      PublishOrderAndCartItemsMutationVariables
-    >({
-      mutation: PublishOrderAndCartItemsDocument,
-      variables: { id: orderId!, id_in: orderItemsId?.map((el) => el.id) },
-    });
   } catch (error) {
-    console.log(JSON.stringify(error), "ERROR!!");
+    console.error(JSON.stringify(error), "ERROR!!");
     res.status(500).json({ messge: "Error while creating order", error });
   }
 

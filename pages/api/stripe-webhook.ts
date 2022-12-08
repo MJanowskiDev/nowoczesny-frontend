@@ -9,10 +9,6 @@ import {
   CompleteOrderMutation,
   CompleteOrderMutationVariables,
   OrderStatus,
-  PublishOrderAfterCompleteDocument,
-  PublishOrderAfterCompleteMutation,
-  PublishOrderAfterCompleteMutationVariables,
-  PublishOrderAndCartItemsDocument,
 } from "../../graphql/generated/gql-types";
 
 export const config = {
@@ -52,9 +48,8 @@ const stripeWebhook: NextApiHandler = async (req, res) => {
 
   switch (event.type) {
     case "checkout.session.completed":
-      console.log("CURRENCY:", event.data.object.currency);
       try {
-        const res = await apolloClient.mutate<
+        await apolloClient.mutate<
           CompleteOrderMutation,
           CompleteOrderMutationVariables
         >({
@@ -65,18 +60,8 @@ const stripeWebhook: NextApiHandler = async (req, res) => {
             email: event.data.object.customer_details?.email!,
           },
         });
-
-        const orderId = res.data?.updateOrder?.id;
-        assert(orderId, "cannot publish order without id");
-        await apolloClient.mutate<
-          PublishOrderAfterCompleteMutation,
-          PublishOrderAfterCompleteMutationVariables
-        >({
-          mutation: PublishOrderAfterCompleteDocument,
-          variables: { id: orderId },
-        });
       } catch (error) {
-        console.log(JSON.stringify(error));
+        console.error(JSON.stringify(error));
         res.status(400).send(`Webhook Error: ${error}`);
       }
   }
