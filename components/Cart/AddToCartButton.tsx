@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useCartState } from "./CartContext";
 import { CartItem } from "./CartUtils";
+import debounce from "lodash.debounce";
 
 interface AddToCartButtonProps {
   item: CartItem;
@@ -17,8 +18,10 @@ export const AddToCartButton = ({ item }: AddToCartButtonProps) => {
     return null;
   }
 
+  const debouncedCallback = debounce(() => addItem(item), 500);
+
   const onAddToCartClickHandle = () => {
-    addItem(item);
+    debouncedCallback();
   };
 
   return (

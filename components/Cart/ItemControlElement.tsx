@@ -1,3 +1,4 @@
+import debounce from "lodash.debounce";
 import { useEffect, useState, useRef } from "react";
 import { RemoveIcon } from "../UI/Icons";
 import { useCartState } from "./CartContext";
@@ -46,6 +47,10 @@ export const ItemControlElement = (cartItem: CartItem) => {
     });
   };
 
+  const subtractOneDebounced = debounce(handleSubtractOne, 500);
+
+  const addOneDebounced = debounce(handleAddOne, 500);
+
   const setAmountValue = () => {
     const val = Number(inputRef.current?.value);
 
@@ -74,7 +79,7 @@ export const ItemControlElement = (cartItem: CartItem) => {
 
   return (
     <div className="flex">
-      <button className="action-button" onClick={handleSubtractOne}>
+      <button className="action-button" onClick={subtractOneDebounced}>
         -
       </button>
       <input
@@ -83,7 +88,7 @@ export const ItemControlElement = (cartItem: CartItem) => {
         onBlur={handleSetAmount}
         onKeyDown={handleKeyDown}
       ></input>
-      <button className="action-button" onClick={handleAddOne}>
+      <button className="action-button" onClick={addOneDebounced}>
         +
       </button>
       <button

@@ -53,8 +53,6 @@ export const CartStateContextProvider = ({
       } else {
         addItemFn(cartItems, item);
       }
-    } else {
-      addItemFn(cartItems, item);
     }
   };
 
