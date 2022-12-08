@@ -12465,21 +12465,6 @@ export type CompleteOrderMutationVariables = Exact<{
 
 export type CompleteOrderMutation = { __typename?: 'Mutation', updateOrder?: { __typename?: 'Order', id: string } | null };
 
-export type PublishOrderAndCartItemsMutationVariables = Exact<{
-  id: Scalars['ID'];
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>> | InputMaybe<Scalars['ID']>>;
-}>;
-
-
-export type PublishOrderAndCartItemsMutation = { __typename?: 'Mutation', publishOrder?: { __typename?: 'Order', id: string } | null, publishManyOrderItems: { __typename?: 'BatchPayload', count: any } };
-
-export type PublishOrderAfterCompleteMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type PublishOrderAfterCompleteMutation = { __typename?: 'Mutation', publishOrder?: { __typename?: 'Order', id: string } | null };
-
 export type UserRegisterMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -12889,76 +12874,6 @@ export function useCompleteOrderMutation(baseOptions?: Apollo.MutationHookOption
 export type CompleteOrderMutationHookResult = ReturnType<typeof useCompleteOrderMutation>;
 export type CompleteOrderMutationResult = Apollo.MutationResult<CompleteOrderMutation>;
 export type CompleteOrderMutationOptions = Apollo.BaseMutationOptions<CompleteOrderMutation, CompleteOrderMutationVariables>;
-export const PublishOrderAndCartItemsDocument = gql`
-    mutation publishOrderAndCartItems($id: ID!, $id_in: [ID]) {
-  publishOrder(where: {id: $id}) {
-    id
-  }
-  publishManyOrderItems(where: {id_in: $id_in}) {
-    count
-  }
-}
-    `;
-export type PublishOrderAndCartItemsMutationFn = Apollo.MutationFunction<PublishOrderAndCartItemsMutation, PublishOrderAndCartItemsMutationVariables>;
-
-/**
- * __usePublishOrderAndCartItemsMutation__
- *
- * To run a mutation, you first call `usePublishOrderAndCartItemsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `usePublishOrderAndCartItemsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [publishOrderAndCartItemsMutation, { data, loading, error }] = usePublishOrderAndCartItemsMutation({
- *   variables: {
- *      id: // value for 'id'
- *      id_in: // value for 'id_in'
- *   },
- * });
- */
-export function usePublishOrderAndCartItemsMutation(baseOptions?: Apollo.MutationHookOptions<PublishOrderAndCartItemsMutation, PublishOrderAndCartItemsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<PublishOrderAndCartItemsMutation, PublishOrderAndCartItemsMutationVariables>(PublishOrderAndCartItemsDocument, options);
-      }
-export type PublishOrderAndCartItemsMutationHookResult = ReturnType<typeof usePublishOrderAndCartItemsMutation>;
-export type PublishOrderAndCartItemsMutationResult = Apollo.MutationResult<PublishOrderAndCartItemsMutation>;
-export type PublishOrderAndCartItemsMutationOptions = Apollo.BaseMutationOptions<PublishOrderAndCartItemsMutation, PublishOrderAndCartItemsMutationVariables>;
-export const PublishOrderAfterCompleteDocument = gql`
-    mutation publishOrderAfterComplete($id: ID!) {
-  publishOrder(where: {id: $id}) {
-    id
-  }
-}
-    `;
-export type PublishOrderAfterCompleteMutationFn = Apollo.MutationFunction<PublishOrderAfterCompleteMutation, PublishOrderAfterCompleteMutationVariables>;
-
-/**
- * __usePublishOrderAfterCompleteMutation__
- *
- * To run a mutation, you first call `usePublishOrderAfterCompleteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `usePublishOrderAfterCompleteMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [publishOrderAfterCompleteMutation, { data, loading, error }] = usePublishOrderAfterCompleteMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function usePublishOrderAfterCompleteMutation(baseOptions?: Apollo.MutationHookOptions<PublishOrderAfterCompleteMutation, PublishOrderAfterCompleteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<PublishOrderAfterCompleteMutation, PublishOrderAfterCompleteMutationVariables>(PublishOrderAfterCompleteDocument, options);
-      }
-export type PublishOrderAfterCompleteMutationHookResult = ReturnType<typeof usePublishOrderAfterCompleteMutation>;
-export type PublishOrderAfterCompleteMutationResult = Apollo.MutationResult<PublishOrderAfterCompleteMutation>;
-export type PublishOrderAfterCompleteMutationOptions = Apollo.BaseMutationOptions<PublishOrderAfterCompleteMutation, PublishOrderAfterCompleteMutationVariables>;
 export const UserRegisterDocument = gql`
     mutation UserRegister($email: String!, $password: String!) {
   createAccount(data: {email: $email, password: $password}) {

@@ -9,8 +9,6 @@ export const OrdersContainer = ({ userId }: OrdersContainerProps) => {
     variables: { id: userId },
   });
 
-  console.log(data);
-
   return (
     <div>
       <h1>This is order container</h1>

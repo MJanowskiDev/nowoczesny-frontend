@@ -7,9 +7,6 @@ import {
   CreatePaidOrderMutation,
   CreatePaidOrderMutationVariables,
   OrderStatus,
-  PublishOrderAndCartItemsMutation,
-  PublishOrderAndCartItemsMutationVariables,
-  PublishOrderAndCartItemsDocument,
   GetCartItemsQuery,
   GetCartItemsQueryVariables,
   GetCartItemsDocument,
@@ -99,7 +96,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
   });
 
   try {
-    const res = await apolloClient.mutate<
+    await apolloClient.mutate<
       CreatePaidOrderMutation,
       CreatePaidOrderMutationVariables
     >({
@@ -124,19 +121,8 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
         }),
       },
     });
-
-    const orderId = res.data?.createOrder?.id;
-    const orderItemsId = res.data?.createOrder?.orderItems;
-
-    await apolloClient.mutate<
-      PublishOrderAndCartItemsMutation,
-      PublishOrderAndCartItemsMutationVariables
-    >({
-      mutation: PublishOrderAndCartItemsDocument,
-      variables: { id: orderId!, id_in: orderItemsId?.map((el) => el.id) },
-    });
   } catch (error) {
-    console.log(JSON.stringify(error), "ERROR!!");
+    console.error(JSON.stringify(error), "ERROR!!");
     res.status(500).json({ messge: "Error while creating order", error });
   }
 

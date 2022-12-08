@@ -91,21 +91,6 @@ mutation CompleteOrder(
   }
 }
 
-mutation publishOrderAndCartItems($id: ID!, $id_in: [ID]) {
-  publishOrder(where: { id: $id }) {
-    id
-  }
-  publishManyOrderItems(where: { id_in: $id_in }) {
-    count
-  }
-}
-
-mutation publishOrderAfterComplete($id: ID!) {
-  publishOrder(where: { id: $id }) {
-    id
-  }
-}
-
 mutation UserRegister($email: String!, $password: String!) {
   createAccount(data: { email: $email, password: $password }) {
     id
