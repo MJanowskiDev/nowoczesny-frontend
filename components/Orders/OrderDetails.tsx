@@ -21,7 +21,7 @@ export const OrderDetails = ({ orderId }: OrderDetailsProps) => {
 
         <p>{data?.order?.email}</p>
 
-        {data?.order?.total && <p>{data?.order?.total / 100} $</p>}
+        {data?.order?.total && <p>{data?.order?.total / 100} PLN</p>}
         <h1 className="text-2xl py-4 font-medium">Products</h1>
       </div>
       <div className="flex flex-wrap">

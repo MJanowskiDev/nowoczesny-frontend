@@ -69,7 +69,9 @@ export const ProductGQL = ({ data, longDescription }: ProductProps) => {
         <AddToCartButton item={cartItem} />
         <h1 className="text-teal-600 dark:text-teal-300">{product?.name}</h1>
         <NextMarkdown>{longDescription}</NextMarkdown>
-        <p className="font-bold">Price: {product?.price}</p>
+        {product?.price && (
+          <p className="font-bold">Price: {product?.price / 100} PLN</p>
+        )}
 
         {data.product?.slug && (
           <ProductReviewContainer productSlug={data.product?.slug} />

@@ -20,7 +20,7 @@ const Pagination = ({
   const pages = usePagination(totalItems, currentPage, itemsPerPage);
 
   return (
-    <div className="flex items-center justify-center my-8">
+    <div className="flex items-center sm:justify-end justify-center my-8 px-2 ">
       {pages.map((pageNumber, i) =>
         pageNumber === dotts ? (
           <span
@@ -32,7 +32,7 @@ const Pagination = ({
         ) : (
           <ActiveLink
             classActive="border-teal-600 dark:border-teal-300 dark:text-teal-300 text-teal-600 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
-            className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
+            className=" text-gray-500 hover:text-gray-700 hover:border-gray-300 border-gray-100/10 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
             key={i}
             href={renderPageLink(pageNumber as number)}
           >

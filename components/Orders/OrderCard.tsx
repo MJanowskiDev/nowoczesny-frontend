@@ -34,7 +34,7 @@ export const OrderCard = ({ order }: OrderProps) => {
           </p>
         </div>
 
-        <div className="h-[150px]  overflow-y-auto py-2">
+        <div className="h-[150px]  overflow-y-auto py-2  scrollbar-thumb-gray-600/50 scrollbar-track-gray-300/40 dark:scrollbar-track-gray-300  scrollbar-thin">
           {order.orderItems.map((item) => (
             <div
               key={`order-div-${item.id}`}
@@ -65,7 +65,7 @@ export const OrderCard = ({ order }: OrderProps) => {
 
         <p className="text-sm text-gray-500 text-right">
           <span>Total: </span>
-          {order.total} $
+          {order.total / 100} PLN
         </p>
 
         <div className="inline-block border-b dark:border-teal-300 border-teal-600 pb-1 font-medium text-teal-600 dark:text-teal-300 text-right">

@@ -9,8 +9,9 @@ import { ProductsListGQL } from "../../components/ProductsListGQL";
 
 import { NextSeo } from "next-seo";
 import { getProducts } from "../../lib/getProducts";
+import { serialize } from "next-mdx-remote/serialize";
 
-export const PER_PAGE = 3;
+export const PER_PAGE = 6;
 const STATIC_PAGES = 2;
 
 const ProductsSSG = ({
@@ -28,13 +29,15 @@ const ProductsSSG = ({
         title="Products SSG"
         description={`About MJanowskiDev E-Commerce App products list, page ${currentPage}`}
       />
-      <PaginationPage
-        currentPage={currentPage}
-        totalProducts={totalProducts}
-        perPage={PER_PAGE}
-        baseLink="products-ssg"
-      />
-      <ProductsListGQL data={products} baseLink="/products-ssg/product" />
+      <div>
+        <ProductsListGQL data={products} baseLink="/products-ssg/product" />
+        <PaginationPage
+          currentPage={currentPage}
+          totalProducts={totalProducts}
+          perPage={PER_PAGE}
+          baseLink="products-ssg"
+        />
+      </div>
     </div>
   );
 };

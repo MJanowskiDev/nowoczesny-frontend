@@ -65,8 +65,8 @@ const CartContent = () => {
             </div>
 
             <div className="flex gap-2 items-center md:justify-end justify-between w-full">
-              <div>{cartItem.price}$ each,</div>
-              <div>total: {cartItem.price * cartItem.count}$</div>
+              <div>{cartItem.price / 100} PLN each,</div>
+              <div>total: {(cartItem.price / 100) * cartItem.count} PLN</div>
               <ItemControlElement {...cartItem} />
             </div>
           </li>
@@ -111,7 +111,7 @@ const CartSummary = () => {
           <span className="font-bold">{totalCount}</span>
         </p>
         <p>
-          Total cost: <span className="font-bold">{totalPrice}$</span>
+          Total cost: <span className="font-bold">{totalPrice / 100} PLN</span>
         </p>
         <button
           onClick={removeAllItems}

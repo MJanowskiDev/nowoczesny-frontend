@@ -16,14 +16,12 @@ const PaginationPage = ({
   baseLink,
 }: PageProps): JSX.Element => {
   return (
-    <div>
-      <Pagination
-        totalItems={totalProducts}
-        currentPage={currentPage}
-        itemsPerPage={perPage}
-        renderPageLink={(page) => `/${baseLink}/${page}`}
-      />
-    </div>
+    <Pagination
+      totalItems={totalProducts}
+      currentPage={currentPage}
+      itemsPerPage={perPage}
+      renderPageLink={(page) => `/${baseLink}/${page}`}
+    />
   );
 };
 

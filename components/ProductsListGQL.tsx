@@ -8,7 +8,7 @@ interface ProductsListProps {
 
 export const ProductsListGQL = ({ data, baseLink }: ProductsListProps) => {
   return (
-    <div className="flex flex-wrap justify-center">
+    <div className="flex flex-wrap   justify-center">
       {data.products.map((element) => (
         <ProductCard
           key={element.id}
@@ -16,8 +16,9 @@ export const ProductsListGQL = ({ data, baseLink }: ProductsListProps) => {
             id: element.id,
             slug: element.slug,
             title: element.name,
-            description: element.name,
+            description: "",
             image: element.images[0].url,
+            price: element.price,
           }}
           link={baseLink}
         />

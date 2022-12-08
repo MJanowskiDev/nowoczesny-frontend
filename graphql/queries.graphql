@@ -41,6 +41,7 @@ query ProductsWithPaginationQuery($limit: Int!, $offset: Int!) {
     slug
     name
     price
+    description
     images(first: 1) {
       url
     }

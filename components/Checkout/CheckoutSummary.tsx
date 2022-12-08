@@ -7,7 +7,9 @@ export const CheckoutSummary = () => {
     <div className="bg-gray-100/50 dark:bg-gray-900 dark:text-white py-12 md:py-24">
       <div className="mx-auto max-w-lg px-4 lg:px-8">
         <div className="mt-8">
-          <p className="text-2xl font-medium tracking-tight">${totalPrice}</p>
+          <p className="text-2xl font-medium tracking-tight">
+            PLN {totalPrice / 100}
+          </p>
           <p className="mt-1 text-sm text-gray-500">For the purchase of</p>
         </div>
 
@@ -38,7 +40,7 @@ export const CheckoutSummary = () => {
 
                   <div>
                     <p className="text-sm">
-                      ${item.price}
+                      PLN {item.price / 100}
                       <small className="text-gray-500">x{item.count}</small>
                     </p>
                   </div>
