@@ -9,7 +9,7 @@ const OrderDetailsPage = () => {
 
   return (
     <div>
-      <h1>Order details page</h1>
+      <h1 className="text-2xl py-4 font-medium">Order details</h1>
       <OrderDetails orderId={orderId.toString()} />
     </div>
   );
