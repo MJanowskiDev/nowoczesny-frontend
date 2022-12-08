@@ -15,6 +15,7 @@ export const ProductsList = ({ data, link }: ProductsListProps) => {
             slug: element.slug,
             id: element.id,
             title: element.title,
+            price: element.price,
             description: element.description,
             image: element.image,
           }}
