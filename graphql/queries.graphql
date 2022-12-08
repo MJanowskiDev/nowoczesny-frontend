@@ -109,6 +109,12 @@ query GetOrdersByUser($id: ID!) {
     id
     orderStatus
     total
+    orderItems {
+      id
+      imageUrl
+      name
+      quantity
+    }
   }
 }
 

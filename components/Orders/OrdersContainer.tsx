@@ -1,5 +1,8 @@
-import { Order } from "./Order";
-import { useGetOrdersByUserQuery } from "../../graphql/generated/gql-types";
+import { OrderCard } from "./OrderCard";
+import {
+  Order,
+  useGetOrdersByUserQuery,
+} from "../../graphql/generated/gql-types";
 
 interface OrdersContainerProps {
   userId: string;
@@ -11,16 +14,12 @@ export const OrdersContainer = ({ userId }: OrdersContainerProps) => {
 
   return (
     <div>
-      <h1>This is order container</h1>
-
-      {data?.orders.map((order) => (
-        <Order
-          key={order.id}
-          status={order.orderStatus!}
-          total={order.total / 100}
-          id={order.id}
-        />
-      ))}
+      <h1 className="text-2xl py-4 font-medium">Orders history</h1>
+      <div className="flex  flex-wrap w-full ">
+        {data?.orders.map((order) => (
+          <OrderCard key={order.id} order={order as Order} />
+        ))}
+      </div>
     </div>
   );
 };

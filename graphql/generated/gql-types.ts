@@ -12530,7 +12530,7 @@ export type GetOrdersByUserQueryVariables = Exact<{
 }>;
 
 
-export type GetOrdersByUserQuery = { __typename?: 'Query', orders: Array<{ __typename?: 'Order', createdAt: any, email?: string | null, id: string, orderStatus?: OrderStatus | null, total: number }> };
+export type GetOrdersByUserQuery = { __typename?: 'Query', orders: Array<{ __typename?: 'Order', createdAt: any, email?: string | null, id: string, orderStatus?: OrderStatus | null, total: number, orderItems: Array<{ __typename?: 'OrderItem', id: string, imageUrl?: string | null, name: string, quantity: number }> }> };
 
 export type GetOrderDetailsQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -13214,6 +13214,12 @@ export const GetOrdersByUserDocument = gql`
     id
     orderStatus
     total
+    orderItems {
+      id
+      imageUrl
+      name
+      quantity
+    }
   }
 }
     `;
