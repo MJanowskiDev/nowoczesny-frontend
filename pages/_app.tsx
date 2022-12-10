@@ -12,14 +12,28 @@ import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "../graphql/apolloClient";
 
 import "../i18";
-import { ClerkProvider } from "@clerk/nextjs";
+import {
+  ClerkProvider,
+  RedirectToSignIn,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 import { useRouter } from "next/router";
 const client = new QueryClient();
+
+const publicPages: string[] = [
+  "/",
+  "/about",
+  "/sign-in/[[...index]]",
+  "/sign-up/[[...index]]",
+  "/products-ssg/[page]",
+  "/products-ssg/product/[slug]",
+];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
 
-  const isPubliPath = ["/"].includes(pathname);
+  const isPublicPage = publicPages.includes(pathname);
   return (
     <ClerkProvider {...pageProps}>
       <ApolloProvider client={apolloClient}>
@@ -27,12 +41,16 @@ function MyApp({ Component, pageProps }: AppProps) {
           <CartStateContextProvider>
             <DefaultSeo {...DefaultSeoConfig} />
             <Layout>
-              <Component {...pageProps} />
-              {/* {!isPubliPath && (
-                  <SignedOut>
-                    <RedirectToSignIn />
-                  </SignedOut>
-                )} */}
+              {isPublicPage ? (
+                <Component {...pageProps} />
+              ) : (
+                <>
+                  <SignedIn>
+                    <Component {...pageProps} />
+                  </SignedIn>
+                  <SignedOut>{<RedirectToSignIn />}</SignedOut>
+                </>
+              )}
             </Layout>
           </CartStateContextProvider>
         </QueryClientProvider>

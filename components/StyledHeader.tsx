@@ -64,15 +64,15 @@ const ActionList = ({ onBurgerClickHandle }: ActionListProps) => {
           <CartIcon />
         </li>
       )}
+
+      <li>
+        <UserClerkButton />
+      </li>
       <li>
         <ThemeToggler />
       </li>
       <li>
         <BurgerButton onClickHandle={onBurgerClickHandle} />
-      </li>
-
-      <li>
-        <UserClerkButton />
       </li>
     </ul>
   );

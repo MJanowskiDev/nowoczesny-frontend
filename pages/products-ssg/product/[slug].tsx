@@ -59,7 +59,7 @@ export const getStaticProps = async ({
 
   if (!data.product) return { notFound: true };
 
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  //await new Promise((resolve) => setTimeout(resolve, 5000));
   const reviewsData = await getReviews(data.product.id);
 
   return {

@@ -15,7 +15,11 @@ export const AddToCartButton = ({ item }: AddToCartButtonProps) => {
   const notAuthetnicated = !isLoaded || !isSignedIn;
 
   if (notAuthetnicated) {
-    return null;
+    return (
+      <button className="mt-4 mb-4 w-full  inline-block rounded border border-teal-600 px-12 py-3 text-sm font-medium text-teal-600 ">
+        Sign in to purchase
+      </button>
+    );
   }
 
   const debouncedCallback = debounce(() => addItem(item), 500);
