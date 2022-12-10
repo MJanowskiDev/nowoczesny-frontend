@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { useUser } from "@clerk/nextjs";
 import { useCartState } from "./CartContext";
 import { CartItem } from "./CartUtils";
 import debounce from "lodash.debounce";
@@ -10,9 +10,9 @@ interface AddToCartButtonProps {
 export const AddToCartButton = ({ item }: AddToCartButtonProps) => {
   const { addItem } = useCartState();
 
-  const { status } = useSession();
+  const { isLoaded, isSignedIn } = useUser();
 
-  const notAuthetnicated = status !== "authenticated";
+  const notAuthetnicated = !isLoaded || !isSignedIn;
 
   if (notAuthetnicated) {
     return null;

@@ -12512,7 +12512,7 @@ export type UpdateCartMutationVariables = Exact<{
 export type UpdateCartMutation = { __typename?: 'Mutation', updateCartItem?: { __typename?: 'CartItem', id: string, count: number } | null, publishCartItem?: { __typename?: 'CartItem', stage: Stage } | null };
 
 export type ClearCartMutationVariables = Exact<{
-  id: Scalars['ID'];
+  userUUID: Scalars['String'];
 }>;
 
 
@@ -12521,7 +12521,7 @@ export type ClearCartMutation = { __typename?: 'Mutation', deleteManyCartItemsCo
 export type AddItemToCartMutationVariables = Exact<{
   count: Scalars['Int'];
   id: Scalars['ID'];
-  userUUID: Scalars['ID'];
+  userUUID: Scalars['String'];
 }>;
 
 
@@ -12533,7 +12533,6 @@ export type CreatePaidOrderMutationVariables = Exact<{
   userUUID: Scalars['String'];
   create?: InputMaybe<Array<OrderItemCreateInput> | OrderItemCreateInput>;
   orderStatus: OrderStatus;
-  id: Scalars['ID'];
 }>;
 
 
@@ -12602,14 +12601,14 @@ export type GetAccountByEmailQueryVariables = Exact<{
 export type GetAccountByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, email: string, password: string } | null };
 
 export type GetCartItemsQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['String'];
 }>;
 
 
 export type GetCartItemsQuery = { __typename?: 'Query', cartItems: Array<{ __typename?: 'CartItem', id: string, count: number, product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, images: Array<{ __typename?: 'Asset', url: string }> } | null }> };
 
 export type GetOrdersByUserQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['String'];
 }>;
 
 
@@ -12805,8 +12804,8 @@ export type UpdateCartMutationHookResult = ReturnType<typeof useUpdateCartMutati
 export type UpdateCartMutationResult = Apollo.MutationResult<UpdateCartMutation>;
 export type UpdateCartMutationOptions = Apollo.BaseMutationOptions<UpdateCartMutation, UpdateCartMutationVariables>;
 export const ClearCartDocument = gql`
-    mutation ClearCart($id: ID!) {
-  deleteManyCartItemsConnection(where: {account: {id: $id}}) {
+    mutation ClearCart($userUUID: String!) {
+  deleteManyCartItemsConnection(where: {userUUID: $userUUID}) {
     aggregate {
       count
     }
@@ -12828,7 +12827,7 @@ export type ClearCartMutationFn = Apollo.MutationFunction<ClearCartMutation, Cle
  * @example
  * const [clearCartMutation, { data, loading, error }] = useClearCartMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      userUUID: // value for 'userUUID'
  *   },
  * });
  */
@@ -12840,9 +12839,9 @@ export type ClearCartMutationHookResult = ReturnType<typeof useClearCartMutation
 export type ClearCartMutationResult = Apollo.MutationResult<ClearCartMutation>;
 export type ClearCartMutationOptions = Apollo.BaseMutationOptions<ClearCartMutation, ClearCartMutationVariables>;
 export const AddItemToCartDocument = gql`
-    mutation addItemToCart($count: Int!, $id: ID!, $userUUID: ID!) {
+    mutation addItemToCart($count: Int!, $id: ID!, $userUUID: String!) {
   createCartItem(
-    data: {count: $count, product: {connect: {id: $id}}, account: {connect: {id: $userUUID}}}
+    data: {count: $count, product: {connect: {id: $id}}, userUUID: $userUUID}
   ) {
     count
   }
@@ -12877,9 +12876,9 @@ export type AddItemToCartMutationHookResult = ReturnType<typeof useAddItemToCart
 export type AddItemToCartMutationResult = Apollo.MutationResult<AddItemToCartMutation>;
 export type AddItemToCartMutationOptions = Apollo.BaseMutationOptions<AddItemToCartMutation, AddItemToCartMutationVariables>;
 export const CreatePaidOrderDocument = gql`
-    mutation CreatePaidOrder($stripeCheckoutId: String!, $total: Int!, $userUUID: String!, $create: [OrderItemCreateInput!], $orderStatus: OrderStatus!, $id: ID!) {
+    mutation CreatePaidOrder($stripeCheckoutId: String!, $total: Int!, $userUUID: String!, $create: [OrderItemCreateInput!], $orderStatus: OrderStatus!) {
   createOrder(
-    data: {total: $total, stripeCheckoutId: $stripeCheckoutId, userUUID: $userUUID, orderItems: {create: $create}, orderStatus: $orderStatus, account: {connect: {id: $id}}}
+    data: {total: $total, stripeCheckoutId: $stripeCheckoutId, userUUID: $userUUID, orderItems: {create: $create}, orderStatus: $orderStatus}
   ) {
     id
     orderItems {
@@ -12908,7 +12907,6 @@ export type CreatePaidOrderMutationFn = Apollo.MutationFunction<CreatePaidOrderM
  *      userUUID: // value for 'userUUID'
  *      create: // value for 'create'
  *      orderStatus: // value for 'orderStatus'
- *      id: // value for 'id'
  *   },
  * });
  */
@@ -13245,8 +13243,8 @@ export type GetAccountByEmailQueryHookResult = ReturnType<typeof useGetAccountBy
 export type GetAccountByEmailLazyQueryHookResult = ReturnType<typeof useGetAccountByEmailLazyQuery>;
 export type GetAccountByEmailQueryResult = Apollo.QueryResult<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>;
 export const GetCartItemsDocument = gql`
-    query GetCartItems($id: ID!) {
-  cartItems(where: {account: {id: $id}}, stage: DRAFT) {
+    query GetCartItems($id: String!) {
+  cartItems(where: {userUUID: $id}, stage: DRAFT) {
     id
     count
     product {
@@ -13291,8 +13289,8 @@ export type GetCartItemsQueryHookResult = ReturnType<typeof useGetCartItemsQuery
 export type GetCartItemsLazyQueryHookResult = ReturnType<typeof useGetCartItemsLazyQuery>;
 export type GetCartItemsQueryResult = Apollo.QueryResult<GetCartItemsQuery, GetCartItemsQueryVariables>;
 export const GetOrdersByUserDocument = gql`
-    query GetOrdersByUser($id: ID!) {
-  orders(where: {account: {id: $id}}, stage: DRAFT) {
+    query GetOrdersByUser($id: String!) {
+  orders(where: {userUUID: $id}, stage: DRAFT) {
     createdAt
     email
     id

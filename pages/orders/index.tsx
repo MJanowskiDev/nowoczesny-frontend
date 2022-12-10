@@ -1,9 +1,9 @@
-import { useSession } from "next-auth/react";
+import { useAuth } from "@clerk/nextjs";
 import { OrdersContainer } from "../../components/Orders/OrdersContainer";
 
 const OrdersPage = () => {
-  const session = useSession();
-  const userId = session?.data?.user.id;
+  const { userId } = useAuth();
+
   return (
     <div>{userId ? <OrdersContainer userId={userId} /> : <p>No user</p>}</div>
   );

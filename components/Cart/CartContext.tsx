@@ -1,4 +1,5 @@
-import { useSession } from "next-auth/react";
+import { useAuth } from "@clerk/nextjs";
+
 import { createContext, ReactNode, useContext, useEffect } from "react";
 
 import { useGetCartItemsQuery } from "../../graphql/generated/gql-types";
@@ -20,8 +21,8 @@ export const CartStateContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const session = useSession();
-  const userUUID = session.data?.user.id;
+  const { userId } = useAuth();
+  const userUUID = userId;
 
   useEffect(() => {
     if (userUUID) {
@@ -30,7 +31,7 @@ export const CartStateContextProvider = ({
   }, [userUUID]);
 
   const { data } = useGetCartItemsQuery({
-    variables: { id: userUUID! },
+    variables: { id: userId! },
   });
 
   const cartItems =

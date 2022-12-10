@@ -33,20 +33,21 @@ mutation UpdateCart($count: Int!, $id: ID!) {
   }
 }
 
-mutation ClearCart($id: ID!) {
-  deleteManyCartItemsConnection(where: { account: { id: $id } }) {
+mutation ClearCart($userUUID: String!) {
+  deleteManyCartItemsConnection(where: { userUUID: $userUUID }) {
     aggregate {
       count
     }
   }
 }
 
-mutation addItemToCart($count: Int!, $id: ID!, $userUUID: ID!) {
+mutation addItemToCart($count: Int!, $id: ID!, $userUUID: String!) {
   createCartItem(
     data: {
       count: $count
       product: { connect: { id: $id } }
-      account: { connect: { id: $userUUID } }
+      userUUID: $userUUID
+      # account: { connect: { id: $userUUID } }
     }
   ) {
     count
@@ -59,7 +60,6 @@ mutation CreatePaidOrder(
   $userUUID: String!
   $create: [OrderItemCreateInput!]
   $orderStatus: OrderStatus!
-  $id: ID!
 ) {
   createOrder(
     data: {
@@ -68,7 +68,7 @@ mutation CreatePaidOrder(
       userUUID: $userUUID
       orderItems: { create: $create }
       orderStatus: $orderStatus
-      account: { connect: { id: $id } }
+      # account: { connect: { id: $id } }
     }
   ) {
     id

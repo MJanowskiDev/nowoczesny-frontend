@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ThemeToggler } from "./ThemeToggler";
 import { CartIcon } from "./Cart/CartIcon";
 import { useState } from "react";
-import { LoginLogoutButton } from "./UI/LoginLogoutButton";
 import UserClerkButton from "./UI/UserClerkButton";
 import { useUser } from "@clerk/nextjs";
 
@@ -71,9 +70,7 @@ const ActionList = ({ onBurgerClickHandle }: ActionListProps) => {
       <li>
         <BurgerButton onClickHandle={onBurgerClickHandle} />
       </li>
-      <li>
-        <LoginLogoutButton />
-      </li>
+
       <li>
         <UserClerkButton />
       </li>

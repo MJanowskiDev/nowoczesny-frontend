@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { useUser } from "@clerk/nextjs";
 import { ProductReviewForm } from "./ProductReviewForm";
 import { ProductReviewList } from "./ProductReviewList";
 
@@ -8,12 +8,11 @@ interface ProductReviewContainer {
 export const ProductReviewContainer = ({
   productSlug,
 }: ProductReviewContainer) => {
-  const { status } = useSession();
+  const { isLoaded, isSignedIn } = useUser();
+  const authenticated = isLoaded && isSignedIn;
   return (
     <div>
-      {status === "authenticated" && (
-        <ProductReviewForm productSlug={productSlug} />
-      )}
+      {authenticated && <ProductReviewForm productSlug={productSlug} />}
       <ProductReviewList productSlug={productSlug} />
     </div>
   );
