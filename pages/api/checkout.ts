@@ -40,16 +40,12 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const body = req.body as {
-    userUUID: string;
-  };
-
   const userCart = await apolloClient.query<
     GetCartItemsQuery,
     GetCartItemsQueryVariables
   >({
     query: GetCartItemsDocument,
-    variables: { id: body.userUUID },
+    variables: { id: userId! },
   });
 
   const productList = userCart.data?.cartItems;
@@ -103,7 +99,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
       variables: {
         stripeCheckoutId: stripeCheckoutSession.id,
         total: stripeCheckoutSession.amount_total || 0,
-        userUUID: body.userUUID,
+        userUUID: userId!,
         orderStatus: OrderStatus.InProgress,
         create: productList.map((cartItem) => {
           return {

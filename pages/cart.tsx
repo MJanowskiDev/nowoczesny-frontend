@@ -78,7 +78,7 @@ const CartContent = () => {
 };
 
 const CartSummary = () => {
-  const { removeAllItems, totalCount, totalPrice, userUUID } = useCartState();
+  const { removeAllItems, totalCount, totalPrice } = useCartState();
   const [payInProgress, setPayInProgress] = useState(false);
 
   const pay = async () => {
@@ -98,11 +98,8 @@ const CartSummary = () => {
         headers: {
           "Content-Type": "application/json",
         },
-
-        body: JSON.stringify({ userUUID: userUUID }),
       });
 
-      console.log("userUUID", userUUID);
       const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
         await res.json();
 
