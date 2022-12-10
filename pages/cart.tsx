@@ -4,10 +4,6 @@ import { useCartState } from "../components/Cart/CartContext";
 import { ItemControlElement } from "../components/Cart/ItemControlElement";
 import { RemoveIcon } from "../components/UI/Icons";
 
-import Stripe from "stripe";
-import { loadStripe } from "@stripe/stripe-js";
-import { useState } from "react";
-
 const ProductCartIsEmpty = () => (
   <div className="flex justify-center">
     <div>
@@ -79,36 +75,6 @@ const CartContent = () => {
 
 const CartSummary = () => {
   const { removeAllItems, totalCount, totalPrice } = useCartState();
-  const [payInProgress, setPayInProgress] = useState(false);
-
-  const pay = async () => {
-    try {
-      setPayInProgress(true);
-      const stripe = await loadStripe(
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-      );
-
-      if (!stripe) {
-        throw new Error("Problem with stripe ");
-        setPayInProgress(false);
-      }
-
-      const res = await fetch("/api/checkout", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
-        await res.json();
-
-      await stripe.redirectToCheckout({ sessionId: session.id });
-      setPayInProgress(false);
-    } catch (error) {
-      setPayInProgress(false);
-    }
-  };
 
   return (
     <div className="flex h-full flex-col justify-between items-end">
@@ -138,14 +104,6 @@ const CartSummary = () => {
             Checkout
           </a>
         </Link>
-
-        <button
-          disabled={payInProgress}
-          onClick={pay}
-          className="border border-teal-600 rounded-md px-4 py-2 hover:bg-teal-300/30"
-        >
-          Checkout with Stripe
-        </button>
       </div>
     </div>
   );
