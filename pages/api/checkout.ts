@@ -23,8 +23,6 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
 
   const { userId } = getAuth(req);
 
-  console.log(getAuth(req));
-
   if (!userId) {
     res.status(401).json({ message: "no user Id", userId });
   }
