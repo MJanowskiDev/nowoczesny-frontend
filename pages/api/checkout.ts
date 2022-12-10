@@ -12,7 +12,10 @@ import {
   GetCartItemsDocument,
 } from "../../graphql/generated/gql-types";
 
+import { CheckoutFormData } from "../../components/Checkout/CheckoutForm";
+
 import { getAuth } from "@clerk/nextjs/server";
+import { bodyStreamToNodeStream } from "next/dist/server/body-streams";
 
 const checkoutHandler: NextApiHandler = async (req, res) => {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
@@ -39,6 +42,8 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
     res.status(500).json({ messge: "Missing stripe secret key!" });
     return;
   }
+
+  const shipment: CheckoutFormData = req.body.formData;
 
   const userCart = await apolloClient.query<
     GetCartItemsQuery,
@@ -100,6 +105,17 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
         stripeCheckoutId: stripeCheckoutSession.id,
         total: stripeCheckoutSession.amount_total || 0,
         userUUID: userId!,
+        shipment: {
+          firstName: shipment.firstName,
+          lastName: shipment.lastName,
+          email: shipment.email,
+          phone: shipment.phone,
+          postal: shipment.postalCode,
+          street: shipment.streetAddres,
+          country: shipment.country,
+          city: shipment.city,
+          userUUID: userId!,
+        },
         orderStatus: OrderStatus.InProgress,
         create: productList.map((cartItem) => {
           return {

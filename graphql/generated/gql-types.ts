@@ -3554,6 +3554,8 @@ export type Mutation = {
   createReview?: Maybe<Review>;
   /** Create one scheduledRelease */
   createScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Create one shipment */
+  createShipment?: Maybe<Shipment>;
   /** Delete one account from _all_ existing stages. Returns deleted document. */
   deleteAccount?: Maybe<Account>;
   /** Delete one asset from _all_ existing stages. Returns deleted document. */
@@ -3657,6 +3659,13 @@ export type Mutation = {
   deleteManyReviews: BatchPayload;
   /** Delete many Review documents, return deleted documents */
   deleteManyReviewsConnection: ReviewConnection;
+  /**
+   * Delete many Shipment documents
+   * @deprecated Please use the new paginated many mutation (deleteManyShipmentsConnection)
+   */
+  deleteManyShipments: BatchPayload;
+  /** Delete many Shipment documents, return deleted documents */
+  deleteManyShipmentsConnection: ShipmentConnection;
   /** Delete one order from _all_ existing stages. Returns deleted document. */
   deleteOrder?: Maybe<Order>;
   /** Delete one orderItem from _all_ existing stages. Returns deleted document. */
@@ -3675,6 +3684,8 @@ export type Mutation = {
   deleteScheduledOperation?: Maybe<ScheduledOperation>;
   /** Delete one scheduledRelease from _all_ existing stages. Returns deleted document. */
   deleteScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Delete one shipment from _all_ existing stages. Returns deleted document. */
+  deleteShipment?: Maybe<Shipment>;
   /** Publish one account */
   publishAccount?: Maybe<Account>;
   /** Publish one asset */
@@ -3778,6 +3789,13 @@ export type Mutation = {
   publishManyReviews: BatchPayload;
   /** Publish many Review documents */
   publishManyReviewsConnection: ReviewConnection;
+  /**
+   * Publish many Shipment documents
+   * @deprecated Please use the new paginated many mutation (publishManyShipmentsConnection)
+   */
+  publishManyShipments: BatchPayload;
+  /** Publish many Shipment documents */
+  publishManyShipmentsConnection: ShipmentConnection;
   /** Publish one order */
   publishOrder?: Maybe<Order>;
   /** Publish one orderItem */
@@ -3792,6 +3810,8 @@ export type Mutation = {
   publishProductSizeVariant?: Maybe<ProductSizeVariant>;
   /** Publish one review */
   publishReview?: Maybe<Review>;
+  /** Publish one shipment */
+  publishShipment?: Maybe<Shipment>;
   /** Schedule to publish one account */
   schedulePublishAccount?: Maybe<Account>;
   /** Schedule to publish one asset */
@@ -3818,6 +3838,8 @@ export type Mutation = {
   schedulePublishProductSizeVariant?: Maybe<ProductSizeVariant>;
   /** Schedule to publish one review */
   schedulePublishReview?: Maybe<Review>;
+  /** Schedule to publish one shipment */
+  schedulePublishShipment?: Maybe<Shipment>;
   /** Unpublish one account from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishAccount?: Maybe<Account>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3844,6 +3866,8 @@ export type Mutation = {
   scheduleUnpublishProductSizeVariant?: Maybe<ProductSizeVariant>;
   /** Unpublish one review from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishReview?: Maybe<Review>;
+  /** Unpublish one shipment from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishShipment?: Maybe<Shipment>;
   /** Unpublish one account from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishAccount?: Maybe<Account>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3947,6 +3971,13 @@ export type Mutation = {
   unpublishManyReviews: BatchPayload;
   /** Find many Review documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyReviewsConnection: ReviewConnection;
+  /**
+   * Unpublish many Shipment documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyShipmentsConnection)
+   */
+  unpublishManyShipments: BatchPayload;
+  /** Find many Shipment documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyShipmentsConnection: ShipmentConnection;
   /** Unpublish one order from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishOrder?: Maybe<Order>;
   /** Unpublish one orderItem from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3961,6 +3992,8 @@ export type Mutation = {
   unpublishProductSizeVariant?: Maybe<ProductSizeVariant>;
   /** Unpublish one review from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishReview?: Maybe<Review>;
+  /** Unpublish one shipment from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishShipment?: Maybe<Shipment>;
   /** Update one account */
   updateAccount?: Maybe<Account>;
   /** Update one asset */
@@ -4064,6 +4097,13 @@ export type Mutation = {
   updateManyReviews: BatchPayload;
   /** Update many Review documents */
   updateManyReviewsConnection: ReviewConnection;
+  /**
+   * Update many shipments
+   * @deprecated Please use the new paginated many mutation (updateManyShipmentsConnection)
+   */
+  updateManyShipments: BatchPayload;
+  /** Update many Shipment documents */
+  updateManyShipmentsConnection: ShipmentConnection;
   /** Update one order */
   updateOrder?: Maybe<Order>;
   /** Update one orderItem */
@@ -4080,6 +4120,8 @@ export type Mutation = {
   updateReview?: Maybe<Review>;
   /** Update one scheduledRelease */
   updateScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Update one shipment */
+  updateShipment?: Maybe<Shipment>;
   /** Upsert one account */
   upsertAccount?: Maybe<Account>;
   /** Upsert one asset */
@@ -4106,6 +4148,8 @@ export type Mutation = {
   upsertProductSizeVariant?: Maybe<ProductSizeVariant>;
   /** Upsert one review */
   upsertReview?: Maybe<Review>;
+  /** Upsert one shipment */
+  upsertShipment?: Maybe<Shipment>;
 };
 
 
@@ -4176,6 +4220,11 @@ export type MutationCreateReviewArgs = {
 
 export type MutationCreateScheduledReleaseArgs = {
   data: ScheduledReleaseCreateInput;
+};
+
+
+export type MutationCreateShipmentArgs = {
+  data: ShipmentCreateInput;
 };
 
 
@@ -4404,6 +4453,21 @@ export type MutationDeleteManyReviewsConnectionArgs = {
 };
 
 
+export type MutationDeleteManyShipmentsArgs = {
+  where?: InputMaybe<ShipmentManyWhereInput>;
+};
+
+
+export type MutationDeleteManyShipmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ShipmentManyWhereInput>;
+};
+
+
 export type MutationDeleteOrderArgs = {
   where: OrderWhereUniqueInput;
 };
@@ -4446,6 +4510,11 @@ export type MutationDeleteScheduledOperationArgs = {
 
 export type MutationDeleteScheduledReleaseArgs = {
   where: ScheduledReleaseWhereUniqueInput;
+};
+
+
+export type MutationDeleteShipmentArgs = {
+  where: ShipmentWhereUniqueInput;
 };
 
 
@@ -4770,6 +4839,24 @@ export type MutationPublishManyReviewsConnectionArgs = {
 };
 
 
+export type MutationPublishManyShipmentsArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<ShipmentManyWhereInput>;
+};
+
+
+export type MutationPublishManyShipmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<ShipmentManyWhereInput>;
+};
+
+
 export type MutationPublishOrderArgs = {
   to?: Array<Stage>;
   where: OrderWhereUniqueInput;
@@ -4821,6 +4908,12 @@ export type MutationPublishProductSizeVariantArgs = {
 export type MutationPublishReviewArgs = {
   to?: Array<Stage>;
   where: ReviewWhereUniqueInput;
+};
+
+
+export type MutationPublishShipmentArgs = {
+  to?: Array<Stage>;
+  where: ShipmentWhereUniqueInput;
 };
 
 
@@ -4949,6 +5042,14 @@ export type MutationSchedulePublishReviewArgs = {
 };
 
 
+export type MutationSchedulePublishShipmentArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: ShipmentWhereUniqueInput;
+};
+
+
 export type MutationScheduleUnpublishAccountArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']>;
@@ -5064,6 +5165,14 @@ export type MutationScheduleUnpublishReviewArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
   where: ReviewWhereUniqueInput;
+};
+
+
+export type MutationScheduleUnpublishShipmentArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  where: ShipmentWhereUniqueInput;
 };
 
 
@@ -5371,6 +5480,24 @@ export type MutationUnpublishManyReviewsConnectionArgs = {
 };
 
 
+export type MutationUnpublishManyShipmentsArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<ShipmentManyWhereInput>;
+};
+
+
+export type MutationUnpublishManyShipmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<ShipmentManyWhereInput>;
+};
+
+
 export type MutationUnpublishOrderArgs = {
   from?: Array<Stage>;
   where: OrderWhereUniqueInput;
@@ -5418,6 +5545,12 @@ export type MutationUnpublishProductSizeVariantArgs = {
 export type MutationUnpublishReviewArgs = {
   from?: Array<Stage>;
   where: ReviewWhereUniqueInput;
+};
+
+
+export type MutationUnpublishShipmentArgs = {
+  from?: Array<Stage>;
+  where: ShipmentWhereUniqueInput;
 };
 
 
@@ -5678,6 +5811,23 @@ export type MutationUpdateManyReviewsConnectionArgs = {
 };
 
 
+export type MutationUpdateManyShipmentsArgs = {
+  data: ShipmentUpdateManyInput;
+  where?: InputMaybe<ShipmentManyWhereInput>;
+};
+
+
+export type MutationUpdateManyShipmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: ShipmentUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ShipmentManyWhereInput>;
+};
+
+
 export type MutationUpdateOrderArgs = {
   data: OrderUpdateInput;
   where: OrderWhereUniqueInput;
@@ -5723,6 +5873,12 @@ export type MutationUpdateReviewArgs = {
 export type MutationUpdateScheduledReleaseArgs = {
   data: ScheduledReleaseUpdateInput;
   where: ScheduledReleaseWhereUniqueInput;
+};
+
+
+export type MutationUpdateShipmentArgs = {
+  data: ShipmentUpdateInput;
+  where: ShipmentWhereUniqueInput;
 };
 
 
@@ -5803,6 +5959,12 @@ export type MutationUpsertReviewArgs = {
   where: ReviewWhereUniqueInput;
 };
 
+
+export type MutationUpsertShipmentArgs = {
+  upsert: ShipmentUpsertInput;
+  where: ShipmentWhereUniqueInput;
+};
+
 /** An object with an ID */
 export type Node = {
   /** The id of the object. */
@@ -5832,6 +5994,7 @@ export type Order = Node & {
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
+  shipment?: Maybe<Shipment>;
   /** System stage field */
   stage: Stage;
   stripeCheckoutId: Scalars['String'];
@@ -5901,6 +6064,12 @@ export type OrderScheduledInArgs = {
 };
 
 
+export type OrderShipmentArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
 export type OrderUpdatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
@@ -5925,10 +6094,12 @@ export type OrderConnection = {
 
 export type OrderCreateInput = {
   account?: InputMaybe<AccountCreateOneInlineInput>;
+  clbi4yn8a1kqg01uo3j72aw6c?: InputMaybe<ShipmentCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
   orderItems?: InputMaybe<OrderItemCreateManyInlineInput>;
   orderStatus?: InputMaybe<OrderStatus>;
+  shipment?: InputMaybe<ShipmentCreateOneInlineInput>;
   stripeCheckoutId: Scalars['String'];
   total: Scalars['Int'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
@@ -6755,6 +6926,7 @@ export type OrderManyWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  shipment?: InputMaybe<ShipmentWhereInput>;
   stripeCheckoutId?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   stripeCheckoutId_contains?: InputMaybe<Scalars['String']>;
@@ -6854,9 +7026,11 @@ export enum OrderStatus {
 
 export type OrderUpdateInput = {
   account?: InputMaybe<AccountUpdateOneInlineInput>;
+  clbi4yn8a1kqg01uo3j72aw6c?: InputMaybe<ShipmentUpdateManyInlineInput>;
   email?: InputMaybe<Scalars['String']>;
   orderItems?: InputMaybe<OrderItemUpdateManyInlineInput>;
   orderStatus?: InputMaybe<OrderStatus>;
+  shipment?: InputMaybe<ShipmentUpdateOneInlineInput>;
   stripeCheckoutId?: InputMaybe<Scalars['String']>;
   total?: InputMaybe<Scalars['Int']>;
   userUUID?: InputMaybe<Scalars['String']>;
@@ -7032,6 +7206,7 @@ export type OrderWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  shipment?: InputMaybe<ShipmentWhereInput>;
   stripeCheckoutId?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   stripeCheckoutId_contains?: InputMaybe<Scalars['String']>;
@@ -9726,6 +9901,14 @@ export type Query = {
   scheduledReleases: Array<ScheduledRelease>;
   /** Retrieve multiple scheduledReleases using the Relay connection interface */
   scheduledReleasesConnection: ScheduledReleaseConnection;
+  /** Retrieve a single shipment */
+  shipment?: Maybe<Shipment>;
+  /** Retrieve document version */
+  shipmentVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple shipments */
+  shipments: Array<Shipment>;
+  /** Retrieve multiple shipments using the Relay connection interface */
+  shipmentsConnection: ShipmentConnection;
   /** Retrieve a single user */
   user?: Maybe<User>;
   /** Retrieve multiple users */
@@ -10299,6 +10482,44 @@ export type QueryScheduledReleasesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<ScheduledReleaseWhereInput>;
+};
+
+
+export type QueryShipmentArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: ShipmentWhereUniqueInput;
+};
+
+
+export type QueryShipmentVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type QueryShipmentsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ShipmentOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<ShipmentWhereInput>;
+};
+
+
+export type QueryShipmentsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ShipmentOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<ShipmentWhereInput>;
 };
 
 
@@ -11055,7 +11276,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Account | Asset | CartItem | Category | Collection | Currency | Order | OrderItem | Product | ProductColorVariant | ProductSizeColorVariant | ProductSizeVariant | Review;
+export type ScheduledOperationAffectedDocument = Account | Asset | CartItem | Category | Collection | Currency | Order | OrderItem | Product | ProductColorVariant | ProductSizeColorVariant | ProductSizeVariant | Review | Shipment;
 
 export type ScheduledOperationConnectInput = {
   /** Allow to specify document position in list of connected documents, will default to appending at end of list */
@@ -11970,6 +12191,801 @@ export type ScheduledReleaseWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+export type Shipment = Node & {
+  __typename?: 'Shipment';
+  city: Scalars['String'];
+  country: Scalars['String'];
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** Get the document in other stages */
+  documentInStages: Array<Shipment>;
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  /** List of Shipment versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID'];
+  lastName: Scalars['String'];
+  order?: Maybe<Order>;
+  phone?: Maybe<Scalars['String']>;
+  postal: Scalars['String'];
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  street: Scalars['String'];
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+  userUUID: Scalars['String'];
+};
+
+
+export type ShipmentCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShipmentDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+
+export type ShipmentHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+export type ShipmentOrderArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShipmentPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShipmentScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+export type ShipmentUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type ShipmentConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: ShipmentWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type ShipmentConnection = {
+  __typename?: 'ShipmentConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<ShipmentEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type ShipmentCreateInput = {
+  city: Scalars['String'];
+  clbi5lofc1ho101t6dn8neoio?: InputMaybe<OrderCreateManyInlineInput>;
+  country: Scalars['String'];
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  order?: InputMaybe<OrderCreateOneInlineInput>;
+  phone?: InputMaybe<Scalars['String']>;
+  postal: Scalars['String'];
+  street: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  userUUID: Scalars['String'];
+};
+
+export type ShipmentCreateManyInlineInput = {
+  /** Connect multiple existing Shipment documents */
+  connect?: InputMaybe<Array<ShipmentWhereUniqueInput>>;
+  /** Create and connect multiple existing Shipment documents */
+  create?: InputMaybe<Array<ShipmentCreateInput>>;
+};
+
+export type ShipmentCreateOneInlineInput = {
+  /** Connect one existing Shipment document */
+  connect?: InputMaybe<ShipmentWhereUniqueInput>;
+  /** Create and connect one Shipment document */
+  create?: InputMaybe<ShipmentCreateInput>;
+};
+
+/** An edge in a connection. */
+export type ShipmentEdge = {
+  __typename?: 'ShipmentEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Shipment;
+};
+
+/** Identifies documents */
+export type ShipmentManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShipmentWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShipmentWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShipmentWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  city_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  city_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  city_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  city_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  city_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  city_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  city_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  city_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  city_starts_with?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  country_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  country_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  country_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  country_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  country_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  country_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  country_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  country_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  country_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ShipmentWhereStageInput>;
+  documentInStages_none?: InputMaybe<ShipmentWhereStageInput>;
+  documentInStages_some?: InputMaybe<ShipmentWhereStageInput>;
+  email?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  email_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  email_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  email_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  email_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  email_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  email_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  email_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  email_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  email_starts_with?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  firstName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  firstName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  firstName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  firstName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  firstName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  firstName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  firstName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  firstName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  firstName_starts_with?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  lastName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  lastName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  lastName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  lastName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  lastName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  lastName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  lastName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  lastName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  lastName_starts_with?: InputMaybe<Scalars['String']>;
+  order?: InputMaybe<OrderWhereInput>;
+  phone?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  phone_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  phone_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  phone_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  phone_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  phone_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  phone_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  phone_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  phone_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  phone_starts_with?: InputMaybe<Scalars['String']>;
+  postal?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  postal_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  postal_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  postal_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  postal_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  postal_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  postal_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  postal_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  postal_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  postal_starts_with?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  street?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  street_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  street_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  street_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  street_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  street_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  street_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  street_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  street_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  street_starts_with?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+  userUUID?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  userUUID_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  userUUID_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  userUUID_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  userUUID_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  userUUID_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  userUUID_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  userUUID_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  userUUID_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  userUUID_starts_with?: InputMaybe<Scalars['String']>;
+};
+
+export enum ShipmentOrderByInput {
+  CityAsc = 'city_ASC',
+  CityDesc = 'city_DESC',
+  CountryAsc = 'country_ASC',
+  CountryDesc = 'country_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  EmailAsc = 'email_ASC',
+  EmailDesc = 'email_DESC',
+  FirstNameAsc = 'firstName_ASC',
+  FirstNameDesc = 'firstName_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  LastNameAsc = 'lastName_ASC',
+  LastNameDesc = 'lastName_DESC',
+  PhoneAsc = 'phone_ASC',
+  PhoneDesc = 'phone_DESC',
+  PostalAsc = 'postal_ASC',
+  PostalDesc = 'postal_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  StreetAsc = 'street_ASC',
+  StreetDesc = 'street_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC',
+  UserUuidAsc = 'userUUID_ASC',
+  UserUuidDesc = 'userUUID_DESC'
+}
+
+export type ShipmentUpdateInput = {
+  city?: InputMaybe<Scalars['String']>;
+  clbi5lofc1ho101t6dn8neoio?: InputMaybe<OrderUpdateManyInlineInput>;
+  country?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  order?: InputMaybe<OrderUpdateOneInlineInput>;
+  phone?: InputMaybe<Scalars['String']>;
+  postal?: InputMaybe<Scalars['String']>;
+  street?: InputMaybe<Scalars['String']>;
+  userUUID?: InputMaybe<Scalars['String']>;
+};
+
+export type ShipmentUpdateManyInlineInput = {
+  /** Connect multiple existing Shipment documents */
+  connect?: InputMaybe<Array<ShipmentConnectInput>>;
+  /** Create and connect multiple Shipment documents */
+  create?: InputMaybe<Array<ShipmentCreateInput>>;
+  /** Delete multiple Shipment documents */
+  delete?: InputMaybe<Array<ShipmentWhereUniqueInput>>;
+  /** Disconnect multiple Shipment documents */
+  disconnect?: InputMaybe<Array<ShipmentWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Shipment documents */
+  set?: InputMaybe<Array<ShipmentWhereUniqueInput>>;
+  /** Update multiple Shipment documents */
+  update?: InputMaybe<Array<ShipmentUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Shipment documents */
+  upsert?: InputMaybe<Array<ShipmentUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type ShipmentUpdateManyInput = {
+  city?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']>;
+  postal?: InputMaybe<Scalars['String']>;
+  street?: InputMaybe<Scalars['String']>;
+  userUUID?: InputMaybe<Scalars['String']>;
+};
+
+export type ShipmentUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: ShipmentUpdateManyInput;
+  /** Document search */
+  where: ShipmentWhereInput;
+};
+
+export type ShipmentUpdateOneInlineInput = {
+  /** Connect existing Shipment document */
+  connect?: InputMaybe<ShipmentWhereUniqueInput>;
+  /** Create and connect one Shipment document */
+  create?: InputMaybe<ShipmentCreateInput>;
+  /** Delete currently connected Shipment document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected Shipment document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single Shipment document */
+  update?: InputMaybe<ShipmentUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Shipment document */
+  upsert?: InputMaybe<ShipmentUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ShipmentUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShipmentUpdateInput;
+  /** Unique document search */
+  where: ShipmentWhereUniqueInput;
+};
+
+export type ShipmentUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShipmentCreateInput;
+  /** Update document if it exists */
+  update: ShipmentUpdateInput;
+};
+
+export type ShipmentUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShipmentUpsertInput;
+  /** Unique document search */
+  where: ShipmentWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type ShipmentWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Identifies documents */
+export type ShipmentWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShipmentWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShipmentWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShipmentWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  city_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  city_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  city_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  city_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  city_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  city_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  city_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  city_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  city_starts_with?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  country_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  country_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  country_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  country_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  country_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  country_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  country_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  country_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  country_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ShipmentWhereStageInput>;
+  documentInStages_none?: InputMaybe<ShipmentWhereStageInput>;
+  documentInStages_some?: InputMaybe<ShipmentWhereStageInput>;
+  email?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  email_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  email_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  email_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  email_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  email_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  email_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  email_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  email_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  email_starts_with?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  firstName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  firstName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  firstName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  firstName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  firstName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  firstName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  firstName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  firstName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  firstName_starts_with?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  lastName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  lastName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  lastName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  lastName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  lastName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  lastName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  lastName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  lastName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  lastName_starts_with?: InputMaybe<Scalars['String']>;
+  order?: InputMaybe<OrderWhereInput>;
+  phone?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  phone_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  phone_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  phone_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  phone_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  phone_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  phone_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  phone_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  phone_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  phone_starts_with?: InputMaybe<Scalars['String']>;
+  postal?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  postal_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  postal_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  postal_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  postal_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  postal_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  postal_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  postal_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  postal_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  postal_starts_with?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  street?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  street_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  street_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  street_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  street_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  street_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  street_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  street_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  street_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  street_starts_with?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+  userUUID?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  userUUID_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  userUUID_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  userUUID_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values that are not equal to given value. */
+  userUUID_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  userUUID_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  userUUID_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  userUUID_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  userUUID_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  userUUID_starts_with?: InputMaybe<Scalars['String']>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type ShipmentWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShipmentWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShipmentWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShipmentWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<ShipmentWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References Shipment record uniquely */
+export type ShipmentWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 /** Stage system enumeration */
 export enum Stage {
   /** The Draft is the default stage for all your content. */
@@ -12533,6 +13549,7 @@ export type CreatePaidOrderMutationVariables = Exact<{
   userUUID: Scalars['String'];
   create?: InputMaybe<Array<OrderItemCreateInput> | OrderItemCreateInput>;
   orderStatus: OrderStatus;
+  shipment: ShipmentCreateInput;
 }>;
 
 
@@ -12619,7 +13636,7 @@ export type GetOrderDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetOrderDetailsQuery = { __typename?: 'Query', order?: { __typename?: 'Order', id: string, createdAt: any, email?: string | null, orderStatus?: OrderStatus | null, total: number, orderItems: Array<{ __typename?: 'OrderItem', id: string, imageUrl?: string | null, name: string, productId: string, quantity: number, slug: string, total: number }> } | null };
+export type GetOrderDetailsQuery = { __typename?: 'Query', order?: { __typename?: 'Order', id: string, createdAt: any, email?: string | null, orderStatus?: OrderStatus | null, total: number, orderItems: Array<{ __typename?: 'OrderItem', id: string, imageUrl?: string | null, name: string, productId: string, quantity: number, slug: string, total: number }>, shipment?: { __typename?: 'Shipment', city: string, country: string, email: string, firstName: string, lastName: string, phone?: string | null, postal: string, street: string } | null } | null };
 
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
@@ -12876,9 +13893,9 @@ export type AddItemToCartMutationHookResult = ReturnType<typeof useAddItemToCart
 export type AddItemToCartMutationResult = Apollo.MutationResult<AddItemToCartMutation>;
 export type AddItemToCartMutationOptions = Apollo.BaseMutationOptions<AddItemToCartMutation, AddItemToCartMutationVariables>;
 export const CreatePaidOrderDocument = gql`
-    mutation CreatePaidOrder($stripeCheckoutId: String!, $total: Int!, $userUUID: String!, $create: [OrderItemCreateInput!], $orderStatus: OrderStatus!) {
+    mutation CreatePaidOrder($stripeCheckoutId: String!, $total: Int!, $userUUID: String!, $create: [OrderItemCreateInput!], $orderStatus: OrderStatus!, $shipment: ShipmentCreateInput!) {
   createOrder(
-    data: {total: $total, stripeCheckoutId: $stripeCheckoutId, userUUID: $userUUID, orderItems: {create: $create}, orderStatus: $orderStatus}
+    data: {total: $total, stripeCheckoutId: $stripeCheckoutId, userUUID: $userUUID, orderItems: {create: $create}, orderStatus: $orderStatus, shipment: {create: $shipment}}
   ) {
     id
     orderItems {
@@ -12907,6 +13924,7 @@ export type CreatePaidOrderMutationFn = Apollo.MutationFunction<CreatePaidOrderM
  *      userUUID: // value for 'userUUID'
  *      create: // value for 'create'
  *      orderStatus: // value for 'orderStatus'
+ *      shipment: // value for 'shipment'
  *   },
  * });
  */
@@ -13349,6 +14367,16 @@ export const GetOrderDetailsDocument = gql`
       quantity
       slug
       total
+    }
+    shipment {
+      city
+      country
+      email
+      firstName
+      lastName
+      phone
+      postal
+      street
     }
   }
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { object } from "yup";
 import {
   OrderItem,
   useGetOrderDetailsQuery,
@@ -12,6 +13,8 @@ export const OrderDetails = ({ orderId }: OrderDetailsProps) => {
   const { data, loading, error } = useGetOrderDetailsQuery({
     variables: { id: orderId },
   });
+
+  const shipment = data?.order?.shipment;
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -22,6 +25,22 @@ export const OrderDetails = ({ orderId }: OrderDetailsProps) => {
         <p>{data?.order?.email}</p>
 
         {data?.order?.total && <p>{data?.order?.total / 100} PLN</p>}
+
+        {shipment && (
+          <div>
+            <h1 className="text-2xl py-4 font-medium">Shipment informations</h1>
+            <p>
+              {shipment?.firstName} {shipment?.lastName}
+            </p>
+            <p>
+              {shipment?.email}, {shipment?.phone}
+            </p>
+            <p>
+              {shipment?.street}, {shipment?.postal}, {shipment?.city},{" "}
+              {shipment?.country}
+            </p>
+          </div>
+        )}
         <h1 className="text-2xl py-4 font-medium">Products</h1>
       </div>
       <div className="flex flex-wrap">

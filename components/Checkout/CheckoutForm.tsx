@@ -1,22 +1,16 @@
 import { useRef, useState } from "react";
-
 import { Input } from "../Form/Input";
 import { SubmitButton } from "../Form/SubmitButton";
 import { Select } from "../Form/Select";
 import { validateCardYearMonth } from "../../utils";
-import { Modal } from "../UI/Modal";
-
 import i18n from "../../i18";
 import { useTranslation } from "react-i18next";
-
 import { useForm } from "react-hook-form";
-
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreateOrderMutationMutation } from "../../graphql/generated/gql-types";
-import { useCartState } from "../Cart/CartContext";
-
-const STRIPE_CHECKOUT_ID = "!!stripe-checkout-id!!";
+import { useUser } from "@clerk/nextjs";
+import { loadStripe } from "@stripe/stripe-js";
+import Stripe from "stripe";
 
 yup.setLocale({
   mixed: {
@@ -31,25 +25,51 @@ const checkoutFormSchema = yup.object({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   email: yup.string().required().email(),
-  phone: yup.string().required(),
-  cardNumber: yup.string().required(),
-  cardExpirationDate: yup.string().required(),
-  cardCVC: yup.string().required(),
+  phone: yup.string(),
   country: yup.string().required(),
   postalCode: yup.string().required(),
+  streetAddres: yup.string().required(),
+  city: yup.string().required(),
 });
 
-type CheckoutFormData = yup.InferType<typeof checkoutFormSchema>;
+export type CheckoutFormData = yup.InferType<typeof checkoutFormSchema>;
 
 export const CheckoutForm = () => {
   const { i18n, t } = useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [showModal, setShowModal] = useState(false);
+  const user = useUser();
+  const [payInProgress, setPayInProgress] = useState(false);
 
-  const [createOrder, createOrderResult] = useCreateOrderMutationMutation();
+  const pay = async (formData: CheckoutFormData) => {
+    try {
+      setPayInProgress(true);
+      const stripe = await loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+      );
 
-  const cartState = useCartState();
+      if (!stripe) {
+        setPayInProgress(false);
+        throw new Error("Problem with stripe ");
+      }
+
+      const res = await fetch("/api/checkout", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ formData }),
+      });
+
+      const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
+        await res.json();
+
+      await stripe.redirectToCheckout({ sessionId: session.id });
+      setPayInProgress(false);
+    } catch (error) {
+      setPayInProgress(false);
+    }
+  };
 
   const {
     register,
@@ -58,54 +78,29 @@ export const CheckoutForm = () => {
     formState: { errors, isValid, isDirty },
   } = useForm<CheckoutFormData>({
     resolver: yupResolver(checkoutFormSchema),
+    defaultValues: {
+      firstName: user.user?.firstName || "",
+      lastName: user.user?.lastName || "",
+      email: user.user?.emailAddresses[0].emailAddress || "",
+    },
   });
 
   const onSubmit = handleSubmit(async (data) => {
     if (isValid) {
-      // await createOrder({
-      //   variables: {
-      //     order: {
-      //       email: data.email,
-      //       total: cartState.totalPrice,
-      //       stripeCheckoutId: STRIPE_CHECKOUT_ID,
-      //       orderItems: {
-      //         create: cartState.items.map((item) => ({
-      //           quantity: item.count,
-      //           total: item.price,
-      //           product: {
-      //             connect: {
-      //               id: item.id,
-      //             },
-      //           },
-      //         })),
-      //       },
-      //     },
-      //   },
-      // });
-
-      setShowModal(true);
+      await pay(data);
       reset();
     }
   });
 
   return (
     <>
-      <Modal
-        showModal={showModal}
-        closeModal={() => setShowModal(false)}
-        title={t("Success")}
-        content={
-          <div>
-            <h1>{t("Form submission succeeded!")}</h1>
-            <pre>{JSON.stringify(createOrderResult.data, null, 2)}</pre>
-          </div>
-        }
-      />
-
+      <h1 className="text-2xl py-4 font-medium">
+        {t("Customer informations")}
+      </h1>
       <form
         ref={formRef}
         onSubmit={onSubmit}
-        className="grid grid-cols-6 gap-4"
+        className="grid grid-cols-6 gap-2"
       >
         <Input<CheckoutFormData>
           wrappingElementStyle="col-span-3"
@@ -143,14 +138,14 @@ export const CheckoutForm = () => {
         />
 
         <fieldset className="col-span-6">
-          <legend className="mb-1 block text-sm ">{t("Card details")}</legend>
+          <h1 className="text-2xl py-4 font-medium">{t("Shipping details")}</h1>
 
-          <div className="-space-y-px rounded-lg  shadow-sm grid gap-4">
+          <div className="-space-y-px  grid gap-2">
             <Input<CheckoutFormData>
               register={register}
-              id="cardNumber"
+              id="streetAddres"
               type="text"
-              placeholder={t("Card number")}
+              label={t("Street Address")}
               errors={errors}
             />
 
@@ -158,9 +153,9 @@ export const CheckoutForm = () => {
               <Input<CheckoutFormData>
                 wrappingElementStyle="flex-1 pr-4"
                 register={register}
-                id="cardExpirationDate"
+                id="city"
                 type="text"
-                placeholder="MM / YY"
+                label={t("City")}
                 registerOptions={{
                   required: true,
                   validate: validateCardYearMonth,
@@ -169,53 +164,33 @@ export const CheckoutForm = () => {
               />
 
               <Input<CheckoutFormData>
-                wrappingElementStyle="flex-1"
                 register={register}
-                id="cardCVC"
+                id="postalCode"
+                label={t("ZIP/Post Code")}
                 type="text"
-                placeholder="CVC"
-                registerOptions={{
-                  required: true,
-                  validate: validateCardYearMonth,
-                }}
+                placeholder="XX-XXX"
                 errors={errors}
+                attributes={{ autoComplete: "postal-code" }}
               />
             </div>
-          </div>
-        </fieldset>
-
-        <fieldset className="col-span-6">
-          <legend className="mb-1 block text-sm ">
-            {t("Billing Address")}
-          </legend>
-
-          <div className="-space-y-px rounded-lg bg-white shadow-sm ">
             <Select<CheckoutFormData>
               register={register}
               errors={errors}
+              label={t("Country")}
               id="country"
             >
+              <option>{t("Poland")}</option>
               <option>{t("England")}</option>
               <option>{t("Scotland")}</option>
               <option>{t("France")}</option>
               <option>{t("Belgium")}</option>
               <option>{t("Japan")}</option>
             </Select>
-
-            <Input<CheckoutFormData>
-              register={register}
-              id="postalCode"
-              label={t("ZIP/Post Code")}
-              type="text"
-              placeholder="XX-XXX"
-              errors={errors}
-              attributes={{ autoComplete: "postal-code" }}
-            />
           </div>
         </fieldset>
 
         <div className="col-span-6">
-          <SubmitButton>{t("Proceed")}</SubmitButton>
+          <SubmitButton disabled={payInProgress}>{t("Proceed")}</SubmitButton>
         </div>
       </form>
     </>
