@@ -28,7 +28,7 @@ export const Product = ({ data, longDescription }: ProductProps) => {
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full  ">
       <ProductDetailsSeo product={product} />
       <div className="flex  flex-wrap sm:justify-center">
         <div className="pt-3 w-[90%] sm:w-[50%]">

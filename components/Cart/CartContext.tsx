@@ -32,6 +32,7 @@ export const CartStateContextProvider = ({
 
   const { data } = useGetCartItemsQuery({
     variables: { id: userId! },
+    skip: !userId,
   });
 
   const cartItems =
