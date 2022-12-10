@@ -3,8 +3,13 @@ import { ReactNode } from "react";
 interface SubmitButtonProps {
   children: ReactNode;
   className?: string;
+  disabled?: boolean;
 }
-export const SubmitButton = ({ children, className }: SubmitButtonProps) => {
+export const SubmitButton = ({
+  children,
+  className,
+  disabled,
+}: SubmitButtonProps) => {
   return (
     <button
       className={`${
@@ -13,6 +18,7 @@ export const SubmitButton = ({ children, className }: SubmitButtonProps) => {
           : "block w-full rounded-lg bg-teal-600 text-white   text-md p-2.5"
       }`}
       type="submit"
+      disabled={disabled}
     >
       {children}
     </button>

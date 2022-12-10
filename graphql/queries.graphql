@@ -135,5 +135,15 @@ query GetOrderDetails($id: ID!) {
       slug
       total
     }
+    shipment {
+      city
+      country
+      email
+      firstName
+      lastName
+      phone
+      postal
+      street
+    }
   }
 }

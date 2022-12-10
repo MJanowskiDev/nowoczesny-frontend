@@ -1,23 +1,16 @@
 import { useRef, useState } from "react";
-
 import { Input } from "../Form/Input";
 import { SubmitButton } from "../Form/SubmitButton";
 import { Select } from "../Form/Select";
 import { validateCardYearMonth } from "../../utils";
-import { Modal } from "../UI/Modal";
-
 import i18n from "../../i18";
 import { useTranslation } from "react-i18next";
-
 import { useForm } from "react-hook-form";
-
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreateOrderMutationMutation } from "../../graphql/generated/gql-types";
-import { useCartState } from "../Cart/CartContext";
 import { useUser } from "@clerk/nextjs";
-
-const STRIPE_CHECKOUT_ID = "!!stripe-checkout-id!!";
+import { loadStripe } from "@stripe/stripe-js";
+import Stripe from "stripe";
 
 yup.setLocale({
   mixed: {
@@ -32,27 +25,51 @@ const checkoutFormSchema = yup.object({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   email: yup.string().required().email(),
-  phone: yup.string().required(),
+  phone: yup.string(),
   country: yup.string().required(),
   postalCode: yup.string().required(),
   streetAddres: yup.string().required(),
   city: yup.string().required(),
 });
 
-type CheckoutFormData = yup.InferType<typeof checkoutFormSchema>;
+export type CheckoutFormData = yup.InferType<typeof checkoutFormSchema>;
 
 export const CheckoutForm = () => {
   const { i18n, t } = useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [showModal, setShowModal] = useState(false);
-
-  const [createOrder, createOrderResult] = useCreateOrderMutationMutation();
-
-  const cartState = useCartState();
-
   const user = useUser();
-  console.log(user);
+  const [payInProgress, setPayInProgress] = useState(false);
+
+  const pay = async (formData: CheckoutFormData) => {
+    try {
+      setPayInProgress(true);
+      const stripe = await loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+      );
+
+      if (!stripe) {
+        setPayInProgress(false);
+        throw new Error("Problem with stripe ");
+      }
+
+      const res = await fetch("/api/checkout", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ formData }),
+      });
+
+      const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
+        await res.json();
+
+      await stripe.redirectToCheckout({ sessionId: session.id });
+      setPayInProgress(false);
+    } catch (error) {
+      setPayInProgress(false);
+    }
+  };
 
   const {
     register,
@@ -70,45 +87,13 @@ export const CheckoutForm = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     if (isValid) {
-      // await createOrder({
-      //   variables: {
-      //     order: {
-      //       email: data.email,
-      //       total: cartState.totalPrice,
-      //       stripeCheckoutId: STRIPE_CHECKOUT_ID,
-      //       orderItems: {
-      //         create: cartState.items.map((item) => ({
-      //           quantity: item.count,
-      //           total: item.price,
-      //           product: {
-      //             connect: {
-      //               id: item.id,
-      //             },
-      //           },
-      //         })),
-      //       },
-      //     },
-      //   },
-      // });
-
-      setShowModal(true);
+      await pay(data);
       reset();
     }
   });
 
   return (
     <>
-      <Modal
-        showModal={showModal}
-        closeModal={() => setShowModal(false)}
-        title={t("Success")}
-        content={
-          <div>
-            <h1>{t("Form submission succeeded!")}</h1>
-            <pre>{JSON.stringify(createOrderResult.data, null, 2)}</pre>
-          </div>
-        }
-      />
       <h1 className="text-2xl py-4 font-medium">
         {t("Customer informations")}
       </h1>
@@ -205,7 +190,7 @@ export const CheckoutForm = () => {
         </fieldset>
 
         <div className="col-span-6">
-          <SubmitButton>{t("Proceed")}</SubmitButton>
+          <SubmitButton disabled={payInProgress}>{t("Proceed")}</SubmitButton>
         </div>
       </form>
     </>

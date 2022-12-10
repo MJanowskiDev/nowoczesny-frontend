@@ -60,6 +60,7 @@ mutation CreatePaidOrder(
   $userUUID: String!
   $create: [OrderItemCreateInput!]
   $orderStatus: OrderStatus!
+  $shipment: ShipmentCreateInput!
 ) {
   createOrder(
     data: {
@@ -68,7 +69,7 @@ mutation CreatePaidOrder(
       userUUID: $userUUID
       orderItems: { create: $create }
       orderStatus: $orderStatus
-      # account: { connect: { id: $id } }
+      shipment: { create: $shipment }
     }
   ) {
     id
