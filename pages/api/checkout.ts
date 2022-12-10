@@ -104,7 +104,6 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
         stripeCheckoutId: stripeCheckoutSession.id,
         total: stripeCheckoutSession.amount_total || 0,
         userUUID: body.userUUID,
-        id: body.userUUID,
         orderStatus: OrderStatus.InProgress,
         create: productList.map((cartItem) => {
           return {
