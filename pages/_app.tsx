@@ -15,6 +15,8 @@ import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 
 import "../i18";
+import { ClerkProvider, RedirectToSignIn, SignedOut } from "@clerk/nextjs";
+import { useRouter } from "next/router";
 const client = new QueryClient();
 
 function MyApp({
@@ -23,19 +25,29 @@ function MyApp({
 }: AppProps<{
   session: Session;
 }>) {
+  const { pathname } = useRouter();
+
+  const isPubliPath = ["/"].includes(pathname);
   return (
-    <SessionProvider session={session}>
-      <ApolloProvider client={apolloClient}>
-        <QueryClientProvider client={client}>
-          <CartStateContextProvider>
-            <DefaultSeo {...DefaultSeoConfig} />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </CartStateContextProvider>
-        </QueryClientProvider>
-      </ApolloProvider>
-    </SessionProvider>
+    <ClerkProvider {...pageProps}>
+      <SessionProvider session={session}>
+        <ApolloProvider client={apolloClient}>
+          <QueryClientProvider client={client}>
+            <CartStateContextProvider>
+              <DefaultSeo {...DefaultSeoConfig} />
+              <Layout>
+                <Component {...pageProps} />
+                {/* {!isPubliPath && (
+                  <SignedOut>
+                    <RedirectToSignIn />
+                  </SignedOut>
+                )} */}
+              </Layout>
+            </CartStateContextProvider>
+          </QueryClientProvider>
+        </ApolloProvider>
+      </SessionProvider>
+    </ClerkProvider>
   );
 }
 
