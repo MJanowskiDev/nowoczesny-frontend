@@ -16,7 +16,7 @@ const ProductCartIsEmpty = () => (
 );
 
 const CartPage = () => {
-  const { totalCount, totalPrice, items } = useCartState();
+  const { items } = useCartState();
   if (items.length <= 0) {
     return <ProductCartIsEmpty />;
   }

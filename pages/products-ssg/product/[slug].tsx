@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Product } from "../../../components/Product/Product";
 import { PRODUCT_TAKE_AMOUNT } from "../../../utils";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next/types";
-import { Loading } from "../../../components/Loading";
+import { Loading } from "../../../components/UI/Loading";
 
 import { serialize } from "next-mdx-remote/serialize";
 import { getProductBySlug } from "../../../lib/getProductBySlug";

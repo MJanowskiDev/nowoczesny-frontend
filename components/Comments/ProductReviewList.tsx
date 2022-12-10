@@ -1,7 +1,5 @@
-import {
-  useGetReviewsForProductSlugQuery,
-  ReviewContentFragment,
-} from "../../graphql/generated/gql-types";
+import { useGetReviewsForProductSlugQuery } from "../../graphql/generated/gql-types";
+import ErrorMessage from "../UI/ErrorMessage";
 import { ProductReviewItem } from "./ProductReviewItem";
 interface ProductReviewListProps {
   productSlug: string;
@@ -14,6 +12,10 @@ export const ProductReviewList = ({ productSlug }: ProductReviewListProps) => {
 
   if (!data?.product) {
     return null;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error.message} />;
   }
 
   if (!data.product.reviews.length) {

@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { object } from "yup";
+import { Loading } from "../UI/Loading";
 import {
   OrderItem,
   useGetOrderDetailsQuery,
 } from "../../graphql/generated/gql-types";
 import { OrderProductCard } from "./OrderProductCard";
+import ErrorMessage from "../UI/ErrorMessage";
 
 interface OrderDetailsProps {
   orderId: string;
@@ -13,6 +14,14 @@ export const OrderDetails = ({ orderId }: OrderDetailsProps) => {
   const { data, loading, error } = useGetOrderDetailsQuery({
     variables: { id: orderId },
   });
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error.message} />;
+  }
 
   const shipment = data?.order?.shipment;
   return (

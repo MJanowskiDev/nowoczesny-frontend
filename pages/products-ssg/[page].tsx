@@ -9,7 +9,6 @@ import { ProductsList } from "../../components/Product/ProductsList";
 
 import { NextSeo } from "next-seo";
 import { getProducts } from "../../lib/getProducts";
-import { serialize } from "next-mdx-remote/serialize";
 
 export const PER_PAGE = 6;
 const STATIC_PAGES = 2;
