@@ -1,7 +1,7 @@
 import assert from "assert";
 import { NextApiHandler } from "next";
 import { Stripe } from "stripe";
-import { apolloClient } from "../../graphql/apolloClient";
+import { authorizedApolloClient } from "../../graphql/apolloClient";
 import {
   CreatePaidOrderDocument,
   CreatePaidOrderMutation,
@@ -44,7 +44,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
 
   const shipment: CheckoutFormData = req.body.formData;
 
-  const userCart = await apolloClient.query<
+  const userCart = await authorizedApolloClient.query<
     GetCartItemsQuery,
     GetCartItemsQueryVariables
   >({
@@ -95,7 +95,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
   });
 
   try {
-    await apolloClient.mutate<
+    await authorizedApolloClient.mutate<
       CreatePaidOrderMutation,
       CreatePaidOrderMutationVariables
     >({
