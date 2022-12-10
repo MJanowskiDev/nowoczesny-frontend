@@ -15,7 +15,6 @@ import {
 import { CheckoutFormData } from "../../components/Checkout/CheckoutForm";
 
 import { getAuth } from "@clerk/nextjs/server";
-import { bodyStreamToNodeStream } from "next/dist/server/body-streams";
 
 const checkoutHandler: NextApiHandler = async (req, res) => {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
@@ -25,7 +24,7 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
   const { userId } = getAuth(req);
 
   if (!userId) {
-    res.status(401).json({});
+    res.status(401).json({ message: "no user Id", userId });
   }
 
   if (!cancelUrl) {
