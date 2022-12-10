@@ -104,8 +104,8 @@ export const ProductReviewForm = ({ productSlug }: ProductReviewFormProps) => {
   });
 
   return (
-    <div className="my-4">
-      <h1 className="text-5xl font-bold pb-4">Create content</h1>
+    <div className="my-4 mt-10">
+      <h1 className="text-4xl font-bold pb-4">Comment product</h1>
 
       <form className="space-y-4" onSubmit={onSubmit}>
         <Input

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { ProductGQL } from "../../../components/ProductGQL";
+import { Product } from "../../../components/Product/Product";
 import { PRODUCT_TAKE_AMOUNT } from "../../../utils";
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next/types";
 import { Loading } from "../../../components/Loading";
@@ -29,7 +29,7 @@ const ProductIdPage = ({
       <Link href={"/products-ssg"}>
         <a>Go back</a>
       </Link>
-      <ProductGQL data={data} longDescription={longDescription} />
+      <Product data={data} longDescription={longDescription} />
     </div>
   );
 };

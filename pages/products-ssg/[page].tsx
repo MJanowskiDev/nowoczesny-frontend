@@ -5,7 +5,7 @@ import {
 } from "next/types";
 
 import PaginationPage from "../../components/PaginationPage";
-import { ProductsListGQL } from "../../components/ProductsListGQL";
+import { ProductsList } from "../../components/Product/ProductsList";
 
 import { NextSeo } from "next-seo";
 import { getProducts } from "../../lib/getProducts";
@@ -30,7 +30,7 @@ const ProductsSSG = ({
         description={`About MJanowskiDev E-Commerce App products list, page ${currentPage}`}
       />
       <div>
-        <ProductsListGQL data={products} baseLink="/products-ssg/product" />
+        <ProductsList data={products} baseLink="/products-ssg/product" />
         <PaginationPage
           currentPage={currentPage}
           totalProducts={totalProducts}

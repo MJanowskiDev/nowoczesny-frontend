@@ -16,12 +16,16 @@ export const ProductReviewList = ({ productSlug }: ProductReviewListProps) => {
     return null;
   }
 
+  if (!data.product.reviews.length) {
+    return <p className="mt-10">This product has no reviews yet.</p>;
+  }
+
   return (
-    <>
-      <h1 className="text-5xl font-bold pb-4">Comments</h1>
+    <div className="mt-10">
+      <h1 className="text-4xl font-bold pb-4">Comments</h1>
       {data.product.reviews.map((review) => (
         <ProductReviewItem key={review.id} review={review} />
       ))}
-    </>
+    </div>
   );
 };

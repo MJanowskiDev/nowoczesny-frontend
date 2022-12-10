@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ProductsAPIResponse } from "../utils";
-import { AddToCartButton } from "./Cart/AddToCartButton";
-import { CartItem } from "./Cart/CartUtils";
+import { ProductsAPIResponse } from "../../utils";
+import { AddToCartButton } from "../Cart/AddToCartButton";
+import { CartItem } from "../Cart/CartUtils";
 
 interface ProductCardProps {
   data: Pick<
