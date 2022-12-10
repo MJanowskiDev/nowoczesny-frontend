@@ -15,6 +15,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateOrderMutationMutation } from "../../graphql/generated/gql-types";
 import { useCartState } from "../Cart/CartContext";
+import { useUser } from "@clerk/nextjs";
 
 const STRIPE_CHECKOUT_ID = "!!stripe-checkout-id!!";
 
@@ -32,11 +33,10 @@ const checkoutFormSchema = yup.object({
   lastName: yup.string().required(),
   email: yup.string().required().email(),
   phone: yup.string().required(),
-  cardNumber: yup.string().required(),
-  cardExpirationDate: yup.string().required(),
-  cardCVC: yup.string().required(),
   country: yup.string().required(),
   postalCode: yup.string().required(),
+  streetAddres: yup.string().required(),
+  city: yup.string().required(),
 });
 
 type CheckoutFormData = yup.InferType<typeof checkoutFormSchema>;
@@ -51,6 +51,9 @@ export const CheckoutForm = () => {
 
   const cartState = useCartState();
 
+  const user = useUser();
+  console.log(user);
+
   const {
     register,
     handleSubmit,
@@ -58,6 +61,11 @@ export const CheckoutForm = () => {
     formState: { errors, isValid, isDirty },
   } = useForm<CheckoutFormData>({
     resolver: yupResolver(checkoutFormSchema),
+    defaultValues: {
+      firstName: user.user?.firstName || "",
+      lastName: user.user?.lastName || "",
+      email: user.user?.emailAddresses[0].emailAddress || "",
+    },
   });
 
   const onSubmit = handleSubmit(async (data) => {
@@ -101,11 +109,13 @@ export const CheckoutForm = () => {
           </div>
         }
       />
-
+      <h1 className="text-2xl py-4 font-medium">
+        {t("Customer informations")}
+      </h1>
       <form
         ref={formRef}
         onSubmit={onSubmit}
-        className="grid grid-cols-6 gap-4"
+        className="grid grid-cols-6 gap-2"
       >
         <Input<CheckoutFormData>
           wrappingElementStyle="col-span-3"
@@ -143,14 +153,14 @@ export const CheckoutForm = () => {
         />
 
         <fieldset className="col-span-6">
-          <legend className="mb-1 block text-sm ">{t("Card details")}</legend>
+          <h1 className="text-2xl py-4 font-medium">{t("Shipping details")}</h1>
 
-          <div className="-space-y-px rounded-lg  shadow-sm grid gap-4">
+          <div className="-space-y-px  grid gap-2">
             <Input<CheckoutFormData>
               register={register}
-              id="cardNumber"
+              id="streetAddres"
               type="text"
-              placeholder={t("Card number")}
+              label={t("Street Address")}
               errors={errors}
             />
 
@@ -158,9 +168,9 @@ export const CheckoutForm = () => {
               <Input<CheckoutFormData>
                 wrappingElementStyle="flex-1 pr-4"
                 register={register}
-                id="cardExpirationDate"
+                id="city"
                 type="text"
-                placeholder="MM / YY"
+                label={t("City")}
                 registerOptions={{
                   required: true,
                   validate: validateCardYearMonth,
@@ -169,48 +179,28 @@ export const CheckoutForm = () => {
               />
 
               <Input<CheckoutFormData>
-                wrappingElementStyle="flex-1"
                 register={register}
-                id="cardCVC"
+                id="postalCode"
+                label={t("ZIP/Post Code")}
                 type="text"
-                placeholder="CVC"
-                registerOptions={{
-                  required: true,
-                  validate: validateCardYearMonth,
-                }}
+                placeholder="XX-XXX"
                 errors={errors}
+                attributes={{ autoComplete: "postal-code" }}
               />
             </div>
-          </div>
-        </fieldset>
-
-        <fieldset className="col-span-6">
-          <legend className="mb-1 block text-sm ">
-            {t("Billing Address")}
-          </legend>
-
-          <div className="-space-y-px rounded-lg bg-white shadow-sm ">
             <Select<CheckoutFormData>
               register={register}
               errors={errors}
+              label={t("Country")}
               id="country"
             >
+              <option>{t("Poland")}</option>
               <option>{t("England")}</option>
               <option>{t("Scotland")}</option>
               <option>{t("France")}</option>
               <option>{t("Belgium")}</option>
               <option>{t("Japan")}</option>
             </Select>
-
-            <Input<CheckoutFormData>
-              register={register}
-              id="postalCode"
-              label={t("ZIP/Post Code")}
-              type="text"
-              placeholder="XX-XXX"
-              errors={errors}
-              attributes={{ autoComplete: "postal-code" }}
-            />
           </div>
         </fieldset>
 

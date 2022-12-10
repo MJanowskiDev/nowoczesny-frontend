@@ -13,12 +13,12 @@ export const Select = <TFormData extends Record<string, unknown>>({
   if (!register) return null;
   return (
     <div
-      className={` bg-gray-100/50 dark:bg-gray-900 dark:text-white   ${
+      className={` bg-transparent  dark:text-white   ${
         wrappingElementStyle ? wrappingElementStyle : ""
       }`}
     >
       {label && (
-        <label className="sr-only" htmlFor={id}>
+        <label className="mb-1 block text-sm " htmlFor={id}>
           {label}
         </label>
       )}

@@ -10,7 +10,7 @@ export const SubmitButton = ({ children, className }: SubmitButtonProps) => {
       className={`${
         className
           ? className
-          : "block w-full rounded-lg bg-teal-600  text-md p-2.5"
+          : "block w-full rounded-lg bg-teal-600 text-white   text-md p-2.5"
       }`}
       type="submit"
     >
