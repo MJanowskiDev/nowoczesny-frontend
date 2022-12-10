@@ -107,7 +107,7 @@ export const removeItemFn = (id: CartItem["id"]) => {
 export const removeAllCartItems = async () => {
   await apolloClient.mutate<ClearCartMutation, ClearCartMutationVariables>({
     mutation: ClearCartDocument,
-    variables: { id: getUserId() },
+    variables: { userUUID: getUserId() },
     refetchQueries: [
       {
         query: GetCartItemsDocument,

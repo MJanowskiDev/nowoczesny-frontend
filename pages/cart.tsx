@@ -96,6 +96,8 @@ const CartSummary = () => {
 
       body: JSON.stringify({ userUUID: userUUID }),
     });
+
+    console.log("userUUID", userUUID);
     const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
       await res.json();
 

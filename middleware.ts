@@ -1,3 +1,9 @@
-export { default } from "next-auth/middleware";
+import { withClerkMiddleware } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-export const config = { matcher: ["/cart", "/checkout"] };
+export default withClerkMiddleware((req) => {
+  return NextResponse.next();
+});
+
+// Stop Middleware running on static files
+export const config = { matcher: "/((?!.*\\.).*)" };

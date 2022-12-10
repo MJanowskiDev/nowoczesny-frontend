@@ -12,17 +12,16 @@ import {
   GetCartItemsDocument,
 } from "../../graphql/generated/gql-types";
 
-import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "./auth/[...nextauth]";
+import { getAuth } from "@clerk/nextjs/server";
 
 const checkoutHandler: NextApiHandler = async (req, res) => {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const successUrl = process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL;
   const cancelUrl = process.env.NEXT_PUBLIC_STRIPE_CANCEL_URL;
 
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const { userId } = getAuth(req);
 
-  if (!session) {
+  if (!userId) {
     res.status(401).json({});
   }
 
@@ -105,7 +104,6 @@ const checkoutHandler: NextApiHandler = async (req, res) => {
         stripeCheckoutId: stripeCheckoutSession.id,
         total: stripeCheckoutSession.amount_total || 0,
         userUUID: body.userUUID,
-        id: body.userUUID,
         orderStatus: OrderStatus.InProgress,
         create: productList.map((cartItem) => {
           return {

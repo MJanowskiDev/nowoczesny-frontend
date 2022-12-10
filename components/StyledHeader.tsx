@@ -2,8 +2,9 @@ import { ActiveLink } from "./ActiveLink";
 import Link from "next/link";
 import { ThemeToggler } from "./ThemeToggler";
 import { CartIcon } from "./Cart/CartIcon";
-import { SetStateAction, useState } from "react";
-import { LoginLogoutButton } from "./UI/LoginLogoutButton";
+import { useState } from "react";
+import UserClerkButton from "./UI/UserClerkButton";
+import { useUser } from "@clerk/nextjs";
 
 export const StyledHeader = () => {
   const [menuToggle, setMenuToggle] = useState(false);
@@ -53,22 +54,29 @@ interface ActionListProps {
   onBurgerClickHandle: () => void;
 }
 
-const ActionList = ({ onBurgerClickHandle }: ActionListProps) => (
-  <ul className="items-center gap-6 text-sm sm:flex-wrap flex">
-    <li>
-      <CartIcon />
-    </li>
-    <li>
-      <ThemeToggler />
-    </li>
-    <li>
-      <BurgerButton onClickHandle={onBurgerClickHandle} />
-    </li>
-    <li>
-      <LoginLogoutButton />
-    </li>
-  </ul>
-);
+const ActionList = ({ onBurgerClickHandle }: ActionListProps) => {
+  const { isLoaded, isSignedIn } = useUser();
+  const authenticated = isLoaded && isSignedIn;
+  return (
+    <ul className="items-center gap-6 text-sm sm:flex-wrap flex">
+      {authenticated && (
+        <li>
+          <CartIcon />
+        </li>
+      )}
+
+      <li>
+        <UserClerkButton />
+      </li>
+      <li>
+        <ThemeToggler />
+      </li>
+      <li>
+        <BurgerButton onClickHandle={onBurgerClickHandle} />
+      </li>
+    </ul>
+  );
+};
 
 interface BurgerButtonProps {
   onClickHandle: () => void;
@@ -93,45 +101,51 @@ interface MenuListProps {
   ulClickHandle?: () => void;
 }
 
-const MenuList = ({ className, ulClickHandle }: MenuListProps) => (
-  <ul className={className} onClick={ulClickHandle}>
-    <li>
-      <ActiveLink
-        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-        href="/"
-      >
-        <a>Home</a>
-      </ActiveLink>
-    </li>
+const MenuList = ({ className, ulClickHandle }: MenuListProps) => {
+  const { isLoaded, isSignedIn } = useUser();
+  const authenticated = isLoaded && isSignedIn;
+  return (
+    <ul className={className} onClick={ulClickHandle}>
+      <li>
+        <ActiveLink
+          className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+          href="/"
+        >
+          <a>Home</a>
+        </ActiveLink>
+      </li>
 
-    <li>
-      <ActiveLink
-        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-        href="/about"
-      >
-        <a>About</a>
-      </ActiveLink>
-    </li>
+      <li>
+        <ActiveLink
+          className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+          href="/about"
+        >
+          <a>About</a>
+        </ActiveLink>
+      </li>
 
-    <li>
-      <ActiveLink
-        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-        href="/products-ssg/1"
-      >
-        <a>Products</a>
-      </ActiveLink>
-    </li>
+      <li>
+        <ActiveLink
+          className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+          href="/products-ssg/1"
+        >
+          <a>Products</a>
+        </ActiveLink>
+      </li>
 
-    <li>
-      <ActiveLink
-        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-        href="/orders"
-      >
-        <a>Orders</a>
-      </ActiveLink>
-    </li>
-  </ul>
-);
+      {authenticated && (
+        <li>
+          <ActiveLink
+            className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+            href="/orders"
+          >
+            <a>Orders</a>
+          </ActiveLink>
+        </li>
+      )}
+    </ul>
+  );
+};
 
 const LogoSVG = () => (
   <svg
