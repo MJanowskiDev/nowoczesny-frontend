@@ -14308,7 +14308,7 @@ export type GetCartItemsLazyQueryHookResult = ReturnType<typeof useGetCartItemsL
 export type GetCartItemsQueryResult = Apollo.QueryResult<GetCartItemsQuery, GetCartItemsQueryVariables>;
 export const GetOrdersByUserDocument = gql`
     query GetOrdersByUser($id: String!) {
-  orders(where: {userUUID: $id}, stage: DRAFT) {
+  orders(where: {userUUID: $id}, stage: DRAFT, orderBy: createdAt_DESC) {
     createdAt
     email
     id

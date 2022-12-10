@@ -104,7 +104,7 @@ query GetCartItems($id: String!) {
 }
 
 query GetOrdersByUser($id: String!) {
-  orders(where: { userUUID: $id }, stage: DRAFT) {
+  orders(where: { userUUID: $id }, stage: DRAFT, orderBy: createdAt_DESC) {
     createdAt
     email
     id
