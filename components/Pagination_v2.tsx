@@ -1,4 +1,4 @@
-import { ActiveLink } from "./ActiveLink";
+import { ActiveLink } from "./UI/nav/ActiveLink";
 import React from "react";
 import usePagination from "../hooks/usePagination";
 

@@ -14,6 +14,7 @@
     "@apollo/client": "^3.6.9",
     "@clerk/clerk-react": "^4.6.1",
     "@clerk/nextjs": "^4.6.9",
+    "@heroicons/react": "^2.0.13",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^2.9.10",
     "@stripe/stripe-js": "^1.44.1",

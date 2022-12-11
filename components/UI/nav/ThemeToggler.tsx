@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { DarkModeContext } from "./ThemeContext";
+import { DarkModeContext } from "../ThemeContext";
 
 const SunIcon = () => (
   <svg

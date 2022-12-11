@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import { StyledHeader } from "./StyledHeader";
 import { Footer } from "./Footer";
-import { Theme } from "./Theme";
+import { Theme } from "./UI/Theme";
 
 interface LayoutProps {
   children: ReactNode;

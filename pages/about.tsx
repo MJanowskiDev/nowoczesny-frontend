@@ -14,7 +14,7 @@ const About = () => {
             </span>{" "}
             course
           </h1>
-          <div className="max-w-4xl">
+          <div className="max-w-4xl w-[70%] mx-auto">
             <Image
               src={aboutImage}
               alt={"MJanowskiDev ecommerce shop - about"}
