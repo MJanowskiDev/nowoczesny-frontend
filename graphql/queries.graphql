@@ -122,6 +122,7 @@ query GetOrdersByUser($id: String!) {
 query GetOrderDetails($id: ID!) {
   order(where: { id: $id }, stage: DRAFT) {
     id
+    userUUID
     createdAt
     email
     orderStatus

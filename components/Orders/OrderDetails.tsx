@@ -2,20 +2,28 @@ import Link from "next/link";
 import { Loading } from "../UI/Loading";
 import {
   OrderItem,
-  useGetOrderDetailsQuery,
+  GetOrderDetailsQuery,
 } from "../../graphql/generated/gql-types";
 import { OrderProductCard } from "./OrderProductCard";
 import ErrorMessage from "../UI/ErrorMessage";
+import { useQuery } from "react-query";
 
 interface OrderDetailsProps {
   orderId: string;
 }
 export const OrderDetails = ({ orderId }: OrderDetailsProps) => {
-  const { data, loading, error } = useGetOrderDetailsQuery({
-    variables: { id: orderId },
-  });
+  const { isLoading, error, data } = useQuery<GetOrderDetailsQuery, Error>(
+    `orderDetails-${orderId}`,
+    () =>
+      fetch("/api/order-details", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: orderId }),
+      }).then((res) => res.json()),
+    { enabled: orderId.length !== 0 }
+  );
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -23,17 +31,22 @@ export const OrderDetails = ({ orderId }: OrderDetailsProps) => {
     return <ErrorMessage message={error.message} />;
   }
 
-  const shipment = data?.order?.shipment;
+  if (!error && !isLoading && !data?.order) {
+    return <ErrorMessage message={"No order data"} />;
+  }
+
+  const shipment = data.order?.shipment;
+  const order = data.order;
   return (
     <div>
       <div className="flex flex-col gap-4">
-        <p>{data?.order?.orderStatus}</p>
+        <p>{order?.orderStatus}</p>
 
-        <p>{data?.order?.id}</p>
+        <p>{order?.id}</p>
 
-        <p>{data?.order?.email}</p>
+        <p>{order?.email}</p>
 
-        {data?.order?.total && <p>{data?.order?.total / 100} PLN</p>}
+        {order?.total && <p>{order?.total / 100} PLN</p>}
 
         {shipment && (
           <div>
@@ -53,7 +66,7 @@ export const OrderDetails = ({ orderId }: OrderDetailsProps) => {
         <h1 className="text-2xl py-4 font-medium">Products</h1>
       </div>
       <div className="flex flex-wrap">
-        {data?.order?.orderItems.map((orderItem) => (
+        {order?.orderItems.map((orderItem) => (
           <OrderProductCard key={orderItem.id} order={orderItem as OrderItem} />
         ))}
       </div>

@@ -13636,7 +13636,7 @@ export type GetOrderDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetOrderDetailsQuery = { __typename?: 'Query', order?: { __typename?: 'Order', id: string, createdAt: any, email?: string | null, orderStatus?: OrderStatus | null, total: number, orderItems: Array<{ __typename?: 'OrderItem', id: string, imageUrl?: string | null, name: string, productId: string, quantity: number, slug: string, total: number }>, shipment?: { __typename?: 'Shipment', city: string, country: string, email: string, firstName: string, lastName: string, phone?: string | null, postal: string, street: string } | null } | null };
+export type GetOrderDetailsQuery = { __typename?: 'Query', order?: { __typename?: 'Order', id: string, userUUID?: string | null, createdAt: any, email?: string | null, orderStatus?: OrderStatus | null, total: number, orderItems: Array<{ __typename?: 'OrderItem', id: string, imageUrl?: string | null, name: string, productId: string, quantity: number, slug: string, total: number }>, shipment?: { __typename?: 'Shipment', city: string, country: string, email: string, firstName: string, lastName: string, phone?: string | null, postal: string, street: string } | null } | null };
 
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
@@ -14355,6 +14355,7 @@ export const GetOrderDetailsDocument = gql`
     query GetOrderDetails($id: ID!) {
   order(where: {id: $id}, stage: DRAFT) {
     id
+    userUUID
     createdAt
     email
     orderStatus

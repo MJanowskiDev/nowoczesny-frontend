@@ -1,5 +1,6 @@
 import { useGetReviewsForProductSlugQuery } from "../../graphql/generated/gql-types";
 import ErrorMessage from "../UI/ErrorMessage";
+import { Loading } from "../UI/Loading";
 import { ProductReviewItem } from "./ProductReviewItem";
 interface ProductReviewListProps {
   productSlug: string;
@@ -9,6 +10,10 @@ export const ProductReviewList = ({ productSlug }: ProductReviewListProps) => {
   const { data, loading, error } = useGetReviewsForProductSlugQuery({
     variables: { slug: productSlug },
   });
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (!data?.product) {
     return null;
