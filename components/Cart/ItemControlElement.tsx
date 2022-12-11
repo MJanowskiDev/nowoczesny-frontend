@@ -1,13 +1,16 @@
-import debounce from "lodash.debounce";
 import { useEffect, useState, useRef } from "react";
 import { RemoveIcon } from "../UI/Icons";
 import { useCartState } from "./CartContext";
 import { CartItem } from "./CartUtils";
 import { CART_MAX_QANTITY, CART_MIN_QANTITY } from "./CartUtils";
+import useDebouncdState from "../../hooks/useDebouncedState";
 
 export const ItemControlElement = (cartItem: CartItem) => {
   const { removeItem, editProductCount } = useCartState();
   const [amount, setAmount] = useState(cartItem.count);
+
+  const debouncedAmount = useDebouncdState(amount, 500);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -18,10 +21,10 @@ export const ItemControlElement = (cartItem: CartItem) => {
   }, [cartItem.count]);
 
   useEffect(() => {
-    if (amount !== cartItem.count) {
-      editProductCount(cartItem.id, amount);
+    if (debouncedAmount !== cartItem.count) {
+      editProductCount(cartItem.id, debouncedAmount);
     }
-  }, [amount, cartItem, editProductCount]);
+  }, [debouncedAmount, cartItem, editProductCount]);
 
   const handleRemoveProductGroup = () => {
     removeItem(cartItem.id);
@@ -47,9 +50,9 @@ export const ItemControlElement = (cartItem: CartItem) => {
     });
   };
 
-  const subtractOneDebounced = debounce(handleSubtractOne, 500);
+  const subtractOneDebounced = handleSubtractOne;
 
-  const addOneDebounced = debounce(handleAddOne, 500);
+  const addOneDebounced = handleAddOne;
 
   const setAmountValue = () => {
     const val = Number(inputRef.current?.value);
