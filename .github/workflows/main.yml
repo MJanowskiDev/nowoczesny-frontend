@@ -1,7 +1,13 @@
 name: Chrome
 
 on: push
-
+env:
+  NEXT_PUBLIC_CMS_URL: ${{secrets.NEXT_PUBLIC_CMS_URL}}
+  GRAPHCMS_TOKEN: ${{secrets.GRAPHCMS_TOKEN}}
+  NEXT_PUBLIC_CLERK_FRONTEND_API: ${{secrets.NEXT_PUBLIC_CLERK_FRONTEND_API}}
+  CLERK_API_KEY: ${{secrets.CLERK_API_KEY}}
+  CLERK_JWT_KEY: ${{secrets.CLERK_JWT_KEY}}
+  
 jobs:
   chrome:
     runs-on: ubuntu-18.04
