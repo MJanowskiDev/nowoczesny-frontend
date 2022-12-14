@@ -7,6 +7,10 @@ env:
   NEXT_PUBLIC_CLERK_FRONTEND_API: ${{secrets.NEXT_PUBLIC_CLERK_FRONTEND_API}}
   CLERK_API_KEY: ${{secrets.CLERK_API_KEY}}
   CLERK_JWT_KEY: ${{secrets.CLERK_JWT_KEY}}
+  # pass the Cypress Cloud record key as an environment variable
+  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  # pass GitHub token to allow accurately detecting a build vs a re-run build
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -17,11 +21,6 @@ jobs:
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v4.2.0
-        env:
-          # pass the Cypress Cloud record key as an environment variable
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          # pass GitHub token to allow accurately detecting a build vs a re-run build
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           build: npm run build
           start: npm start
