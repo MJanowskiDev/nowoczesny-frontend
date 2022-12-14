@@ -70,7 +70,7 @@ const ActionList = ({ onBurgerClickHandle }: ActionListProps) => {
     <ul className="items-center gap-6 text-sm sm:flex-wrap flex">
       {authenticated && (
         <li>
-          <CartIcon />
+          <CartIcon data-testid="nav-link-cart" />
         </li>
       )}
 
@@ -108,6 +108,7 @@ const MenuList = ({ className, ulClickHandle }: MenuListProps) => {
         content="Products"
         href="/products-ssg/1"
         icon={<ShoppingBagIcon height={18} />}
+        data-testid="nav-link-products"
       />
       {authenticated && (
         <LiLinkItem
