@@ -10,28 +10,27 @@ describe("empty spec", () => {
 
     cy.url().should("eq", "http://localhost:3000/");
 
-    cy.getCookie("__session")
-      .should("exist")
-      .then((c) => {
-        cy.get('a[href="/products-ssg/1"]').first().click();
-      });
+    cy.getCookie("__session").should("exist")
+    //  .then((c) => {
+    //    cy.get('a[href="/products-ssg/1"]').first().click();
+    //  });
     //cy.visit("/products-ssg/1");
-    cy.get(".flex-wrap > :nth-child(2)")
-      .contains("Add to Cart")
-      .first()
-      .click();
+    //cy.get(".flex-wrap > :nth-child(2)")
+     // .contains("Add to Cart")
+     // .first()
+     // .click();
 
-    cy.get('a[href="/cart"]').first().click();
-    cy.url().should("eq", "http://localhost:3000/cart");
-    cy.get('a[href="/checkout"]').first().click();
-    cy.url().should("eq", "http://localhost:3000/checkout");
+    //cy.get('a[href="/cart"]').first().click();
+    //cy.url().should("eq", "http://localhost:3000/cart");
+    //cy.get('a[href="/checkout"]').first().click();
+    //cy.url().should("eq", "http://localhost:3000/checkout");
 
-    cy.get(`input[id="firstName"]`).type("MrCypress");
-    cy.get(`input[id="lastName"]`).type("Tester");
-    cy.get(`input[id="phone"]`).type("123456789");
-    cy.get(`input[id="streetAddres"]`).type("Address 123/1");
-    cy.get(`input[id="city"]`).type("City");
-    cy.get(`input[id="postalCode"]`).type("12-345");
+    //cy.get(`input[id="firstName"]`).type("MrCypress");
+    //cy.get(`input[id="lastName"]`).type("Tester");
+    //cy.get(`input[id="phone"]`).type("123456789");
+    //cy.get(`input[id="streetAddres"]`).type("Address 123/1");
+    //cy.get(`input[id="city"]`).type("City");
+    //cy.get(`input[id="postalCode"]`).type("12-345");
     // cy.get("button").contains("Proceed").click();
 
     // console.log("Test \n\n\n\n\n\n\n");
